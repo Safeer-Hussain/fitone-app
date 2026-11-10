@@ -1,24 +1,26 @@
 import 'dart:async';
+
 import 'package:fitone/domain/entities/ring_telemetry.dart';
 import 'package:fitone/domain/repositories/ring_repository.dart';
 import 'package:fitone/presentation/dashboard/stores/dashboard_store.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class FakeRingRepository implements RingRepository {
-  final StreamController<RingTelemetry> controller = StreamController<RingTelemetry>.broadcast();
+  final StreamController<RingTelemetry> controller =
+      StreamController<RingTelemetry>.broadcast();
 
   @override
   Future<List<RingDevice>> getDiscoveredDevices() async => [
-        const RingDevice(
-          id: 'AURA-PRO-9842',
-          name: 'AuraRing Pro v2',
-          sdk: 'SDK_A',
-          battery: 88,
-          firmware: 'v2.4.1',
-          rssi: -58,
-          isConnected: true,
-        ),
-      ];
+    const RingDevice(
+      id: 'AURA-PRO-9842',
+      name: 'AuraRing Pro v2',
+      sdk: 'SDK_A',
+      battery: 88,
+      firmware: 'v2.4.1',
+      rssi: -58,
+      isConnected: true,
+    ),
+  ];
 
   @override
   Future<void> connectRing(String deviceId, String sdkType) async {}
@@ -27,7 +29,8 @@ class FakeRingRepository implements RingRepository {
   Future<void> disconnectRing() async {}
 
   @override
-  Future<HardwareDiagnostics> getHardwareDiagnostics() async => const HardwareDiagnostics(
+  Future<HardwareDiagnostics> getHardwareDiagnostics() async =>
+      const HardwareDiagnostics(
         opticalPPG: 'PASSED',
         temperatureSensor: 'PASSED',
         sixAxisIMU: 'NORMAL',

@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 enum FastingProtocol {
@@ -54,7 +55,9 @@ enum FastingProtocol {
 
   static FastingProtocol fromString(String val) {
     return FastingProtocol.values.firstWhere(
-      (e) => e.name.toLowerCase() == val.toLowerCase() || e.label.toLowerCase() == val.toLowerCase(),
+      (e) =>
+          e.name.toLowerCase() == val.toLowerCase() ||
+          e.label.toLowerCase() == val.toLowerCase(),
       orElse: () => FastingProtocol.sixteenEight,
     );
   }
@@ -170,7 +173,9 @@ class FastingSession {
   double getProgress([DateTime? asOf]) {
     if (targetHours <= 0) return 1.0;
     final elapsed = getElapsedHours(asOf);
-    return double.parse((elapsed / targetHours).clamp(0.0, 2.0).toStringAsFixed(4));
+    return double.parse(
+      (elapsed / targetHours).clamp(0.0, 2.0).toStringAsFixed(4),
+    );
   }
 
   bool isTargetReached([DateTime? asOf]) {
@@ -219,9 +224,13 @@ class FastingSession {
   factory FastingSession.fromMap(Map<String, dynamic> map) {
     return FastingSession(
       id: map['id'] as String,
-      startTime: DateTime.fromMillisecondsSinceEpoch((map['start_time'] as num).toInt()),
+      startTime: DateTime.fromMillisecondsSinceEpoch(
+        (map['start_time'] as num).toInt(),
+      ),
       endTime: map['end_time'] != null
-          ? DateTime.fromMillisecondsSinceEpoch((map['end_time'] as num).toInt())
+          ? DateTime.fromMillisecondsSinceEpoch(
+              (map['end_time'] as num).toInt(),
+            )
           : null,
       protocol: FastingProtocol.fromString(map['protocol'] as String),
       targetHours: (map['target_hours'] as num).toDouble(),

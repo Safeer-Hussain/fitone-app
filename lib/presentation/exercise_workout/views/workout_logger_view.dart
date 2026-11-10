@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+
 import '../../../core/di/injection.dart';
 import '../../../core/theme/theme_store.dart';
 import '../../../core/utils/app_feedback.dart';
@@ -47,7 +48,9 @@ class _WorkoutLoggerViewState extends State<WorkoutLoggerView> {
       _loggerStore.startWorkout(title: 'Upper Hypertrophy Session');
     }
 
-    _weightController = TextEditingController(text: _inputWeight.toStringAsFixed(1));
+    _weightController = TextEditingController(
+      text: _inputWeight.toStringAsFixed(1),
+    );
     _repsController = TextEditingController(text: _inputReps.toString());
 
     _attachFocusAutoScroll(_weightFocus);
@@ -136,7 +139,9 @@ class _WorkoutLoggerViewState extends State<WorkoutLoggerView> {
         final restRemaining = _loggerStore.restTimeRemaining;
         final exercises = _exerciseStore.exercises;
 
-        final currentExercise = exercises.where((e) => e.id == _selectedExerciseId).firstOrNull;
+        final currentExercise = exercises
+            .where((e) => e.id == _selectedExerciseId)
+            .firstOrNull;
 
         return Scaffold(
           appBar: AppBar(
@@ -146,14 +151,18 @@ class _WorkoutLoggerViewState extends State<WorkoutLoggerView> {
                 onPressed: () => _loggerStore.toggleUnit(),
                 child: Text(
                   unit.toUpperCase(),
-                  style: TextStyle(fontWeight: FontWeight.w800, color: colorScheme.primary),
+                  style: TextStyle(
+                    fontWeight: FontWeight.w800,
+                    color: colorScheme.primary,
+                  ),
                 ),
               ),
               IconButton(
                 key: const ValueKey('plate_calculator_appbar_button'),
                 onPressed: () => BarbellPlateCalculatorSheet.show(
                   context,
-                  initialWeight: double.tryParse(_weightController.text) ?? _inputWeight,
+                  initialWeight:
+                      double.tryParse(_weightController.text) ?? _inputWeight,
                   unit: unit,
                   onWeightApplied: (weight) {
                     setState(() {
@@ -163,12 +172,18 @@ class _WorkoutLoggerViewState extends State<WorkoutLoggerView> {
                     });
                   },
                 ),
-                icon: Icon(Icons.fitness_center_rounded, color: colorScheme.primary),
+                icon: Icon(
+                  Icons.fitness_center_rounded,
+                  color: colorScheme.primary,
+                ),
                 tooltip: 'Barbell Plate Calculator',
               ),
               IconButton(
                 onPressed: () => OneRmCalculatorSheet.show(context),
-                icon: Icon(Icons.calculate_outlined, color: colorScheme.secondary),
+                icon: Icon(
+                  Icons.calculate_outlined,
+                  color: colorScheme.secondary,
+                ),
                 tooltip: '1RM Calculator',
               ),
             ],
@@ -188,20 +203,37 @@ class _WorkoutLoggerViewState extends State<WorkoutLoggerView> {
                           flex: 5,
                           child: SingleChildScrollView(
                             physics: const ClampingScrollPhysics(),
-                            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                            keyboardDismissBehavior:
+                                ScrollViewKeyboardDismissBehavior.onDrag,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 8,
+                            ),
                             child: Column(
                               children: [
                                 _buildSummaryCard(session, colorScheme),
                                 const SizedBox(height: 8),
-                                _buildInputCard(currentExercise, exercises, unit, colorScheme),
+                                _buildInputCard(
+                                  currentExercise,
+                                  exercises,
+                                  unit,
+                                  colorScheme,
+                                ),
                                 const SizedBox(height: 8),
-                                _buildBottomBar(context, isRestRunning, restRemaining, colorScheme),
+                                _buildBottomBar(
+                                  context,
+                                  isRestRunning,
+                                  restRemaining,
+                                  colorScheme,
+                                ),
                               ],
                             ),
                           ),
                         ),
-                        VerticalDivider(color: colorScheme.outlineVariant, width: 1),
+                        VerticalDivider(
+                          color: colorScheme.outlineVariant,
+                          width: 1,
+                        ),
                         Expanded(
                           flex: 5,
                           child: _buildSetsList(session, colorScheme),
@@ -215,10 +247,20 @@ class _WorkoutLoggerViewState extends State<WorkoutLoggerView> {
                   child: Column(
                     children: [
                       _buildSummaryCard(session, colorScheme),
-                      _buildInputCard(currentExercise, exercises, unit, colorScheme),
+                      _buildInputCard(
+                        currentExercise,
+                        exercises,
+                        unit,
+                        colorScheme,
+                      ),
                       Divider(color: colorScheme.outlineVariant, height: 1),
                       Expanded(child: _buildSetsList(session, colorScheme)),
-                      _buildBottomBar(context, isRestRunning, restRemaining, colorScheme),
+                      _buildBottomBar(
+                        context,
+                        isRestRunning,
+                        restRemaining,
+                        colorScheme,
+                      ),
                     ],
                   ),
                 );
@@ -239,11 +281,29 @@ class _WorkoutLoggerViewState extends State<WorkoutLoggerView> {
       color: colorScheme.surface,
       child: Row(
         children: [
-          Expanded(child: _Stat(label: 'Total Volume', value: '${volume.toStringAsFixed(0)} kg', colorScheme: colorScheme)),
+          Expanded(
+            child: _Stat(
+              label: 'Total Volume',
+              value: '${volume.toStringAsFixed(0)} kg',
+              colorScheme: colorScheme,
+            ),
+          ),
           Container(width: 1, height: 28, color: colorScheme.outlineVariant),
-          Expanded(child: _Stat(label: 'Sets Done', value: '$setsCount', colorScheme: colorScheme)),
+          Expanded(
+            child: _Stat(
+              label: 'Sets Done',
+              value: '$setsCount',
+              colorScheme: colorScheme,
+            ),
+          ),
           Container(width: 1, height: 28, color: colorScheme.outlineVariant),
-          Expanded(child: _Stat(label: 'Est. Cal', value: '380 kcal', colorScheme: colorScheme)),
+          Expanded(
+            child: _Stat(
+              label: 'Est. Cal',
+              value: '380 kcal',
+              colorScheme: colorScheme,
+            ),
+          ),
         ],
       ),
     );
@@ -265,7 +325,10 @@ class _WorkoutLoggerViewState extends State<WorkoutLoggerView> {
             value: _selectedExerciseId,
             isExpanded: true,
             decoration: const InputDecoration(
-              contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 10,
+              ),
               isDense: true,
             ),
             dropdownColor: colorScheme.surface,
@@ -296,24 +359,37 @@ class _WorkoutLoggerViewState extends State<WorkoutLoggerView> {
                       key: const ValueKey('workout_weight_field'),
                       controller: _weightController,
                       focusNode: _weightFocus,
-                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
                       decoration: InputDecoration(
                         labelText: 'Weight ($unit)',
                         errorText: _weightErrorText,
                         isDense: true,
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 8,
+                        ),
                         suffixIcon: IconButton(
                           key: const ValueKey('quick_plate_calc_suffix_button'),
-                          icon: Icon(Icons.view_column_rounded, size: 18, color: colorScheme.primary),
+                          icon: Icon(
+                            Icons.view_column_rounded,
+                            size: 18,
+                            color: colorScheme.primary,
+                          ),
                           tooltip: 'Calculate Plates',
                           onPressed: () => BarbellPlateCalculatorSheet.show(
                             context,
-                            initialWeight: double.tryParse(_weightController.text) ?? _inputWeight,
+                            initialWeight:
+                                double.tryParse(_weightController.text) ??
+                                _inputWeight,
                             unit: unit,
                             onWeightApplied: (weight) {
                               setState(() {
                                 _inputWeight = weight.clamp(0, 300);
-                                _weightController.text = weight.toStringAsFixed(1);
+                                _weightController.text = weight.toStringAsFixed(
+                                  1,
+                                );
                                 _weightErrorText = null;
                               });
                             },
@@ -362,7 +438,10 @@ class _WorkoutLoggerViewState extends State<WorkoutLoggerView> {
                         labelText: 'Reps',
                         errorText: _repsErrorText,
                         isDense: true,
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 8,
+                        ),
                       ),
                       onChanged: (val) {
                         final v = int.tryParse(val);
@@ -401,9 +480,15 @@ class _WorkoutLoggerViewState extends State<WorkoutLoggerView> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: colorScheme.primary,
                     foregroundColor: colorScheme.onPrimary,
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 14,
+                    ),
                   ),
-                  child: const Text('Log Set', style: TextStyle(fontWeight: FontWeight.w700)),
+                  child: const Text(
+                    'Log Set',
+                    style: TextStyle(fontWeight: FontWeight.w700),
+                  ),
                 ),
               ),
             ],
@@ -430,7 +515,9 @@ class _WorkoutLoggerViewState extends State<WorkoutLoggerView> {
       itemCount: sets.length,
       itemBuilder: (context, index) {
         final set = sets[index];
-        final ex = _exerciseStore.exercises.where((e) => e.id == set.exerciseId).firstOrNull;
+        final ex = _exerciseStore.exercises
+            .where((e) => e.id == set.exerciseId)
+            .firstOrNull;
 
         return Dismissible(
           key: ValueKey(set.id),
@@ -482,13 +569,20 @@ class _WorkoutLoggerViewState extends State<WorkoutLoggerView> {
                         ex?.name ?? 'Compound Lift',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 13, color: colorScheme.onSurface),
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 13,
+                          color: colorScheme.onSurface,
+                        ),
                       ),
                       Text(
                         '${set.weightKg.toStringAsFixed(1)} kg × ${set.reps} reps • RPE ${set.rpe.toStringAsFixed(1)} • 1RM: ${set.oneRepMaxEpley.toStringAsFixed(0)}kg',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(fontSize: 11, color: colorScheme.onSurfaceVariant),
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: colorScheme.onSurfaceVariant,
+                        ),
                       ),
                     ],
                   ),
@@ -496,8 +590,12 @@ class _WorkoutLoggerViewState extends State<WorkoutLoggerView> {
                 IconButton(
                   onPressed: () => _loggerStore.toggleSetCompletion(index),
                   icon: Icon(
-                    set.isCompleted ? Icons.check_circle_rounded : Icons.radio_button_unchecked_rounded,
-                    color: set.isCompleted ? colorScheme.primary : colorScheme.onSurfaceVariant,
+                    set.isCompleted
+                        ? Icons.check_circle_rounded
+                        : Icons.radio_button_unchecked_rounded,
+                    color: set.isCompleted
+                        ? colorScheme.primary
+                        : colorScheme.onSurfaceVariant,
                   ),
                 ),
               ],
@@ -527,22 +625,35 @@ class _WorkoutLoggerViewState extends State<WorkoutLoggerView> {
               child: GestureDetector(
                 onTap: () => RestTimerDialog.show(context, _loggerStore),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 10,
+                  ),
                   decoration: BoxDecoration(
                     color: colorScheme.primary.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: colorScheme.primary.withValues(alpha: 0.4)),
+                    border: Border.all(
+                      color: colorScheme.primary.withValues(alpha: 0.4),
+                    ),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.timer_outlined, size: 15, color: colorScheme.primary),
+                      Icon(
+                        Icons.timer_outlined,
+                        size: 15,
+                        color: colorScheme.primary,
+                      ),
                       const SizedBox(width: 4),
                       Flexible(
                         child: Text(
                           'Rest: ${restRemaining}s',
-                          style: TextStyle(color: colorScheme.primary, fontWeight: FontWeight.w700, fontSize: 13),
+                          style: TextStyle(
+                            color: colorScheme.primary,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 13,
+                          ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -557,10 +668,17 @@ class _WorkoutLoggerViewState extends State<WorkoutLoggerView> {
               child: OutlinedButton.icon(
                 onPressed: () => RestTimerDialog.show(context, _loggerStore),
                 icon: const Icon(Icons.timer_outlined, size: 15),
-                label: const Text('Rest Timer', maxLines: 1, overflow: TextOverflow.ellipsis),
+                label: const Text(
+                  'Rest Timer',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: colorScheme.onSurface,
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 10,
+                  ),
                   side: BorderSide(color: colorScheme.outlineVariant),
                 ),
               ),
@@ -578,11 +696,18 @@ class _WorkoutLoggerViewState extends State<WorkoutLoggerView> {
                 }
               },
               icon: const Icon(Icons.check_circle_outline, size: 16),
-              label: const Text('Finish Workout', maxLines: 1, overflow: TextOverflow.ellipsis),
+              label: const Text(
+                'Finish Workout',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: colorScheme.primary,
                 foregroundColor: colorScheme.onPrimary,
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 10,
+                ),
               ),
             ),
           ),
@@ -597,15 +722,29 @@ class _Stat extends StatelessWidget {
   final String value;
   final ColorScheme colorScheme;
 
-  const _Stat({required this.label, required this.value, required this.colorScheme});
+  const _Stat({
+    required this.label,
+    required this.value,
+    required this.colorScheme,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(label, style: TextStyle(fontSize: 11, color: colorScheme.onSurfaceVariant)),
+        Text(
+          label,
+          style: TextStyle(fontSize: 11, color: colorScheme.onSurfaceVariant),
+        ),
         const SizedBox(height: 2),
-        Text(value, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: colorScheme.onSurface)),
+        Text(
+          value,
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
+            color: colorScheme.onSurface,
+          ),
+        ),
       ],
     );
   }

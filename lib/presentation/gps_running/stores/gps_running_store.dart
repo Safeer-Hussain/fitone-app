@@ -1,6 +1,8 @@
 import 'dart:async';
+
 import 'package:mobx/mobx.dart';
 import 'package:uuid/uuid.dart';
+
 import '../../../domain/entities/run_record.dart';
 import '../../../domain/repositories/ring_repository.dart';
 import '../../../domain/repositories/running_repository.dart';
@@ -178,14 +180,18 @@ class GpsRunningStore {
     runInAction(() => _isPaused.value = false);
   }
 
-  Future<RunRecord?> finishAndSaveRun({String title = 'Lahore Boulevard Tempo Run'}) async {
+  Future<RunRecord?> finishAndSaveRun({
+    String title = 'Lahore Boulevard Tempo Run',
+  }) async {
     _timer?.cancel();
     _timer = null;
 
     final record = RunRecord(
       id: const Uuid().v4(),
       title: title,
-      startTime: DateTime.now().subtract(Duration(seconds: _elapsedSeconds.value)),
+      startTime: DateTime.now().subtract(
+        Duration(seconds: _elapsedSeconds.value),
+      ),
       durationSeconds: _elapsedSeconds.value,
       distanceKm: double.parse(_distanceKm.value.toStringAsFixed(2)),
       avgPaceSecPerKm: _currentPaceSec.value,

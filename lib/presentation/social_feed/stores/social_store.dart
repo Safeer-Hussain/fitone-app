@@ -1,5 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:uuid/uuid.dart';
+
 import '../../../domain/entities/social_post.dart';
 import '../../../domain/repositories/social_repository.dart';
 
@@ -53,7 +54,9 @@ class SocialStore {
 
     final post = _posts[index];
     final newLiked = !post.isLiked;
-    final newCount = newLiked ? post.likesCount + 1 : (post.likesCount > 0 ? post.likesCount - 1 : 0);
+    final newCount = newLiked
+        ? post.likesCount + 1
+        : (post.likesCount > 0 ? post.likesCount - 1 : 0);
 
     runInAction(() {
       _posts[index] = post.copyWith(isLiked: newLiked, likesCount: newCount);
@@ -65,10 +68,7 @@ class SocialStore {
   Future<void> addComment(String postId, String text) async {
     if (text.trim().isEmpty) return;
 
-    final comment = PostComment(
-      author: 'Safeer Hussain',
-      text: text.trim(),
-    );
+    final comment = PostComment(author: 'Safeer Hussain', text: text.trim());
 
     final index = _posts.indexWhere((p) => p.id == postId);
     if (index != -1) {

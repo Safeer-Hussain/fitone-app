@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+
 import '../network/network_monitor.dart';
 
 class OfflineBanner extends StatelessWidget {
@@ -20,7 +21,9 @@ class OfflineBanner extends StatelessWidget {
 
         return AnimatedCrossFade(
           duration: const Duration(milliseconds: 300),
-          crossFadeState: isOnline ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+          crossFadeState: isOnline
+              ? CrossFadeState.showFirst
+              : CrossFadeState.showSecond,
           firstChild: const SizedBox.shrink(),
           secondChild: Container(
             width: double.infinity,
@@ -33,11 +36,7 @@ class OfflineBanner extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Icon(
-                  Icons.wifi_off_rounded,
-                  color: warningColor,
-                  size: 16,
-                ),
+                Icon(Icons.wifi_off_rounded, color: warningColor, size: 16),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
@@ -53,7 +52,10 @@ class OfflineBanner extends StatelessWidget {
                 ),
                 if (pendingCount > 0)
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 2,
+                    ),
                     decoration: BoxDecoration(
                       color: warningColor.withValues(alpha: 0.18),
                       borderRadius: BorderRadius.circular(10),

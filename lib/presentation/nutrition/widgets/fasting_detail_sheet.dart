@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import '../../../domain/entities/fasting_session.dart';
 import '../stores/fasting_store.dart';
 
@@ -28,7 +29,9 @@ class FastingDetailSheet extends StatelessWidget {
 
     return SafeArea(
       child: Padding(
-        padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
         child: Container(
           constraints: BoxConstraints(maxHeight: maxSheetHeight),
           decoration: BoxDecoration(
@@ -54,7 +57,11 @@ class FastingDetailSheet extends StatelessWidget {
               const SizedBox(height: 14),
               Row(
                 children: [
-                  Icon(Icons.science_rounded, color: colorScheme.primary, size: 22),
+                  Icon(
+                    Icons.science_rounded,
+                    color: colorScheme.primary,
+                    size: 22,
+                  ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
@@ -92,7 +99,8 @@ class FastingDetailSheet extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     ...FastingPhaseType.values.map((phase) {
-                      final isCurrent = isFastingActive && phase == currentPhase;
+                      final isCurrent =
+                          isFastingActive && phase == currentPhase;
                       final rangeText = phase.endHour != null
                           ? '${phase.startHour.toInt()}h - ${phase.endHour!.toInt()}h'
                           : '${phase.startHour.toInt()}h+';
@@ -104,7 +112,9 @@ class FastingDetailSheet extends StatelessWidget {
                           color: colorScheme.surface,
                           borderRadius: BorderRadius.circular(14),
                           border: Border.all(
-                            color: isCurrent ? phase.color : colorScheme.outlineVariant,
+                            color: isCurrent
+                                ? phase.color
+                                : colorScheme.outlineVariant,
                             width: isCurrent ? 1.5 : 1.0,
                           ),
                           boxShadow: isCurrent
@@ -145,7 +155,10 @@ class FastingDetailSheet extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 8),
                                 Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 3,
+                                  ),
                                   decoration: BoxDecoration(
                                     color: phase.color.withOpacity(0.15),
                                     borderRadius: BorderRadius.circular(6),
@@ -176,13 +189,18 @@ class FastingDetailSheet extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 11,
                                 height: 1.4,
-                                color: colorScheme.onSurfaceVariant.withOpacity(0.85),
+                                color: colorScheme.onSurfaceVariant.withOpacity(
+                                  0.85,
+                                ),
                               ),
                             ),
                             if (isCurrent) ...[
                               const SizedBox(height: 8),
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 4,
+                                ),
                                 decoration: BoxDecoration(
                                   color: phase.color.withOpacity(0.2),
                                   borderRadius: BorderRadius.circular(6),
@@ -190,7 +208,11 @@ class FastingDetailSheet extends StatelessWidget {
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Icon(Icons.check_circle_rounded, size: 14, color: phase.color),
+                                    Icon(
+                                      Icons.check_circle_rounded,
+                                      size: 14,
+                                      color: phase.color,
+                                    ),
                                     const SizedBox(width: 6),
                                     Text(
                                       'ACTIVE METABOLIC STATE',
@@ -231,15 +253,21 @@ class FastingDetailSheet extends StatelessWidget {
                         child: Center(
                           child: Text(
                             'No completed fasting sessions logged yet.',
-                            style: TextStyle(fontSize: 12, color: colorScheme.onSurfaceVariant),
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: colorScheme.onSurfaceVariant,
+                            ),
                           ),
                         ),
                       )
                     else
                       ...pastSessions.map((s) {
                         final dateFormat = DateFormat('MMM d, yyyy • h:mm a');
-                        final startStr = dateFormat.format(s.startTime.toLocal());
-                        final durationStr = '${s.getElapsedHours().toStringAsFixed(1)} hrs';
+                        final startStr = dateFormat.format(
+                          s.startTime.toLocal(),
+                        );
+                        final durationStr =
+                            '${s.getElapsedHours().toStringAsFixed(1)} hrs';
                         final isHit = s.isTargetReached();
 
                         return Container(
@@ -248,7 +276,9 @@ class FastingDetailSheet extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: colorScheme.surface,
                             borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: colorScheme.outlineVariant),
+                            border: Border.all(
+                              color: colorScheme.outlineVariant,
+                            ),
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -267,7 +297,10 @@ class FastingDetailSheet extends StatelessWidget {
                                   const SizedBox(height: 2),
                                   Text(
                                     startStr,
-                                    style: TextStyle(fontSize: 11, color: colorScheme.onSurfaceVariant),
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      color: colorScheme.onSurfaceVariant,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -278,14 +311,20 @@ class FastingDetailSheet extends StatelessWidget {
                                     style: TextStyle(
                                       fontSize: 13,
                                       fontWeight: FontWeight.w800,
-                                      color: isHit ? colorScheme.primary : colorScheme.onSurface,
+                                      color: isHit
+                                          ? colorScheme.primary
+                                          : colorScheme.onSurface,
                                     ),
                                   ),
                                   const SizedBox(width: 8),
                                   Icon(
-                                    isHit ? Icons.check_circle_rounded : Icons.radio_button_unchecked_rounded,
+                                    isHit
+                                        ? Icons.check_circle_rounded
+                                        : Icons.radio_button_unchecked_rounded,
                                     size: 16,
-                                    color: isHit ? colorScheme.primary : colorScheme.onSurfaceVariant,
+                                    color: isHit
+                                        ? colorScheme.primary
+                                        : colorScheme.onSurfaceVariant,
                                   ),
                                 ],
                               ),
@@ -305,9 +344,14 @@ class FastingDetailSheet extends StatelessWidget {
                     backgroundColor: colorScheme.primary,
                     foregroundColor: colorScheme.onPrimary,
                     padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
-                  child: const Text('Close Details', style: TextStyle(fontWeight: FontWeight.w700)),
+                  child: const Text(
+                    'Close Details',
+                    style: TextStyle(fontWeight: FontWeight.w700),
+                  ),
                 ),
               ),
             ],

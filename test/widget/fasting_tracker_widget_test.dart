@@ -19,10 +19,12 @@ class _FakeNutritionRepo implements NutritionRepository {
   Future<void> addFoodEntry(NutritionLogItem item) async => entries.add(item);
 
   @override
-  Future<void> deleteFoodEntry(String id) async => entries.removeWhere((i) => i.id == id);
+  Future<void> deleteFoodEntry(String id) async =>
+      entries.removeWhere((i) => i.id == id);
 
   @override
-  Future<DailyNutritionSummary> getDailySummary(String dateStr) async => DailyNutritionSummary(
+  Future<DailyNutritionSummary> getDailySummary(String dateStr) async =>
+      DailyNutritionSummary(
         dateStr: dateStr,
         targetCalories: 2500,
         targetProteinG: 180,
@@ -41,7 +43,8 @@ class _FakeNutritionRepo implements NutritionRepository {
       );
 
   @override
-  Future<void> logHydration(HydrationLogItem item) async => waterLogged += item.amountMl;
+  Future<void> logHydration(HydrationLogItem item) async =>
+      waterLogged += item.amountMl;
 
   @override
   Future<void> resetDayHydration(String dateStr) async => waterLogged = 0;
@@ -60,7 +63,9 @@ void main() {
     sl.registerLazySingleton<NutritionRepository>(() => _FakeNutritionRepo());
 
     fastingStore = FastingStore(preferences: prefs);
-    nutritionStore = NutritionStore(nutritionRepository: sl<NutritionRepository>());
+    nutritionStore = NutritionStore(
+      nutritionRepository: sl<NutritionRepository>(),
+    );
 
     sl.registerLazySingleton<FastingStore>(() => fastingStore);
     sl.registerLazySingleton<NutritionStore>(() => nutritionStore);
@@ -99,63 +104,87 @@ void main() {
   }
 
   group('FastingTrackerCard Widget Tests', () {
-    testWidgets('Renders idle state with eating window open and protocol chips', (tester) async {
+    testWidgets(
+      'Renders idle state with eating window open and protocol chips',
+      (tester) async {
+        setupPortrait(tester);
+
+        await tester.pumpWidget(
+          createTestWidget(FastingTrackerCard(store: fastingStore)),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.text('Intermittent Fasting Tracker'), findsOneWidget);
+        expect(find.text('EATING WINDOW'), findsOneWidget);
+        expect(find.text('Idle'), findsOneWidget);
+        expect(find.text('Start Fasting Window (16:8)'), findsOneWidget);
+        expect(find.text('16:8'), findsWidgets);
+        expect(find.text('18:6'), findsOneWidget);
+        expect(find.text('20:4'), findsOneWidget);
+        expect(find.text('Circadian'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'Tapping protocol chip updates selected protocol and target hours',
+      (tester) async {
+        setupPortrait(tester);
+
+        await tester.pumpWidget(
+          createTestWidget(FastingTrackerCard(store: fastingStore)),
+        );
+        await tester.pumpAndSettle();
+
+        final chip18_6 = find.text('18:6');
+        expect(chip18_6, findsOneWidget);
+        await tester.tap(chip18_6);
+        await tester.pumpAndSettle();
+
+        expect(fastingStore.selectedProtocol, FastingProtocol.eighteenSix);
+        expect(find.text('Start Fasting Window (18:6)'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'Starting fast transitions card to active fasting state with timer',
+      (tester) async {
+        setupPortrait(tester);
+
+        await tester.pumpWidget(
+          createTestWidget(FastingTrackerCard(store: fastingStore)),
+        );
+        await tester.pumpAndSettle();
+
+        final startButton = find.byKey(const ValueKey('start_fast_button'));
+        expect(startButton, findsOneWidget);
+        await tester.tap(startButton);
+        await tester.pump();
+
+        expect(fastingStore.isFastingActive, isTrue);
+        expect(find.text('FASTING'), findsOneWidget);
+        expect(find.byKey(const ValueKey('end_fast_button')), findsOneWidget);
+        expect(
+          find.byKey(const ValueKey('adjust_fast_start_time_button')),
+          findsOneWidget,
+        );
+
+        fastingStore.dispose();
+      },
+    );
+
+    testWidgets('Notification toggle button updates notification preference', (
+      tester,
+    ) async {
       setupPortrait(tester);
 
-      await tester.pumpWidget(createTestWidget(FastingTrackerCard(store: fastingStore)));
+      await tester.pumpWidget(
+        createTestWidget(FastingTrackerCard(store: fastingStore)),
+      );
       await tester.pumpAndSettle();
 
-      expect(find.text('Intermittent Fasting Tracker'), findsOneWidget);
-      expect(find.text('EATING WINDOW'), findsOneWidget);
-      expect(find.text('Idle'), findsOneWidget);
-      expect(find.text('Start Fasting Window (16:8)'), findsOneWidget);
-      expect(find.text('16:8'), findsWidgets);
-      expect(find.text('18:6'), findsOneWidget);
-      expect(find.text('20:4'), findsOneWidget);
-      expect(find.text('Circadian'), findsOneWidget);
-    });
-
-    testWidgets('Tapping protocol chip updates selected protocol and target hours', (tester) async {
-      setupPortrait(tester);
-
-      await tester.pumpWidget(createTestWidget(FastingTrackerCard(store: fastingStore)));
-      await tester.pumpAndSettle();
-
-      final chip18_6 = find.text('18:6');
-      expect(chip18_6, findsOneWidget);
-      await tester.tap(chip18_6);
-      await tester.pumpAndSettle();
-
-      expect(fastingStore.selectedProtocol, FastingProtocol.eighteenSix);
-      expect(find.text('Start Fasting Window (18:6)'), findsOneWidget);
-    });
-
-    testWidgets('Starting fast transitions card to active fasting state with timer', (tester) async {
-      setupPortrait(tester);
-
-      await tester.pumpWidget(createTestWidget(FastingTrackerCard(store: fastingStore)));
-      await tester.pumpAndSettle();
-
-      final startButton = find.byKey(const ValueKey('start_fast_button'));
-      expect(startButton, findsOneWidget);
-      await tester.tap(startButton);
-      await tester.pump();
-
-      expect(fastingStore.isFastingActive, isTrue);
-      expect(find.text('FASTING'), findsOneWidget);
-      expect(find.byKey(const ValueKey('end_fast_button')), findsOneWidget);
-      expect(find.byKey(const ValueKey('adjust_fast_start_time_button')), findsOneWidget);
-
-      fastingStore.dispose();
-    });
-
-    testWidgets('Notification toggle button updates notification preference', (tester) async {
-      setupPortrait(tester);
-
-      await tester.pumpWidget(createTestWidget(FastingTrackerCard(store: fastingStore)));
-      await tester.pumpAndSettle();
-
-      final notifBtn = find.byKey(const ValueKey('fasting_notification_toggle'));
+      final notifBtn = find.byKey(
+        const ValueKey('fasting_notification_toggle'),
+      );
       expect(notifBtn, findsOneWidget);
       await tester.tap(notifBtn);
       await tester.pump();
@@ -163,63 +192,78 @@ void main() {
       expect(fastingStore.notificationsEnabled, isFalse);
     });
 
-    testWidgets('Detail button launches FastingDetailSheet with metabolic phase breakdown', (tester) async {
-      setupPortrait(tester);
+    testWidgets(
+      'Detail button launches FastingDetailSheet with metabolic phase breakdown',
+      (tester) async {
+        setupPortrait(tester);
 
-      await tester.pumpWidget(createTestWidget(FastingTrackerCard(store: fastingStore)));
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(
+          createTestWidget(FastingTrackerCard(store: fastingStore)),
+        );
+        await tester.pumpAndSettle();
 
-      final detailBtn = find.byKey(const ValueKey('fasting_detail_button'));
-      expect(detailBtn, findsOneWidget);
-      await tester.tap(detailBtn);
-      await tester.pumpAndSettle();
+        final detailBtn = find.byKey(const ValueKey('fasting_detail_button'));
+        expect(detailBtn, findsOneWidget);
+        await tester.tap(detailBtn);
+        await tester.pumpAndSettle();
 
-      expect(find.text('Fasting Physiology & Ketone Stages'), findsOneWidget);
-      expect(find.text('BIOLOGICAL METABOLIC PHASES'), findsOneWidget);
-      expect(find.text('Digestion & Storage'), findsOneWidget);
-      expect(find.text('Fat Burning & Early Ketosis'), findsOneWidget);
-      expect(find.text('Deep Ketosis & Autophagy'), findsOneWidget);
-      expect(find.text('Peak Autophagy & HGH Surge'), findsOneWidget);
-    });
+        expect(find.text('Fasting Physiology & Ketone Stages'), findsOneWidget);
+        expect(find.text('BIOLOGICAL METABOLIC PHASES'), findsOneWidget);
+        expect(find.text('Digestion & Storage'), findsOneWidget);
+        expect(find.text('Fat Burning & Early Ketosis'), findsOneWidget);
+        expect(find.text('Deep Ketosis & Autophagy'), findsOneWidget);
+        expect(find.text('Peak Autophagy & HGH Surge'), findsOneWidget);
+      },
+    );
 
-    testWidgets('Ending active fast opens dialog, archives session, and returns to idle', (tester) async {
-      setupPortrait(tester);
+    testWidgets(
+      'Ending active fast opens dialog, archives session, and returns to idle',
+      (tester) async {
+        setupPortrait(tester);
 
-      await fastingStore.startFast(protocol: FastingProtocol.sixteenEight);
+        await fastingStore.startFast(protocol: FastingProtocol.sixteenEight);
 
-      await tester.pumpWidget(createTestWidget(FastingTrackerCard(store: fastingStore)));
-      await tester.pump();
+        await tester.pumpWidget(
+          createTestWidget(FastingTrackerCard(store: fastingStore)),
+        );
+        await tester.pump();
 
-      final endBtn = find.byKey(const ValueKey('end_fast_button'));
-      expect(endBtn, findsOneWidget);
-      await tester.tap(endBtn);
-      await tester.pumpAndSettle();
+        final endBtn = find.byKey(const ValueKey('end_fast_button'));
+        expect(endBtn, findsOneWidget);
+        await tester.tap(endBtn);
+        await tester.pumpAndSettle();
 
-      expect(find.text('Complete Fasting Window'), findsOneWidget);
+        expect(find.text('Complete Fasting Window'), findsOneWidget);
 
-      final confirmBtn = find.byKey(const ValueKey('confirm_end_fast_dialog_button'));
-      expect(confirmBtn, findsOneWidget);
-      await tester.tap(confirmBtn);
-      await tester.pumpAndSettle();
+        final confirmBtn = find.byKey(
+          const ValueKey('confirm_end_fast_dialog_button'),
+        );
+        expect(confirmBtn, findsOneWidget);
+        await tester.tap(confirmBtn);
+        await tester.pumpAndSettle();
 
-      expect(fastingStore.isFastingActive, isFalse);
-      expect(fastingStore.pastSessions.length, 1);
-      expect(find.text('EATING WINDOW'), findsOneWidget);
-    });
+        expect(fastingStore.isFastingActive, isFalse);
+        expect(fastingStore.pastSessions.length, 1);
+        expect(find.text('EATING WINDOW'), findsOneWidget);
+      },
+    );
 
-    testWidgets('NutritionView renders FastingTrackerCard in portrait and landscape', (tester) async {
-      setupPortrait(tester);
+    testWidgets(
+      'NutritionView renders FastingTrackerCard in portrait and landscape',
+      (tester) async {
+        setupPortrait(tester);
 
-      await tester.pumpWidget(createTestWidget(const NutritionView()));
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(createTestWidget(const NutritionView()));
+        await tester.pumpAndSettle();
 
-      expect(find.text('Intermittent Fasting Tracker'), findsOneWidget);
+        expect(find.text('Intermittent Fasting Tracker'), findsOneWidget);
 
-      setupLandscape(tester);
-      await tester.pumpWidget(createTestWidget(const NutritionView()));
-      await tester.pumpAndSettle();
+        setupLandscape(tester);
+        await tester.pumpWidget(createTestWidget(const NutritionView()));
+        await tester.pumpAndSettle();
 
-      expect(find.text('Intermittent Fasting Tracker'), findsOneWidget);
-    });
+        expect(find.text('Intermittent Fasting Tracker'), findsOneWidget);
+      },
+    );
   });
 }

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+
 import '../network/mock_api_interceptor.dart';
 import '../theme/theme_store.dart';
 import '../../data/datasources/native_ring_channel_data_source.dart';
@@ -28,32 +29,62 @@ final sl = GetIt.instance;
 
 Future<void> configureDependencies() async {
   // Network
-  final dio = Dio(BaseOptions(
-    connectTimeout: const Duration(seconds: 10),
-    receiveTimeout: const Duration(seconds: 10),
-  ));
+  final dio = Dio(
+    BaseOptions(
+      connectTimeout: const Duration(seconds: 10),
+      receiveTimeout: const Duration(seconds: 10),
+    ),
+  );
   dio.interceptors.add(MockApiInterceptor());
   sl.registerSingleton<Dio>(dio);
 
   // Data Sources
-  sl.registerLazySingleton<NativeRingChannelDataSource>(() => NativeRingChannelDataSource());
+  sl.registerLazySingleton<NativeRingChannelDataSource>(
+    () => NativeRingChannelDataSource(),
+  );
 
   // Repositories
-  sl.registerLazySingleton<RingRepository>(() => RingRepositoryImpl(dataSource: sl()));
-  sl.registerLazySingleton<WorkoutRepository>(() => WorkoutRepositoryImpl(dio: sl()));
-  sl.registerLazySingleton<NutritionRepository>(() => NutritionRepositoryImpl(dio: sl()));
-  sl.registerLazySingleton<RunningRepository>(() => RunningRepositoryImpl(dio: sl()));
-  sl.registerLazySingleton<AiCoachRepository>(() => AiCoachRepositoryImpl(ringRepository: sl()));
-  sl.registerLazySingleton<SocialRepository>(() => SocialRepositoryImpl(dio: sl()));
+  sl.registerLazySingleton<RingRepository>(
+    () => RingRepositoryImpl(dataSource: sl()),
+  );
+  sl.registerLazySingleton<WorkoutRepository>(
+    () => WorkoutRepositoryImpl(dio: sl()),
+  );
+  sl.registerLazySingleton<NutritionRepository>(
+    () => NutritionRepositoryImpl(dio: sl()),
+  );
+  sl.registerLazySingleton<RunningRepository>(
+    () => RunningRepositoryImpl(dio: sl()),
+  );
+  sl.registerLazySingleton<AiCoachRepository>(
+    () => AiCoachRepositoryImpl(ringRepository: sl()),
+  );
+  sl.registerLazySingleton<SocialRepository>(
+    () => SocialRepositoryImpl(dio: sl()),
+  );
 
   // Stores
   sl.registerLazySingleton<ThemeStore>(() => ThemeStore());
-  sl.registerLazySingleton<DashboardStore>(() => DashboardStore(ringRepository: sl()));
-  sl.registerLazySingleton<ExerciseStore>(() => ExerciseStore(workoutRepository: sl()));
-  sl.registerLazySingleton<WorkoutLoggerStore>(() => WorkoutLoggerStore(workoutRepository: sl()));
-  sl.registerLazySingleton<NutritionStore>(() => NutritionStore(nutritionRepository: sl()));
+  sl.registerLazySingleton<DashboardStore>(
+    () => DashboardStore(ringRepository: sl()),
+  );
+  sl.registerLazySingleton<ExerciseStore>(
+    () => ExerciseStore(workoutRepository: sl()),
+  );
+  sl.registerLazySingleton<WorkoutLoggerStore>(
+    () => WorkoutLoggerStore(workoutRepository: sl()),
+  );
+  sl.registerLazySingleton<NutritionStore>(
+    () => NutritionStore(nutritionRepository: sl()),
+  );
   sl.registerLazySingleton<FastingStore>(() => FastingStore());
-  sl.registerLazySingleton<GpsRunningStore>(() => GpsRunningStore(runningRepository: sl(), ringRepository: sl()));
-  sl.registerLazySingleton<AiCoachStore>(() => AiCoachStore(aiCoachRepository: sl()));
-  sl.registerLazySingleton<SocialStore>(() => SocialStore(socialRepository: sl()));
+  sl.registerLazySingleton<GpsRunningStore>(
+    () => GpsRunningStore(runningRepository: sl(), ringRepository: sl()),
+  );
+  sl.registerLazySingleton<AiCoachStore>(
+    () => AiCoachStore(aiCoachRepository: sl()),
+  );
+  sl.registerLazySingleton<SocialStore>(
+    () => SocialStore(socialRepository: sl()),
+  );
 }

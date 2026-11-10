@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import '../constants/app_colors.dart';
 
 class AppTheme {
@@ -71,7 +72,10 @@ class AppTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: AppColors.darkSurfaceElevated,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 14,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: AppColors.darkBorder),
@@ -82,16 +86,30 @@ class AppTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.emeraldPrimary, width: 1.5),
+          borderSide: const BorderSide(
+            color: AppColors.emeraldPrimary,
+            width: 1.5,
+          ),
         ),
-        hintStyle: const TextStyle(color: AppColors.darkTextMuted, fontSize: 14),
+        hintStyle: const TextStyle(
+          color: AppColors.darkTextMuted,
+          fontSize: 14,
+        ),
       ),
       chipTheme: ChipThemeData(
         backgroundColor: AppColors.darkSurfaceElevated,
         selectedColor: AppColors.emeraldPrimary.withValues(alpha: 0.18),
         disabledColor: AppColors.darkSurface,
-        labelStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.darkTextPrimary),
-        secondaryLabelStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.emeraldPrimary),
+        labelStyle: const TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+          color: AppColors.darkTextPrimary,
+        ),
+        secondaryLabelStyle: const TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w700,
+          color: AppColors.emeraldPrimary,
+        ),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
@@ -119,7 +137,10 @@ class AppTheme {
         }),
         iconTheme: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return const IconThemeData(color: AppColors.emeraldPrimary, size: 22);
+            return const IconThemeData(
+              color: AppColors.emeraldPrimary,
+              size: 22,
+            );
           }
           return const IconThemeData(color: AppColors.darkTextMuted, size: 22);
         }),
@@ -127,8 +148,14 @@ class AppTheme {
       navigationRailTheme: NavigationRailThemeData(
         backgroundColor: AppColors.darkSurface,
         indicatorColor: AppColors.emeraldPrimary.withValues(alpha: 0.18),
-        selectedIconTheme: const IconThemeData(color: AppColors.emeraldPrimary, size: 24),
-        unselectedIconTheme: const IconThemeData(color: AppColors.darkTextMuted, size: 22),
+        selectedIconTheme: const IconThemeData(
+          color: AppColors.emeraldPrimary,
+          size: 24,
+        ),
+        unselectedIconTheme: const IconThemeData(
+          color: AppColors.darkTextMuted,
+          size: 22,
+        ),
         selectedLabelTextStyle: const TextStyle(
           fontSize: 11,
           fontWeight: FontWeight.w700,
@@ -214,7 +241,10 @@ class AppTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: AppColors.lightSurfaceElevated,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 14,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: AppColors.lightBorder),
@@ -225,16 +255,30 @@ class AppTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.emeraldDark, width: 1.5),
+          borderSide: const BorderSide(
+            color: AppColors.emeraldDark,
+            width: 1.5,
+          ),
         ),
-        hintStyle: const TextStyle(color: AppColors.lightTextMuted, fontSize: 14),
+        hintStyle: const TextStyle(
+          color: AppColors.lightTextMuted,
+          fontSize: 14,
+        ),
       ),
       chipTheme: ChipThemeData(
         backgroundColor: AppColors.lightSurfaceElevated,
         selectedColor: AppColors.emeraldDark.withValues(alpha: 0.15),
         disabledColor: AppColors.lightSurface,
-        labelStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.lightTextPrimary),
-        secondaryLabelStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.emeraldDark),
+        labelStyle: const TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+          color: AppColors.lightTextPrimary,
+        ),
+        secondaryLabelStyle: const TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w700,
+          color: AppColors.emeraldDark,
+        ),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
@@ -270,8 +314,14 @@ class AppTheme {
       navigationRailTheme: NavigationRailThemeData(
         backgroundColor: AppColors.lightSurface,
         indicatorColor: AppColors.emeraldDark.withValues(alpha: 0.15),
-        selectedIconTheme: const IconThemeData(color: AppColors.emeraldDark, size: 24),
-        unselectedIconTheme: const IconThemeData(color: AppColors.lightTextMuted, size: 22),
+        selectedIconTheme: const IconThemeData(
+          color: AppColors.emeraldDark,
+          size: 24,
+        ),
+        unselectedIconTheme: const IconThemeData(
+          color: AppColors.lightTextMuted,
+          size: 22,
+        ),
         selectedLabelTextStyle: const TextStyle(
           fontSize: 11,
           fontWeight: FontWeight.w700,

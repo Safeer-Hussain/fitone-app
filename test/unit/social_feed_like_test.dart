@@ -18,7 +18,9 @@ class _FakeSocialRepo implements SocialRepository {
       final p = feed[idx];
       feed[idx] = p.copyWith(
         isLiked: isLiked,
-        likesCount: isLiked ? p.likesCount + 1 : (p.likesCount > 0 ? p.likesCount - 1 : 0),
+        likesCount: isLiked
+            ? p.likesCount + 1
+            : (p.likesCount > 0 ? p.likesCount - 1 : 0),
       );
     }
   }
@@ -76,42 +78,45 @@ void main() {
       expect(socialStore.posts.first.likesCount, equals(14));
     });
 
-    testWidgets('SocialPostCard re-renders heart icon and like count reactively on tap', (tester) async {
-      await socialStore.loadFeed();
+    testWidgets(
+      'SocialPostCard re-renders heart icon and like count reactively on tap',
+      (tester) async {
+        await socialStore.loadFeed();
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: SocialPostCard(
-              post: socialStore.posts.first,
-              store: socialStore,
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: SocialPostCard(
+                post: socialStore.posts.first,
+                store: socialStore,
+              ),
             ),
           ),
-        ),
-      );
+        );
 
-      // Verify initial unliked state
-      expect(find.text('14'), findsOneWidget);
-      expect(find.byIcon(Icons.favorite_border_rounded), findsOneWidget);
-      expect(find.byIcon(Icons.favorite_rounded), findsNothing);
+        // Verify initial unliked state
+        expect(find.text('14'), findsOneWidget);
+        expect(find.byIcon(Icons.favorite_border_rounded), findsOneWidget);
+        expect(find.byIcon(Icons.favorite_rounded), findsNothing);
 
-      // Tap like button
-      final likeButton = find.byType(IconButton).first;
-      await tester.tap(likeButton);
-      await tester.pump();
+        // Tap like button
+        final likeButton = find.byType(IconButton).first;
+        await tester.tap(likeButton);
+        await tester.pump();
 
-      // Assert instant UI update without full reload
-      expect(find.text('15'), findsOneWidget);
-      expect(find.byIcon(Icons.favorite_rounded), findsOneWidget);
-      expect(find.byIcon(Icons.favorite_border_rounded), findsNothing);
+        // Assert instant UI update without full reload
+        expect(find.text('15'), findsOneWidget);
+        expect(find.byIcon(Icons.favorite_rounded), findsOneWidget);
+        expect(find.byIcon(Icons.favorite_border_rounded), findsNothing);
 
-      // Tap again to unlike
-      await tester.tap(likeButton);
-      await tester.pump();
+        // Tap again to unlike
+        await tester.tap(likeButton);
+        await tester.pump();
 
-      expect(find.text('14'), findsOneWidget);
-      expect(find.byIcon(Icons.favorite_border_rounded), findsOneWidget);
-      expect(find.byIcon(Icons.favorite_rounded), findsNothing);
-    });
+        expect(find.text('14'), findsOneWidget);
+        expect(find.byIcon(Icons.favorite_border_rounded), findsOneWidget);
+        expect(find.byIcon(Icons.favorite_rounded), findsNothing);
+      },
+    );
   });
 }

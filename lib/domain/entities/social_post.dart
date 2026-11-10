@@ -76,9 +76,13 @@ class SocialPost {
   }
 
   factory SocialPost.fromMap(Map<String, dynamic> map) {
-    final rawMetrics = jsonDecode(map['metrics_json'] as String) as Map<String, dynamic>;
-    final rawComments = jsonDecode(map['comments_json'] as String) as List<dynamic>;
-    final comments = rawComments.map((e) => PostComment.fromMap(Map<String, dynamic>.from(e as Map))).toList();
+    final rawMetrics =
+        jsonDecode(map['metrics_json'] as String) as Map<String, dynamic>;
+    final rawComments =
+        jsonDecode(map['comments_json'] as String) as List<dynamic>;
+    final comments = rawComments
+        .map((e) => PostComment.fromMap(Map<String, dynamic>.from(e as Map)))
+        .toList();
 
     return SocialPost(
       id: map['id'] as String,
@@ -92,7 +96,9 @@ class SocialPost {
       likesCount: (map['likes_count'] as num).toInt(),
       isLiked: (map['is_liked'] as int) == 1,
       comments: comments,
-      timestamp: DateTime.fromMillisecondsSinceEpoch((map['timestamp'] as num).toInt()),
+      timestamp: DateTime.fromMillisecondsSinceEpoch(
+        (map['timestamp'] as num).toInt(),
+      ),
     );
   }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../core/utils/app_feedback.dart';
 import '../../../domain/entities/nutrition_day.dart';
 
@@ -6,13 +7,18 @@ class MacroProgressRing extends StatelessWidget {
   final DailyNutritionSummary summary;
   final bool isCompact;
 
-  const MacroProgressRing({super.key, required this.summary, this.isCompact = false});
+  const MacroProgressRing({
+    super.key,
+    required this.summary,
+    this.isCompact = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final caloriesRemaining = (summary.targetCalories - summary.consumedCalories).clamp(0.0, 9999.0);
+    final caloriesRemaining =
+        (summary.targetCalories - summary.consumedCalories).clamp(0.0, 9999.0);
 
     final ringSize = isCompact ? 80.0 : 120.0;
     final strokeWidth = isCompact ? 7.0 : 10.0;
@@ -25,115 +31,122 @@ class MacroProgressRing extends StatelessWidget {
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
-        onTap: () => _showMacroBreakdownSheet(context, colorScheme, caloriesRemaining),
+        onTap: () =>
+            _showMacroBreakdownSheet(context, colorScheme, caloriesRemaining),
         child: Padding(
-        padding: EdgeInsets.all(isCompact ? 12 : 20),
-        child: Column(
-          children: [
-            Wrap(
-              alignment: WrapAlignment.spaceBetween,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              spacing: 8,
-              runSpacing: 4,
-              children: [
-                Text(
-                  'DAILY ENERGY & MACROS',
-                  style: TextStyle(
-                    fontSize: isCompact ? 10 : 12,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 0.8,
-                    color: colorScheme.onSurfaceVariant,
+          padding: EdgeInsets.all(isCompact ? 12 : 20),
+          child: Column(
+            children: [
+              Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                spacing: 8,
+                runSpacing: 4,
+                children: [
+                  Text(
+                    'DAILY ENERGY & MACROS',
+                    style: TextStyle(
+                      fontSize: isCompact ? 10 : 12,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.8,
+                      color: colorScheme.onSurfaceVariant,
+                    ),
                   ),
-                ),
-                Text(
-                  '${caloriesRemaining.toStringAsFixed(0)} kcal left',
-                  style: TextStyle(
-                    fontSize: isCompact ? 10 : 12,
-                    fontWeight: FontWeight.w700,
-                    color: colorScheme.primary,
+                  Text(
+                    '${caloriesRemaining.toStringAsFixed(0)} kcal left',
+                    style: TextStyle(
+                      fontSize: isCompact ? 10 : 12,
+                      fontWeight: FontWeight.w700,
+                      color: colorScheme.primary,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: isCompact ? 10 : 20),
-            Row(
-              children: [
-                SizedBox(
-                  width: ringSize,
-                  height: ringSize,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      CircularProgressIndicator(
-                        value: summary.calorieProgress,
-                        strokeWidth: strokeWidth,
-                        backgroundColor: colorScheme.surfaceContainerHighest,
-                        valueColor: AlwaysStoppedAnimation(colorScheme.primary),
-                      ),
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            summary.consumedCalories.toStringAsFixed(0),
-                            style: TextStyle(
-                              fontSize: isCompact ? 16 : 22,
-                              fontWeight: FontWeight.w800,
-                              color: colorScheme.onSurface,
-                            ),
+                ],
+              ),
+              SizedBox(height: isCompact ? 10 : 20),
+              Row(
+                children: [
+                  SizedBox(
+                    width: ringSize,
+                    height: ringSize,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        CircularProgressIndicator(
+                          value: summary.calorieProgress,
+                          strokeWidth: strokeWidth,
+                          backgroundColor: colorScheme.surfaceContainerHighest,
+                          valueColor: AlwaysStoppedAnimation(
+                            colorScheme.primary,
                           ),
-                          Text(
-                            'KCAL',
-                            style: TextStyle(
-                              fontSize: isCompact ? 8 : 9,
-                              fontWeight: FontWeight.w700,
-                              color: colorScheme.onSurfaceVariant,
+                        ),
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              summary.consumedCalories.toStringAsFixed(0),
+                              style: TextStyle(
+                                fontSize: isCompact ? 16 : 22,
+                                fontWeight: FontWeight.w800,
+                                color: colorScheme.onSurface,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                            Text(
+                              'KCAL',
+                              style: TextStyle(
+                                fontSize: isCompact ? 8 : 9,
+                                fontWeight: FontWeight.w700,
+                                color: colorScheme.onSurfaceVariant,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(width: isCompact ? 12 : 24),
-                Expanded(
-                  child: Column(
-                    children: [
-                      _MacroBar(
-                        label: 'Protein',
-                        consumed: summary.consumedProteinG,
-                        target: summary.targetProteinG,
-                        color: colorScheme.secondary,
-                        isCompact: isCompact,
-                      ),
-                      SizedBox(height: isCompact ? 6 : 10),
-                      _MacroBar(
-                        label: 'Carbs',
-                        consumed: summary.consumedCarbsG,
-                        target: summary.targetCarbsG,
-                        color: colorScheme.tertiary,
-                        isCompact: isCompact,
-                      ),
-                      SizedBox(height: isCompact ? 6 : 10),
-                      _MacroBar(
-                        label: 'Fats',
-                        consumed: summary.consumedFatG,
-                        target: summary.targetFatG,
-                        color: Colors.purpleAccent,
-                        isCompact: isCompact,
-                      ),
-                    ],
+                  SizedBox(width: isCompact ? 12 : 24),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        _MacroBar(
+                          label: 'Protein',
+                          consumed: summary.consumedProteinG,
+                          target: summary.targetProteinG,
+                          color: colorScheme.secondary,
+                          isCompact: isCompact,
+                        ),
+                        SizedBox(height: isCompact ? 6 : 10),
+                        _MacroBar(
+                          label: 'Carbs',
+                          consumed: summary.consumedCarbsG,
+                          target: summary.targetCarbsG,
+                          color: colorScheme.tertiary,
+                          isCompact: isCompact,
+                        ),
+                        SizedBox(height: isCompact ? 6 : 10),
+                        _MacroBar(
+                          label: 'Fats',
+                          consumed: summary.consumedFatG,
+                          target: summary.targetFatG,
+                          color: Colors.purpleAccent,
+                          isCompact: isCompact,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
-      ),
       ),
     );
   }
 
-  void _showMacroBreakdownSheet(BuildContext context, ColorScheme colorScheme, double caloriesRemaining) {
+  void _showMacroBreakdownSheet(
+    BuildContext context,
+    ColorScheme colorScheme,
+    double caloriesRemaining,
+  ) {
     AppFeedback.showInfo(
       context,
       'Macro Target: ${summary.consumedCalories.toStringAsFixed(0)} / ${summary.targetCalories.toStringAsFixed(0)} kcal (${caloriesRemaining.toStringAsFixed(0)} kcal left)',
@@ -170,7 +183,11 @@ class MacroProgressRing extends StatelessWidget {
                   const SizedBox(height: 16),
                   Row(
                     children: [
-                      Icon(Icons.pie_chart_outline_rounded, color: colorScheme.primary, size: 22),
+                      Icon(
+                        Icons.pie_chart_outline_rounded,
+                        color: colorScheme.primary,
+                        size: 22,
+                      ),
                       const SizedBox(width: 10),
                       Text(
                         'Macronutrient Distribution',
@@ -192,13 +209,33 @@ class MacroProgressRing extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
-                        _buildMacroRow('Daily Caloric Target', '${summary.consumedCalories.toStringAsFixed(0)} / ${summary.targetCalories.toStringAsFixed(0)} kcal', colorScheme.primary, colorScheme),
+                        _buildMacroRow(
+                          'Daily Caloric Target',
+                          '${summary.consumedCalories.toStringAsFixed(0)} / ${summary.targetCalories.toStringAsFixed(0)} kcal',
+                          colorScheme.primary,
+                          colorScheme,
+                        ),
                         Divider(color: colorScheme.outlineVariant, height: 16),
-                        _buildMacroRow('Protein (4 kcal/g)', '${summary.consumedProteinG.toStringAsFixed(0)} / ${summary.targetProteinG.toStringAsFixed(0)}g (${(summary.proteinProgress * 100).toInt()}%)', colorScheme.primary, colorScheme),
+                        _buildMacroRow(
+                          'Protein (4 kcal/g)',
+                          '${summary.consumedProteinG.toStringAsFixed(0)} / ${summary.targetProteinG.toStringAsFixed(0)}g (${(summary.proteinProgress * 100).toInt()}%)',
+                          colorScheme.primary,
+                          colorScheme,
+                        ),
                         Divider(color: colorScheme.outlineVariant, height: 16),
-                        _buildMacroRow('Carbohydrates (4 kcal/g)', '${summary.consumedCarbsG.toStringAsFixed(0)} / ${summary.targetCarbsG.toStringAsFixed(0)}g (${(summary.carbsProgress * 100).toInt()}%)', colorScheme.secondary, colorScheme),
+                        _buildMacroRow(
+                          'Carbohydrates (4 kcal/g)',
+                          '${summary.consumedCarbsG.toStringAsFixed(0)} / ${summary.targetCarbsG.toStringAsFixed(0)}g (${(summary.carbsProgress * 100).toInt()}%)',
+                          colorScheme.secondary,
+                          colorScheme,
+                        ),
                         Divider(color: colorScheme.outlineVariant, height: 16),
-                        _buildMacroRow('Dietary Fats (9 kcal/g)', '${summary.consumedFatG.toStringAsFixed(0)} / ${summary.targetFatG.toStringAsFixed(0)}g (${(summary.fatProgress * 100).toInt()}%)', const Color(0xFFFFB74D), colorScheme),
+                        _buildMacroRow(
+                          'Dietary Fats (9 kcal/g)',
+                          '${summary.consumedFatG.toStringAsFixed(0)} / ${summary.targetFatG.toStringAsFixed(0)}g (${(summary.fatProgress * 100).toInt()}%)',
+                          const Color(0xFFFFB74D),
+                          colorScheme,
+                        ),
                       ],
                     ),
                   ),
@@ -223,18 +260,40 @@ class MacroProgressRing extends StatelessWidget {
     );
   }
 
-  Widget _buildMacroRow(String title, String val, Color dotColor, ColorScheme colorScheme) {
+  Widget _buildMacroRow(
+    String title,
+    String val,
+    Color dotColor,
+    ColorScheme colorScheme,
+  ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Row(
           children: [
-            Container(width: 8, height: 8, decoration: BoxDecoration(color: dotColor, shape: BoxShape.circle)),
+            Container(
+              width: 8,
+              height: 8,
+              decoration: BoxDecoration(
+                color: dotColor,
+                shape: BoxShape.circle,
+              ),
+            ),
             const SizedBox(width: 8),
-            Text(title, style: TextStyle(fontSize: 12, color: colorScheme.onSurface)),
+            Text(
+              title,
+              style: TextStyle(fontSize: 12, color: colorScheme.onSurface),
+            ),
           ],
         ),
-        Text(val, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: colorScheme.onSurface)),
+        Text(
+          val,
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w700,
+            color: colorScheme.onSurface,
+          ),
+        ),
       ],
     );
   }
@@ -269,11 +328,18 @@ class _MacroBar extends StatelessWidget {
           children: [
             Text(
               label,
-              style: TextStyle(fontSize: isCompact ? 10 : 12, fontWeight: FontWeight.w600, color: colorScheme.onSurface),
+              style: TextStyle(
+                fontSize: isCompact ? 10 : 12,
+                fontWeight: FontWeight.w600,
+                color: colorScheme.onSurface,
+              ),
             ),
             Text(
               '${consumed.toStringAsFixed(0)} / ${target.toStringAsFixed(0)}g',
-              style: TextStyle(fontSize: isCompact ? 9 : 11, color: colorScheme.onSurfaceVariant),
+              style: TextStyle(
+                fontSize: isCompact ? 9 : 11,
+                color: colorScheme.onSurfaceVariant,
+              ),
             ),
           ],
         ),

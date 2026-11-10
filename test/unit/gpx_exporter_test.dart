@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fitone/core/utils/gpx_exporter.dart';
 import 'package:fitone/domain/entities/run_record.dart';
@@ -34,7 +35,12 @@ void main() {
       expect(gpx, contains('<gpx version="1.1"'));
       expect(gpx, contains('creator="Fitone Mobile Wearable Ecosystem"'));
       expect(gpx, contains('xmlns="http://www.topografix.com/GPX/1/1"'));
-      expect(gpx, contains('xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1"'));
+      expect(
+        gpx,
+        contains(
+          'xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1"',
+        ),
+      );
       expect(gpx, endsWith('</gpx>\n'));
     });
 
@@ -43,7 +49,12 @@ void main() {
 
       expect(gpx, contains('<metadata>'));
       expect(gpx, contains('<name>Lahore Canal Tempo Run</name>'));
-      expect(gpx, contains('<desc>Fitone GPS Outdoor Run: 5.00 km, 20:00, 4:00 /km avg pace, 156 BPM avg HR, +18.5m elevation</desc>'));
+      expect(
+        gpx,
+        contains(
+          '<desc>Fitone GPS Outdoor Run: 5.00 km, 20:00, 4:00 /km avg pace, 156 BPM avg HR, +18.5m elevation</desc>',
+        ),
+      );
       expect(gpx, contains('<time>2026-11-06T14:30:00.000Z</time>'));
       expect(gpx, contains('</metadata>'));
     });
@@ -87,14 +98,17 @@ void main() {
         elevationGainM: 5.0,
         caloriesBurned: 180.0,
         avgHeartRate: 160,
-        coordinates: const [
-          RunCoordinate(31.5204, 74.3587),
-        ],
+        coordinates: const [RunCoordinate(31.5204, 74.3587)],
         splits: const [],
       );
 
       final gpx = GpxExporter.generateGpx(runWithSpecialChars);
-      expect(gpx, contains('<name>Morning &lt;Intervals&gt; &amp; &quot;Sprints&quot; @ 5&apos; pace</name>'));
+      expect(
+        gpx,
+        contains(
+          '<name>Morning &lt;Intervals&gt; &amp; &quot;Sprints&quot; @ 5&apos; pace</name>',
+        ),
+      );
       expect(gpx, isNot(contains('<Intervals>')));
     });
 
@@ -165,7 +179,10 @@ void main() {
     test('Writes GPX file to directory successfully', () async {
       final tempDir = Directory.systemTemp.createTempSync('fitone_gpx_test_');
       try {
-        final file = await GpxExporter.writeGpxToFile(standardRun, directory: tempDir);
+        final file = await GpxExporter.writeGpxToFile(
+          standardRun,
+          directory: tempDir,
+        );
         expect(await file.exists(), isTrue);
 
         final content = await file.readAsString();

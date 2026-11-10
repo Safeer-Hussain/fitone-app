@@ -1,5 +1,7 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
+
 import '../../../core/constants/app_typography.dart';
 import '../../../core/utils/app_feedback.dart';
 
@@ -40,117 +42,141 @@ class ReadinessRing extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         onTap: () => _showReadinessBreakdown(context, colorScheme, statusText),
         child: Padding(
-        padding: EdgeInsets.all(paddingValue),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Text(
-                    'RECOVERY & READINESS',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: isCompact ? 10 : 12,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 0.8,
-                      color: colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 4),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: isCompact ? 6 : 10, vertical: isCompact ? 2 : 4),
-                  decoration: BoxDecoration(
-                    color: statusColor.withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: statusColor.withValues(alpha: 0.4)),
-                  ),
-                  child: Text(
-                    statusText,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: statusColor,
-                      fontSize: isCompact ? 10 : 11,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: spacing),
-            SizedBox(
-              width: gaugeSize,
-              height: gaugeSize,
-              child: CustomPaint(
-                painter: _ReadinessGaugePainter(
-                  score: score,
-                  primaryColor: statusColor,
-                  trackColor: colorScheme.outlineVariant.withValues(alpha: 0.5),
-                  strokeWidth: strokeWidth,
-                ),
-                child: Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        '$score',
-                        style: isCompact
-                            ? TextStyle(fontSize: 26, fontWeight: FontWeight.w800, color: colorScheme.onSurface)
-                            : AppTypography.metricLarge.copyWith(color: colorScheme.onSurface),
+          padding: EdgeInsets.all(paddingValue),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      'RECOVERY & READINESS',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: isCompact ? 10 : 12,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 0.8,
+                        color: colorScheme.onSurfaceVariant,
                       ),
-                      Text(
-                        'SCORE',
-                        style: TextStyle(
-                          fontSize: isCompact ? 9 : 11,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 1.0,
-                          color: colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: isCompact ? 6 : 10,
+                      vertical: isCompact ? 2 : 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: statusColor.withValues(alpha: 0.15),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: statusColor.withValues(alpha: 0.4),
+                      ),
+                    ),
+                    child: Text(
+                      statusText,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: statusColor,
+                        fontSize: isCompact ? 10 : 11,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: spacing),
+              SizedBox(
+                width: gaugeSize,
+                height: gaugeSize,
+                child: CustomPaint(
+                  painter: _ReadinessGaugePainter(
+                    score: score,
+                    primaryColor: statusColor,
+                    trackColor: colorScheme.outlineVariant.withValues(
+                      alpha: 0.5,
+                    ),
+                    strokeWidth: strokeWidth,
+                  ),
+                  child: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          '$score',
+                          style: isCompact
+                              ? TextStyle(
+                                  fontSize: 26,
+                                  fontWeight: FontWeight.w800,
+                                  color: colorScheme.onSurface,
+                                )
+                              : AppTypography.metricLarge.copyWith(
+                                  color: colorScheme.onSurface,
+                                ),
                         ),
-                      ),
-                    ],
+                        Text(
+                          'SCORE',
+                          style: TextStyle(
+                            fontSize: isCompact ? 9 : 11,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 1.0,
+                            color: colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: spacing),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Expanded(
-                  child: _BiometricMetric(
-                    label: 'HRV (ms)',
-                    value: '$hrvMs',
-                    sub: '+4ms vs 30d',
-                    icon: Icons.graphic_eq_rounded,
-                    accentColor: statusColor,
-                    isCompact: isCompact,
+              SizedBox(height: spacing),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                    child: _BiometricMetric(
+                      label: 'HRV (ms)',
+                      value: '$hrvMs',
+                      sub: '+4ms vs 30d',
+                      icon: Icons.graphic_eq_rounded,
+                      accentColor: statusColor,
+                      isCompact: isCompact,
+                    ),
                   ),
-                ),
-                Container(width: 1, height: isCompact ? 28 : 36, color: colorScheme.outlineVariant),
-                Expanded(
-                  child: _BiometricMetric(
-                    label: 'Resting HR',
-                    value: '$restingHr',
-                    sub: 'BPM baseline',
-                    icon: Icons.favorite_rounded,
-                    accentColor: colorScheme.error,
-                    isCompact: isCompact,
+                  Container(
+                    width: 1,
+                    height: isCompact ? 28 : 36,
+                    color: colorScheme.outlineVariant,
                   ),
-                ),
-              ],
-            ),
-          ],
+                  Expanded(
+                    child: _BiometricMetric(
+                      label: 'Resting HR',
+                      value: '$restingHr',
+                      sub: 'BPM baseline',
+                      icon: Icons.favorite_rounded,
+                      accentColor: colorScheme.error,
+                      isCompact: isCompact,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
-      ),
       ),
     );
   }
 
-  void _showReadinessBreakdown(BuildContext context, ColorScheme colorScheme, String statusText) {
-    AppFeedback.showInfo(context, 'Readiness Index: $score / 100 ($statusText)');
+  void _showReadinessBreakdown(
+    BuildContext context,
+    ColorScheme colorScheme,
+    String statusText,
+  ) {
+    AppFeedback.showInfo(
+      context,
+      'Readiness Index: $score / 100 ($statusText)',
+    );
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -183,7 +209,11 @@ class ReadinessRing extends StatelessWidget {
                   const SizedBox(height: 16),
                   Row(
                     children: [
-                      Icon(Icons.bolt_rounded, color: colorScheme.primary, size: 22),
+                      Icon(
+                        Icons.bolt_rounded,
+                        color: colorScheme.primary,
+                        size: 22,
+                      ),
                       const SizedBox(width: 8),
                       Text(
                         'Readiness & Recovery Intelligence',
@@ -211,30 +241,63 @@ class ReadinessRing extends StatelessWidget {
                           children: [
                             Text(
                               'Score: $score / 100',
-                              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: colorScheme.primary),
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w800,
+                                color: colorScheme.primary,
+                              ),
                             ),
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 3,
+                              ),
                               decoration: BoxDecoration(
-                                color: colorScheme.primary.withValues(alpha: 0.15),
+                                color: colorScheme.primary.withValues(
+                                  alpha: 0.15,
+                                ),
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               child: Text(
                                 statusText,
-                                style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: colorScheme.primary),
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w700,
+                                  color: colorScheme.primary,
+                                ),
                               ),
                             ),
                           ],
                         ),
                         const SizedBox(height: 10),
                         Divider(color: colorScheme.outlineVariant, height: 16),
-                        _buildReadinessRow('Autonomic Balance (HRV)', '$hrvMs ms RMSSD', Icons.graphic_eq_rounded, colorScheme),
+                        _buildReadinessRow(
+                          'Autonomic Balance (HRV)',
+                          '$hrvMs ms RMSSD',
+                          Icons.graphic_eq_rounded,
+                          colorScheme,
+                        ),
                         const SizedBox(height: 8),
-                        _buildReadinessRow('Resting Pulse', '$restingHr BPM', Icons.favorite_rounded, colorScheme),
+                        _buildReadinessRow(
+                          'Resting Pulse',
+                          '$restingHr BPM',
+                          Icons.favorite_rounded,
+                          colorScheme,
+                        ),
                         const SizedBox(height: 8),
-                        _buildReadinessRow('Circadian Sync', '94% Diurnal Alignment', Icons.bedtime_rounded, colorScheme),
+                        _buildReadinessRow(
+                          'Circadian Sync',
+                          '94% Diurnal Alignment',
+                          Icons.bedtime_rounded,
+                          colorScheme,
+                        ),
                         const SizedBox(height: 8),
-                        _buildReadinessRow('Skin Temp Delta', '+0.1°C Baseline', Icons.thermostat_rounded, colorScheme),
+                        _buildReadinessRow(
+                          'Skin Temp Delta',
+                          '+0.1°C Baseline',
+                          Icons.thermostat_rounded,
+                          colorScheme,
+                        ),
                       ],
                     ),
                   ),
@@ -253,7 +316,11 @@ class ReadinessRing extends StatelessWidget {
                     score >= 80
                         ? 'Your nervous system is primed for peak exertion. Progressive overload and intense interval running are recommended.'
                         : 'Moderate strain advised. Prioritize Zone 2 cardio, hydration replenishment, and 8 hours of restorative sleep.',
-                    style: TextStyle(fontSize: 12, color: colorScheme.onSurfaceVariant, height: 1.4),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: colorScheme.onSurfaceVariant,
+                      height: 1.4,
+                    ),
                   ),
                   const SizedBox(height: 16),
                   SizedBox(
@@ -276,7 +343,12 @@ class ReadinessRing extends StatelessWidget {
     );
   }
 
-  Widget _buildReadinessRow(String title, String val, IconData icon, ColorScheme colorScheme) {
+  Widget _buildReadinessRow(
+    String title,
+    String val,
+    IconData icon,
+    ColorScheme colorScheme,
+  ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -284,10 +356,20 @@ class ReadinessRing extends StatelessWidget {
           children: [
             Icon(icon, size: 16, color: colorScheme.primary),
             const SizedBox(width: 8),
-            Text(title, style: TextStyle(fontSize: 12, color: colorScheme.onSurface)),
+            Text(
+              title,
+              style: TextStyle(fontSize: 12, color: colorScheme.onSurface),
+            ),
           ],
         ),
-        Text(val, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: colorScheme.onSurface)),
+        Text(
+          val,
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w700,
+            color: colorScheme.onSurface,
+          ),
+        ),
       ],
     );
   }
@@ -325,7 +407,10 @@ class _BiometricMetric extends StatelessWidget {
             Flexible(
               child: Text(
                 label,
-                style: TextStyle(fontSize: isCompact ? 9 : 12, color: colorScheme.onSurfaceVariant),
+                style: TextStyle(
+                  fontSize: isCompact ? 9 : 12,
+                  color: colorScheme.onSurfaceVariant,
+                ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -336,8 +421,14 @@ class _BiometricMetric extends StatelessWidget {
         Text(
           value,
           style: isCompact
-              ? TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: colorScheme.onSurface)
-              : AppTypography.metricMedium.copyWith(color: colorScheme.onSurface),
+              ? TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w800,
+                  color: colorScheme.onSurface,
+                )
+              : AppTypography.metricMedium.copyWith(
+                  color: colorScheme.onSurface,
+                ),
         ),
         Text(
           sub,

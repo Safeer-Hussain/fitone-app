@@ -31,7 +31,9 @@ class NutritionLogItem {
       proteinG: (map['protein_g'] as num).toDouble(),
       carbsG: (map['carbs_g'] as num).toDouble(),
       fatG: (map['fat_g'] as num).toDouble(),
-      timestamp: DateTime.fromMillisecondsSinceEpoch((map['timestamp'] as num).toInt()),
+      timestamp: DateTime.fromMillisecondsSinceEpoch(
+        (map['timestamp'] as num).toInt(),
+      ),
     );
   }
 
@@ -68,7 +70,9 @@ class HydrationLogItem {
       id: map['id'] as String,
       dateStr: map['date_str'] as String,
       amountMl: (map['amount_ml'] as num).toInt(),
-      timestamp: DateTime.fromMillisecondsSinceEpoch((map['timestamp'] as num).toInt()),
+      timestamp: DateTime.fromMillisecondsSinceEpoch(
+        (map['timestamp'] as num).toInt(),
+      ),
     );
   }
 
@@ -103,15 +107,28 @@ class DailyNutritionSummary {
     required this.waterItems,
   });
 
-  double get consumedCalories => mealItems.fold(0.0, (acc, item) => acc + item.calories);
-  double get consumedProteinG => mealItems.fold(0.0, (acc, item) => acc + item.proteinG);
-  double get consumedCarbsG => mealItems.fold(0.0, (acc, item) => acc + item.carbsG);
-  double get consumedFatG => mealItems.fold(0.0, (acc, item) => acc + item.fatG);
-  int get consumedWaterMl => waterItems.fold(0, (acc, item) => acc + item.amountMl);
+  double get consumedCalories =>
+      mealItems.fold(0.0, (acc, item) => acc + item.calories);
+  double get consumedProteinG =>
+      mealItems.fold(0.0, (acc, item) => acc + item.proteinG);
+  double get consumedCarbsG =>
+      mealItems.fold(0.0, (acc, item) => acc + item.carbsG);
+  double get consumedFatG =>
+      mealItems.fold(0.0, (acc, item) => acc + item.fatG);
+  int get consumedWaterMl =>
+      waterItems.fold(0, (acc, item) => acc + item.amountMl);
 
-  double get calorieProgress => targetCalories > 0 ? (consumedCalories / targetCalories).clamp(0.0, 1.0) : 0.0;
-  double get proteinProgress => targetProteinG > 0 ? (consumedProteinG / targetProteinG).clamp(0.0, 1.0) : 0.0;
-  double get carbsProgress => targetCarbsG > 0 ? (consumedCarbsG / targetCarbsG).clamp(0.0, 1.0) : 0.0;
-  double get fatProgress => targetFatG > 0 ? (consumedFatG / targetFatG).clamp(0.0, 1.0) : 0.0;
-  double get waterProgress => targetWaterMl > 0 ? (consumedWaterMl / targetWaterMl).clamp(0.0, 1.0) : 0.0;
+  double get calorieProgress => targetCalories > 0
+      ? (consumedCalories / targetCalories).clamp(0.0, 1.0)
+      : 0.0;
+  double get proteinProgress => targetProteinG > 0
+      ? (consumedProteinG / targetProteinG).clamp(0.0, 1.0)
+      : 0.0;
+  double get carbsProgress =>
+      targetCarbsG > 0 ? (consumedCarbsG / targetCarbsG).clamp(0.0, 1.0) : 0.0;
+  double get fatProgress =>
+      targetFatG > 0 ? (consumedFatG / targetFatG).clamp(0.0, 1.0) : 0.0;
+  double get waterProgress => targetWaterMl > 0
+      ? (consumedWaterMl / targetWaterMl).clamp(0.0, 1.0)
+      : 0.0;
 }

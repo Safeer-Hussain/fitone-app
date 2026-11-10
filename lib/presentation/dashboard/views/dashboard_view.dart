@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+
 import '../../../core/di/injection.dart';
 import '../../../core/theme/theme_store.dart';
 import '../stores/dashboard_store.dart';
@@ -55,7 +56,10 @@ class _DashboardViewState extends State<DashboardView> {
 
               if (isLandscape) {
                 return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -66,7 +70,13 @@ class _DashboardViewState extends State<DashboardView> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              _buildDeviceHeader(context, connected, colorScheme, battery: battery, isCompact: true),
+                              _buildDeviceHeader(
+                                context,
+                                connected,
+                                colorScheme,
+                                battery: battery,
+                                isCompact: true,
+                              ),
                               const SizedBox(height: 8),
                               ReadinessRing(
                                 score: readiness,
@@ -109,15 +119,19 @@ class _DashboardViewState extends State<DashboardView> {
 
               return ListView(
                 physics: const ClampingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
                 children: [
-                  _buildDeviceHeader(context, connected, colorScheme, battery: battery),
-                  const SizedBox(height: 14),
-                  ReadinessRing(
-                    score: readiness,
-                    hrvMs: hrv,
-                    restingHr: hr,
+                  _buildDeviceHeader(
+                    context,
+                    connected,
+                    colorScheme,
+                    battery: battery,
                   ),
+                  const SizedBox(height: 14),
+                  ReadinessRing(score: readiness, hrvMs: hrv, restingHr: hr),
                   const SizedBox(height: 14),
                   EcgWaveformCard(
                     ecgBuffer: buffer,
@@ -150,7 +164,10 @@ class _DashboardViewState extends State<DashboardView> {
     return GestureDetector(
       onTap: () => DeviceManagerSheet.show(context, _store),
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: isCompact ? 10 : 16, vertical: isCompact ? 8 : 12),
+        padding: EdgeInsets.symmetric(
+          horizontal: isCompact ? 10 : 16,
+          vertical: isCompact ? 8 : 12,
+        ),
         decoration: BoxDecoration(
           color: colorScheme.surface,
           borderRadius: BorderRadius.circular(14),
@@ -200,16 +217,26 @@ class _DashboardViewState extends State<DashboardView> {
               decoration: BoxDecoration(
                 color: colorScheme.primary.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(6),
-                border: Border.all(color: colorScheme.primary.withValues(alpha: 0.3)),
+                border: Border.all(
+                  color: colorScheme.primary.withValues(alpha: 0.3),
+                ),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.battery_charging_full_rounded, size: 12, color: colorScheme.primary),
+                  Icon(
+                    Icons.battery_charging_full_rounded,
+                    size: 12,
+                    color: colorScheme.primary,
+                  ),
                   const SizedBox(width: 2),
                   Text(
                     '$battery%',
-                    style: TextStyle(fontSize: 10, fontWeight: FontWeight.w800, color: colorScheme.primary),
+                    style: TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w800,
+                      color: colorScheme.primary,
+                    ),
                   ),
                 ],
               ),

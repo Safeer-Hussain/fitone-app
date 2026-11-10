@@ -19,21 +19,26 @@ class RunCoordinate {
     return RunCoordinate(
       (map['lat'] as num).toDouble(),
       (map['lng'] as num).toDouble(),
-      elevation: (map['elevation'] as num?)?.toDouble() ?? (map['ele'] as num?)?.toDouble(),
+      elevation:
+          (map['elevation'] as num?)?.toDouble() ??
+          (map['ele'] as num?)?.toDouble(),
       timestamp: map['timestamp'] != null
           ? DateTime.tryParse(map['timestamp'] as String)
-          : (map['time'] != null ? DateTime.tryParse(map['time'] as String) : null),
-      heartRate: (map['heartRate'] as num?)?.toInt() ?? (map['hr'] as num?)?.toInt(),
+          : (map['time'] != null
+                ? DateTime.tryParse(map['time'] as String)
+                : null),
+      heartRate:
+          (map['heartRate'] as num?)?.toInt() ?? (map['hr'] as num?)?.toInt(),
     );
   }
 
   Map<String, dynamic> toMap() => {
-        'lat': lat,
-        'lng': lng,
-        if (elevation != null) 'elevation': elevation,
-        if (timestamp != null) 'timestamp': timestamp!.toIso8601String(),
-        if (heartRate != null) 'heartRate': heartRate,
-      };
+    'lat': lat,
+    'lng': lng,
+    if (elevation != null) 'elevation': elevation,
+    if (timestamp != null) 'timestamp': timestamp!.toIso8601String(),
+    if (heartRate != null) 'heartRate': heartRate,
+  };
 }
 
 class RunSplit {
@@ -65,11 +70,11 @@ class RunSplit {
   }
 
   Map<String, dynamic> toMap() => {
-        'km': km,
-        'paceSec': paceSec,
-        'elevationDelta': elevationDelta,
-        'avgHeartRate': avgHeartRate,
-      };
+    'km': km,
+    'paceSec': paceSec,
+    'elevationDelta': elevationDelta,
+    'avgHeartRate': avgHeartRate,
+  };
 }
 
 class RunRecord {
@@ -112,16 +117,23 @@ class RunRecord {
   }
 
   factory RunRecord.fromMap(Map<String, dynamic> map) {
-    final rawCoords = jsonDecode(map['coordinates_json'] as String) as List<dynamic>;
-    final coords = rawCoords.map((e) => RunCoordinate.fromMap(Map<String, dynamic>.from(e as Map))).toList();
+    final rawCoords =
+        jsonDecode(map['coordinates_json'] as String) as List<dynamic>;
+    final coords = rawCoords
+        .map((e) => RunCoordinate.fromMap(Map<String, dynamic>.from(e as Map)))
+        .toList();
 
     final rawSplits = jsonDecode(map['splits_json'] as String) as List<dynamic>;
-    final splits = rawSplits.map((e) => RunSplit.fromMap(Map<String, dynamic>.from(e as Map))).toList();
+    final splits = rawSplits
+        .map((e) => RunSplit.fromMap(Map<String, dynamic>.from(e as Map)))
+        .toList();
 
     return RunRecord(
       id: map['id'] as String,
       title: map['title'] as String,
-      startTime: DateTime.fromMillisecondsSinceEpoch((map['start_time'] as num).toInt()),
+      startTime: DateTime.fromMillisecondsSinceEpoch(
+        (map['start_time'] as num).toInt(),
+      ),
       durationSeconds: (map['duration_seconds'] as num).toInt(),
       distanceKm: (map['distance_km'] as num).toDouble(),
       avgPaceSecPerKm: (map['avg_pace_sec_per_km'] as num).toInt(),
@@ -144,7 +156,9 @@ class RunRecord {
       'elevation_gain_m': elevationGainM,
       'calories_burned': caloriesBurned,
       'avg_heart_rate': avgHeartRate,
-      'coordinates_json': jsonEncode(coordinates.map((c) => c.toMap()).toList()),
+      'coordinates_json': jsonEncode(
+        coordinates.map((c) => c.toMap()).toList(),
+      ),
       'splits_json': jsonEncode(splits.map((s) => s.toMap()).toList()),
     };
   }

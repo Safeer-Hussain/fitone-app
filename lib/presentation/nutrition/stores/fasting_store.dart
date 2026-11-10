@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:mobx/mobx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
+
 import '../../../domain/entities/fasting_session.dart';
 
 class FastingStore {
@@ -21,7 +23,9 @@ class FastingStore {
   final _pastSessions = ObservableList<FastingSession>();
   List<FastingSession> get pastSessions => _pastSessions;
 
-  final _selectedProtocol = Observable<FastingProtocol>(FastingProtocol.sixteenEight);
+  final _selectedProtocol = Observable<FastingProtocol>(
+    FastingProtocol.sixteenEight,
+  );
   FastingProtocol get selectedProtocol => _selectedProtocol.value;
 
   final _customTargetHours = Observable<double>(16.0);
@@ -38,7 +42,8 @@ class FastingStore {
 
   Timer? _timer;
 
-  bool get isFastingActive => _activeSession.value != null && !_activeSession.value!.isCompleted;
+  bool get isFastingActive =>
+      _activeSession.value != null && !_activeSession.value!.isCompleted;
 
   Duration get elapsedDuration {
     if (!isFastingActive) return Duration.zero;
@@ -97,14 +102,19 @@ class FastingStore {
 
     final protoStr = prefs.getString(_keyProtocol);
     if (protoStr != null) {
-      runInAction(() => _selectedProtocol.value = FastingProtocol.fromString(protoStr));
+      runInAction(
+        () => _selectedProtocol.value = FastingProtocol.fromString(protoStr),
+      );
     }
 
     final rawPast = prefs.getString(_keyPastSessions);
     if (rawPast != null) {
       try {
         final list = (jsonDecode(rawPast) as List<dynamic>)
-            .map((e) => FastingSession.fromMap(Map<String, dynamic>.from(e as Map)))
+            .map(
+              (e) =>
+                  FastingSession.fromMap(Map<String, dynamic>.from(e as Map)),
+            )
             .toList();
         runInAction(() {
           _pastSessions.clear();
@@ -138,7 +148,8 @@ class FastingStore {
       }
       runInAction(() {
         _liveElapsedSeconds.value++;
-        if (!_isTargetCelebrated.value && _activeSession.value!.isTargetReached()) {
+        if (!_isTargetCelebrated.value &&
+            _activeSession.value!.isTargetReached()) {
           _isTargetCelebrated.value = true;
         }
       });
@@ -151,7 +162,8 @@ class FastingStore {
     DateTime? customStartTime,
   }) async {
     final effectiveProtocol = protocol ?? _selectedProtocol.value;
-    final target = customHours ??
+    final target =
+        customHours ??
         (effectiveProtocol == FastingProtocol.custom
             ? _customTargetHours.value
             : effectiveProtocol.fastingHours);
@@ -209,8 +221,12 @@ class FastingStore {
   Future<void> adjustStartTime(DateTime newStartTime) async {
     if (_activeSession.value == null) return;
     runInAction(() {
-      _activeSession.value = _activeSession.value!.copyWith(startTime: newStartTime);
-      _liveElapsedSeconds.value = _activeSession.value!.getElapsedDuration().inSeconds;
+      _activeSession.value = _activeSession.value!.copyWith(
+        startTime: newStartTime,
+      );
+      _liveElapsedSeconds.value = _activeSession.value!
+          .getElapsedDuration()
+          .inSeconds;
       _isTargetCelebrated.value = _activeSession.value!.isTargetReached();
     });
     await _persistState();
@@ -245,7 +261,10 @@ class FastingStore {
     try {
       final prefs = preferences ?? await SharedPreferences.getInstance();
       if (_activeSession.value != null && !_activeSession.value!.isCompleted) {
-        await prefs.setString(_keyActiveSession, _activeSession.value!.toJson());
+        await prefs.setString(
+          _keyActiveSession,
+          _activeSession.value!.toJson(),
+        );
       } else {
         await prefs.remove(_keyActiveSession);
       }

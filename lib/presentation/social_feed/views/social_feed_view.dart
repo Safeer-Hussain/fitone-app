@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+
 import '../../../core/di/injection.dart';
 import '../../../core/theme/theme_store.dart';
 import '../stores/social_store.dart';
@@ -31,7 +32,8 @@ class _SocialFeedViewState extends State<SocialFeedView> {
         final _ = _themeStore.themeMode;
         final theme = Theme.of(context);
         final colorScheme = theme.colorScheme;
-        final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+        final isLandscape =
+            MediaQuery.of(context).orientation == Orientation.landscape;
 
         return DefaultTabController(
           length: 2,
@@ -66,7 +68,10 @@ class _SocialFeedViewState extends State<SocialFeedView> {
               backgroundColor: colorScheme.primary,
               foregroundColor: colorScheme.onPrimary,
               icon: const Icon(Icons.edit_note_rounded),
-              label: const Text('Share Milestone', style: TextStyle(fontWeight: FontWeight.w700)),
+              label: const Text(
+                'Share Milestone',
+                style: TextStyle(fontWeight: FontWeight.w700),
+              ),
             ),
           ),
         );
@@ -78,13 +83,18 @@ class _SocialFeedViewState extends State<SocialFeedView> {
     return Observer(
       builder: (_) {
         if (_store.isLoading) {
-          return Center(child: CircularProgressIndicator(color: colorScheme.primary));
+          return Center(
+            child: CircularProgressIndicator(color: colorScheme.primary),
+          );
         }
 
         final posts = _store.posts;
         if (posts.isEmpty) {
           return Center(
-            child: Text('No community posts found.', style: TextStyle(color: colorScheme.onSurfaceVariant)),
+            child: Text(
+              'No community posts found.',
+              style: TextStyle(color: colorScheme.onSurfaceVariant),
+            ),
           );
         }
 
@@ -135,12 +145,18 @@ class _SocialFeedViewState extends State<SocialFeedView> {
       builder: (ctx) {
         return SafeArea(
           child: Padding(
-            padding: EdgeInsets.only(bottom: MediaQuery.of(ctx).viewInsets.bottom),
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(ctx).viewInsets.bottom,
+            ),
             child: Container(
               decoration: BoxDecoration(
                 color: colorScheme.surface,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-                border: Border(top: BorderSide(color: colorScheme.outlineVariant)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(24),
+                ),
+                border: Border(
+                  top: BorderSide(color: colorScheme.outlineVariant),
+                ),
               ),
               padding: const EdgeInsets.all(24),
               child: SingleChildScrollView(
@@ -162,18 +178,26 @@ class _SocialFeedViewState extends State<SocialFeedView> {
                     const SizedBox(height: 16),
                     Text(
                       'Share Fitness Milestone',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: colorScheme.onSurface),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        color: colorScheme.onSurface,
+                      ),
                     ),
                     const SizedBox(height: 16),
                     TextField(
                       controller: titleCtrl,
-                      decoration: const InputDecoration(labelText: 'Milestone Title (e.g. 10K Personal Record)'),
+                      decoration: const InputDecoration(
+                        labelText: 'Milestone Title (e.g. 10K Personal Record)',
+                      ),
                     ),
                     const SizedBox(height: 12),
                     TextField(
                       controller: descCtrl,
                       maxLines: 3,
-                      decoration: const InputDecoration(labelText: 'Context & ring biometric recovery details'),
+                      decoration: const InputDecoration(
+                        labelText: 'Context & ring biometric recovery details',
+                      ),
                     ),
                     const SizedBox(height: 20),
                     SizedBox(
@@ -187,7 +211,10 @@ class _SocialFeedViewState extends State<SocialFeedView> {
                               title: t,
                               description: d,
                               postType: 'WORKOUT_MILESTONE',
-                              metrics: {'status': 'Completed', 'volumeKg': 3400},
+                              metrics: {
+                                'status': 'Completed',
+                                'volumeKg': 3400,
+                              },
                             );
                             Navigator.of(ctx).pop();
                           }
@@ -197,7 +224,10 @@ class _SocialFeedViewState extends State<SocialFeedView> {
                           foregroundColor: colorScheme.onPrimary,
                           padding: const EdgeInsets.symmetric(vertical: 14),
                         ),
-                        child: const Text('Publish Post', style: TextStyle(fontWeight: FontWeight.w700)),
+                        child: const Text(
+                          'Publish Post',
+                          style: TextStyle(fontWeight: FontWeight.w700),
+                        ),
                       ),
                     ),
                   ],

@@ -1,5 +1,7 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
+
 import '../../core/constants/app_assets.dart';
 import '../../core/constants/app_colors.dart';
 import '../../main.dart';
@@ -45,9 +47,10 @@ class _SplashViewState extends State<SplashView>
       CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
     );
 
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _pulseController, curve: Curves.easeIn),
-    );
+    _fadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _pulseController, curve: Curves.easeIn));
 
     _pulseController.repeat(reverse: true);
 

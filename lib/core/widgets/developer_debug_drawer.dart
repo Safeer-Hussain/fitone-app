@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+
 import '../database/app_database.dart';
 import '../network/network_monitor.dart';
 import '../utils/app_feedback.dart';
@@ -22,7 +23,9 @@ class DeveloperDebugDrawer extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                border: Border(bottom: BorderSide(color: colorScheme.outlineVariant)),
+                border: Border(
+                  bottom: BorderSide(color: colorScheme.outlineVariant),
+                ),
               ),
               child: Row(
                 children: [
@@ -32,7 +35,11 @@ class DeveloperDebugDrawer extends StatelessWidget {
                       color: colorScheme.primary.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: Icon(Icons.terminal_rounded, color: colorScheme.primary, size: 20),
+                    child: Icon(
+                      Icons.terminal_rounded,
+                      color: colorScheme.primary,
+                      size: 20,
+                    ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -83,11 +90,17 @@ class DeveloperDebugDrawer extends StatelessWidget {
                       contentPadding: EdgeInsets.zero,
                       title: Text(
                         'Force API Error (503)',
-                        style: TextStyle(fontSize: 14, color: colorScheme.onSurface),
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: colorScheme.onSurface,
+                        ),
                       ),
                       subtitle: Text(
                         'Tests Dio interceptor error handling & retry UI',
-                        style: TextStyle(fontSize: 12, color: colorScheme.onSurfaceVariant),
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: colorScheme.onSurfaceVariant,
+                        ),
                       ),
                       value: monitor.forceApiError,
                       activeThumbColor: colorScheme.error,
@@ -95,7 +108,9 @@ class DeveloperDebugDrawer extends StatelessWidget {
                         monitor.setForceApiError(val);
                         AppFeedback.showWarning(
                           context,
-                          val ? 'API 503 error injection activated' : 'API 503 error injection deactivated',
+                          val
+                              ? 'API 503 error injection activated'
+                              : 'API 503 error injection deactivated',
                         );
                       },
                     ),
@@ -106,11 +121,17 @@ class DeveloperDebugDrawer extends StatelessWidget {
                       contentPadding: EdgeInsets.zero,
                       title: Text(
                         'Simulate Offline Mode',
-                        style: TextStyle(fontSize: 14, color: colorScheme.onSurface),
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: colorScheme.onSurface,
+                        ),
                       ),
                       subtitle: Text(
                         'Forces local SQLite database cache usage',
-                        style: TextStyle(fontSize: 12, color: colorScheme.onSurfaceVariant),
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: colorScheme.onSurfaceVariant,
+                        ),
                       ),
                       value: !monitor.isOnline,
                       activeThumbColor: const Color(0xFFF59E0B),
@@ -118,7 +139,9 @@ class DeveloperDebugDrawer extends StatelessWidget {
                         monitor.setManualOnlineState(!val);
                         AppFeedback.showInfo(
                           context,
-                          val ? 'Simulating offline SQLite mode' : 'Simulating online network connection',
+                          val
+                              ? 'Simulating offline SQLite mode'
+                              : 'Simulating online network connection',
                         );
                       },
                     ),
@@ -134,7 +157,10 @@ class DeveloperDebugDrawer extends StatelessWidget {
                           children: [
                             Text(
                               'Simulated Network Latency',
-                              style: TextStyle(fontSize: 14, color: colorScheme.onSurface),
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: colorScheme.onSurface,
+                              ),
                             ),
                             Text(
                               '${monitor.simulatedLatencyMs} ms',
@@ -153,7 +179,8 @@ class DeveloperDebugDrawer extends StatelessWidget {
                           divisions: 20,
                           activeColor: colorScheme.primary,
                           inactiveColor: colorScheme.surfaceContainer,
-                          onChanged: (val) => monitor.setSimulatedLatency(val.toInt()),
+                          onChanged: (val) =>
+                              monitor.setSimulatedLatency(val.toInt()),
                         ),
                       ],
                     ),
@@ -177,7 +204,10 @@ class DeveloperDebugDrawer extends StatelessWidget {
                           isSelected: monitor.telemetryIntervalMs == 500,
                           onTap: () {
                             monitor.setTelemetryInterval(500);
-                            AppFeedback.showSuccess(context, 'Telemetry rate set to 500ms (High Fidelity)');
+                            AppFeedback.showSuccess(
+                              context,
+                              'Telemetry rate set to 500ms (High Fidelity)',
+                            );
                           },
                         ),
                         const SizedBox(width: 8),
@@ -186,7 +216,10 @@ class DeveloperDebugDrawer extends StatelessWidget {
                           isSelected: monitor.telemetryIntervalMs == 2000,
                           onTap: () {
                             monitor.setTelemetryInterval(2000);
-                            AppFeedback.showSuccess(context, 'Telemetry rate set to 2000ms (Standard)');
+                            AppFeedback.showSuccess(
+                              context,
+                              'Telemetry rate set to 2000ms (Standard)',
+                            );
                           },
                         ),
                         const SizedBox(width: 8),
@@ -195,7 +228,10 @@ class DeveloperDebugDrawer extends StatelessWidget {
                           isSelected: monitor.telemetryIntervalMs == 5000,
                           onTap: () {
                             monitor.setTelemetryInterval(5000);
-                            AppFeedback.showSuccess(context, 'Telemetry rate set to 5000ms (Eco Battery)');
+                            AppFeedback.showSuccess(
+                              context,
+                              'Telemetry rate set to 5000ms (Eco Battery)',
+                            );
                           },
                         ),
                       ],
@@ -221,11 +257,17 @@ class DeveloperDebugDrawer extends StatelessWidget {
                         'BLE channel timeout: Check device battery.',
                       );
                     },
-                    icon: Icon(Icons.error_outline_rounded, size: 16, color: colorScheme.error),
+                    icon: Icon(
+                      Icons.error_outline_rounded,
+                      size: 16,
+                      color: colorScheme.error,
+                    ),
                     label: const Text('Simulate BLE Diagnostic Timeout'),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: colorScheme.error,
-                      side: BorderSide(color: colorScheme.error.withValues(alpha: 0.5)),
+                      side: BorderSide(
+                        color: colorScheme.error.withValues(alpha: 0.5),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -291,10 +333,14 @@ class _TelemetryChip extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 10),
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: isSelected ? colorScheme.primary : colorScheme.surfaceContainer,
+            color: isSelected
+                ? colorScheme.primary
+                : colorScheme.surfaceContainer,
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
-              color: isSelected ? colorScheme.primary : colorScheme.outlineVariant,
+              color: isSelected
+                  ? colorScheme.primary
+                  : colorScheme.outlineVariant,
             ),
           ),
           child: Text(

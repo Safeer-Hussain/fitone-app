@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:fitone/core/di/injection.dart';
 import 'package:fitone/core/theme/theme_store.dart';
 import 'package:fitone/domain/entities/exercise.dart';
@@ -46,16 +47,16 @@ class _FakeRingRepo implements RingRepository {
 
   @override
   Future<List<RingDevice>> getDiscoveredDevices() async => [
-        const RingDevice(
-          id: 'AURA-PRO-9842',
-          name: 'AuraRing Pro v2',
-          sdk: 'SDK_A',
-          battery: 88,
-          firmware: 'v2.4.1',
-          rssi: -58,
-          isConnected: true,
-        ),
-      ];
+    const RingDevice(
+      id: 'AURA-PRO-9842',
+      name: 'AuraRing Pro v2',
+      sdk: 'SDK_A',
+      battery: 88,
+      firmware: 'v2.4.1',
+      rssi: -58,
+      isConnected: true,
+    ),
+  ];
 
   @override
   Future<void> connectRing(String deviceId, String sdkType) async {}
@@ -64,7 +65,8 @@ class _FakeRingRepo implements RingRepository {
   Future<void> disconnectRing() async {}
 
   @override
-  Future<HardwareDiagnostics> getHardwareDiagnostics() async => const HardwareDiagnostics(
+  Future<HardwareDiagnostics> getHardwareDiagnostics() async =>
+      const HardwareDiagnostics(
         opticalPPG: 'OK (99.8%)',
         temperatureSensor: 'OK (36.6°C)',
         sixAxisIMU: 'CALIBRATED',
@@ -100,16 +102,27 @@ class _FakeWorkoutRepo implements WorkoutRepository {
   ];
 
   @override
-  Future<List<Exercise>> getExercises({String? bodyPart, String? equipment, String? search, int page = 1, int limit = 60}) async {
+  Future<List<Exercise>> getExercises({
+    String? bodyPart,
+    String? equipment,
+    String? search,
+    int page = 1,
+    int limit = 60,
+  }) async {
     return exercises.where((e) {
-      if (bodyPart != null && bodyPart != 'All' && e.bodyPart != bodyPart) return false;
-      if (equipment != null && equipment != 'All' && e.equipment != equipment) return false;
+      if (bodyPart != null && bodyPart != 'All' && e.bodyPart != bodyPart) {
+        return false;
+      }
+      if (equipment != null && equipment != 'All' && e.equipment != equipment) {
+        return false;
+      }
       return true;
     }).toList();
   }
 
   @override
-  Future<Exercise?> getExerciseById(String id) async => exercises.where((e) => e.id == id).firstOrNull;
+  Future<Exercise?> getExerciseById(String id) async =>
+      exercises.where((e) => e.id == id).firstOrNull;
 
   @override
   Future<List<WorkoutPlan>> getWorkoutPlans() async => [];
@@ -132,10 +145,12 @@ class _FakeNutritionRepo implements NutritionRepository {
   Future<void> addFoodEntry(NutritionLogItem item) async => entries.add(item);
 
   @override
-  Future<void> deleteFoodEntry(String id) async => entries.removeWhere((i) => i.id == id);
+  Future<void> deleteFoodEntry(String id) async =>
+      entries.removeWhere((i) => i.id == id);
 
   @override
-  Future<DailyNutritionSummary> getDailySummary(String dateStr) async => DailyNutritionSummary(
+  Future<DailyNutritionSummary> getDailySummary(String dateStr) async =>
+      DailyNutritionSummary(
         dateStr: dateStr,
         targetCalories: 2500,
         targetProteinG: 180,
@@ -154,7 +169,8 @@ class _FakeNutritionRepo implements NutritionRepository {
       );
 
   @override
-  Future<void> logHydration(HydrationLogItem item) async => waterLogged += item.amountMl;
+  Future<void> logHydration(HydrationLogItem item) async =>
+      waterLogged += item.amountMl;
 
   @override
   Future<void> resetDayHydration(String dateStr) async => waterLogged = 0;
@@ -167,7 +183,8 @@ class _FakeRunningRepo implements RunningRepository {
   Future<List<RunRecord>> getRunHistory() async => runs;
 
   @override
-  Future<RunRecord?> getRunById(String id) async => runs.where((r) => r.id == id).firstOrNull;
+  Future<RunRecord?> getRunById(String id) async =>
+      runs.where((r) => r.id == id).firstOrNull;
 
   @override
   Future<void> saveRunRecord(RunRecord record) async => runs.add(record);
@@ -184,7 +201,10 @@ class _FakeSocialRepo implements SocialRepository {
     final idx = feed.indexWhere((p) => p.id == postId);
     if (idx != -1) {
       final p = feed[idx];
-      feed[idx] = p.copyWith(isLiked: isLiked, likesCount: isLiked ? p.likesCount + 1 : p.likesCount - 1);
+      feed[idx] = p.copyWith(
+        isLiked: isLiked,
+        likesCount: isLiked ? p.likesCount + 1 : p.likesCount - 1,
+      );
     }
   }
 
@@ -224,15 +244,31 @@ class _FakeHttpClient implements HttpClient {
   String? userAgent;
 
   @override
-  void addCredentials(Uri url, String realm, HttpClientCredentials credentials) {}
+  void addCredentials(
+    Uri url,
+    String realm,
+    HttpClientCredentials credentials,
+  ) {}
   @override
-  void addProxyCredentials(String host, int port, String realm, HttpClientCredentials credentials) {}
+  void addProxyCredentials(
+    String host,
+    int port,
+    String realm,
+    HttpClientCredentials credentials,
+  ) {}
   @override
-  set authenticate(Future<bool> Function(Uri url, String scheme, String? realm)? f) {}
+  set authenticate(
+    Future<bool> Function(Uri url, String scheme, String? realm)? f,
+  ) {}
   @override
-  set authenticateProxy(Future<bool> Function(String host, int port, String scheme, String? realm)? f) {}
+  set authenticateProxy(
+    Future<bool> Function(String host, int port, String scheme, String? realm)?
+    f,
+  ) {}
   @override
-  set badCertificateCallback(bool Function(X509Certificate cert, String host, int port)? callback) {}
+  set badCertificateCallback(
+    bool Function(X509Certificate cert, String host, int port)? callback,
+  ) {}
   @override
   void close({bool force = false}) {}
   @override
@@ -241,7 +277,8 @@ class _FakeHttpClient implements HttpClient {
   @override
   Future<HttpClientRequest> getUrl(Uri url) async => _FakeHttpClientRequest();
   @override
-  Future<HttpClientRequest> openUrl(String method, Uri url) async => _FakeHttpClientRequest();
+  Future<HttpClientRequest> openUrl(String method, Uri url) async =>
+      _FakeHttpClientRequest();
 
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
@@ -273,7 +310,8 @@ class _FakeHttpClientRequest implements HttpClientRequest {
   @override
   Future flush() async {}
   @override
-  Future<HttpClientResponse> get done => Future.value(_FakeHttpClientResponse());
+  Future<HttpClientResponse> get done =>
+      Future.value(_FakeHttpClientResponse());
   @override
   void write(Object? object) {}
   @override
@@ -315,13 +353,76 @@ class _FakeHttpHeaders implements HttpHeaders {
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
-class _FakeHttpClientResponse extends Stream<List<int>> implements HttpClientResponse {
+class _FakeHttpClientResponse extends Stream<List<int>>
+    implements HttpClientResponse {
   static final List<int> _transparentPng = [
-    0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00, 0x00, 0x00, 0x0D, 0x49, 0x48, 0x44, 0x52,
-    0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x08, 0x06, 0x00, 0x00, 0x00, 0x1F, 0x15, 0xC4,
-    0x89, 0x00, 0x00, 0x00, 0x0A, 0x49, 0x44, 0x41, 0x54, 0x78, 0x9C, 0x63, 0x00, 0x01, 0x00, 0x00,
-    0x05, 0x00, 0x01, 0x0D, 0x0A, 0x2D, 0xB4, 0x00, 0x00, 0x00, 0x00, 0x49, 0x45, 0x4E, 0x44, 0xAE,
-    0x42, 0x60, 0x82,
+    0x89,
+    0x50,
+    0x4E,
+    0x47,
+    0x0D,
+    0x0A,
+    0x1A,
+    0x0A,
+    0x00,
+    0x00,
+    0x00,
+    0x0D,
+    0x49,
+    0x48,
+    0x44,
+    0x52,
+    0x00,
+    0x00,
+    0x00,
+    0x01,
+    0x00,
+    0x00,
+    0x00,
+    0x01,
+    0x08,
+    0x06,
+    0x00,
+    0x00,
+    0x00,
+    0x1F,
+    0x15,
+    0xC4,
+    0x89,
+    0x00,
+    0x00,
+    0x00,
+    0x0A,
+    0x49,
+    0x44,
+    0x41,
+    0x54,
+    0x78,
+    0x9C,
+    0x63,
+    0x00,
+    0x01,
+    0x00,
+    0x00,
+    0x05,
+    0x00,
+    0x01,
+    0x0D,
+    0x0A,
+    0x2D,
+    0xB4,
+    0x00,
+    0x00,
+    0x00,
+    0x00,
+    0x49,
+    0x45,
+    0x4E,
+    0x44,
+    0xAE,
+    0x42,
+    0x60,
+    0x82,
   ];
 
   @override
@@ -337,13 +438,18 @@ class _FakeHttpClientResponse extends Stream<List<int>> implements HttpClientRes
   @override
   String get reasonPhrase => 'OK';
   @override
-  HttpClientResponseCompressionState get compressionState => HttpClientResponseCompressionState.notCompressed;
+  HttpClientResponseCompressionState get compressionState =>
+      HttpClientResponseCompressionState.notCompressed;
   @override
   final HttpHeaders headers = _FakeHttpHeaders();
 
   @override
-  StreamSubscription<List<int>> listen(void Function(List<int> event)? onData,
-      {Function? onError, void Function()? onDone, bool? cancelOnError}) {
+  StreamSubscription<List<int>> listen(
+    void Function(List<int> event)? onData, {
+    Function? onError,
+    void Function()? onDone,
+    bool? cancelOnError,
+  }) {
     return Stream<List<int>>.fromIterable([_transparentPng]).listen(
       onData,
       onError: onError,
@@ -378,28 +484,44 @@ void main() {
         sl.registerSingleton<ThemeStore>(ThemeStore());
       }
       if (!sl.isRegistered<DashboardStore>()) {
-        sl.registerSingleton<DashboardStore>(DashboardStore(ringRepository: ringRepo));
+        sl.registerSingleton<DashboardStore>(
+          DashboardStore(ringRepository: ringRepo),
+        );
       } else {
         sl.unregister<DashboardStore>();
-        sl.registerSingleton<DashboardStore>(DashboardStore(ringRepository: ringRepo));
+        sl.registerSingleton<DashboardStore>(
+          DashboardStore(ringRepository: ringRepo),
+        );
       }
       if (!sl.isRegistered<ExerciseStore>()) {
-        sl.registerSingleton<ExerciseStore>(ExerciseStore(workoutRepository: workoutRepo));
+        sl.registerSingleton<ExerciseStore>(
+          ExerciseStore(workoutRepository: workoutRepo),
+        );
       } else {
         sl.unregister<ExerciseStore>();
-        sl.registerSingleton<ExerciseStore>(ExerciseStore(workoutRepository: workoutRepo));
+        sl.registerSingleton<ExerciseStore>(
+          ExerciseStore(workoutRepository: workoutRepo),
+        );
       }
       if (!sl.isRegistered<WorkoutLoggerStore>()) {
-        sl.registerSingleton<WorkoutLoggerStore>(WorkoutLoggerStore(workoutRepository: workoutRepo));
+        sl.registerSingleton<WorkoutLoggerStore>(
+          WorkoutLoggerStore(workoutRepository: workoutRepo),
+        );
       } else {
         sl.unregister<WorkoutLoggerStore>();
-        sl.registerSingleton<WorkoutLoggerStore>(WorkoutLoggerStore(workoutRepository: workoutRepo));
+        sl.registerSingleton<WorkoutLoggerStore>(
+          WorkoutLoggerStore(workoutRepository: workoutRepo),
+        );
       }
       if (!sl.isRegistered<NutritionStore>()) {
-        sl.registerSingleton<NutritionStore>(NutritionStore(nutritionRepository: nutritionRepo));
+        sl.registerSingleton<NutritionStore>(
+          NutritionStore(nutritionRepository: nutritionRepo),
+        );
       } else {
         sl.unregister<NutritionStore>();
-        sl.registerSingleton<NutritionStore>(NutritionStore(nutritionRepository: nutritionRepo));
+        sl.registerSingleton<NutritionStore>(
+          NutritionStore(nutritionRepository: nutritionRepo),
+        );
       }
       if (!sl.isRegistered<FastingStore>()) {
         sl.registerSingleton<FastingStore>(FastingStore());
@@ -408,236 +530,265 @@ void main() {
         sl.registerSingleton<FastingStore>(FastingStore());
       }
       if (!sl.isRegistered<GpsRunningStore>()) {
-        sl.registerSingleton<GpsRunningStore>(GpsRunningStore(runningRepository: runningRepo, ringRepository: ringRepo));
+        sl.registerSingleton<GpsRunningStore>(
+          GpsRunningStore(
+            runningRepository: runningRepo,
+            ringRepository: ringRepo,
+          ),
+        );
       } else {
         sl.unregister<GpsRunningStore>();
-        sl.registerSingleton<GpsRunningStore>(GpsRunningStore(runningRepository: runningRepo, ringRepository: ringRepo));
+        sl.registerSingleton<GpsRunningStore>(
+          GpsRunningStore(
+            runningRepository: runningRepo,
+            ringRepository: ringRepo,
+          ),
+        );
       }
       if (!sl.isRegistered<SocialStore>()) {
-        sl.registerSingleton<SocialStore>(SocialStore(socialRepository: socialRepo));
+        sl.registerSingleton<SocialStore>(
+          SocialStore(socialRepository: socialRepo),
+        );
       } else {
         sl.unregister<SocialStore>();
-        sl.registerSingleton<SocialStore>(SocialStore(socialRepository: socialRepo));
+        sl.registerSingleton<SocialStore>(
+          SocialStore(socialRepository: socialRepo),
+        );
       }
       if (!sl.isRegistered<AiCoachStore>()) {
-        sl.registerSingleton<AiCoachStore>(AiCoachStore(aiCoachRepository: aiCoachRepo));
+        sl.registerSingleton<AiCoachStore>(
+          AiCoachStore(aiCoachRepository: aiCoachRepo),
+        );
       } else {
         sl.unregister<AiCoachStore>();
-        sl.registerSingleton<AiCoachStore>(AiCoachStore(aiCoachRepository: aiCoachRepo));
+        sl.registerSingleton<AiCoachStore>(
+          AiCoachStore(aiCoachRepository: aiCoachRepo),
+        );
       }
     });
 
-    testWidgets('MainNavigationShell renders all tabs in IndexedStack with zero Hero tag collisions', (tester) async {
-      tester.view.physicalSize = const Size(1080, 2400);
-      tester.view.devicePixelRatio = 2.0;
-      addTearDown(tester.view.resetPhysicalSize);
-      addTearDown(tester.view.resetDevicePixelRatio);
+    testWidgets(
+      'MainNavigationShell renders all tabs in IndexedStack with zero Hero tag collisions',
+      (tester) async {
+        tester.view.physicalSize = const Size(1080, 2400);
+        tester.view.devicePixelRatio = 2.0;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
 
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: MainNavigationShell(),
-        ),
-      );
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(const MaterialApp(home: MainNavigationShell()));
+        await tester.pumpAndSettle();
 
-      // Navigation shell renders Hub by default
-      expect(find.byType(MainNavigationShell), findsOneWidget);
+        // Navigation shell renders Hub by default
+        expect(find.byType(MainNavigationShell), findsOneWidget);
 
-      // Verify each tab can be selected without any Hero exceptions
-      await tester.tap(find.byType(NavigationDestination).at(1));
-      await tester.pumpAndSettle();
+        // Verify each tab can be selected without any Hero exceptions
+        await tester.tap(find.byType(NavigationDestination).at(1));
+        await tester.pumpAndSettle();
 
-      await tester.tap(find.byType(NavigationDestination).at(2));
-      await tester.pumpAndSettle();
+        await tester.tap(find.byType(NavigationDestination).at(2));
+        await tester.pumpAndSettle();
 
-      await tester.tap(find.byType(NavigationDestination).at(3));
-      await tester.pumpAndSettle();
+        await tester.tap(find.byType(NavigationDestination).at(3));
+        await tester.pumpAndSettle();
 
-      await tester.tap(find.byType(NavigationDestination).at(4));
-      await tester.pumpAndSettle();
+        await tester.tap(find.byType(NavigationDestination).at(4));
+        await tester.pumpAndSettle();
 
-      await tester.tap(find.byType(NavigationDestination).at(0));
-      await tester.pumpAndSettle();
-    });
+        await tester.tap(find.byType(NavigationDestination).at(0));
+        await tester.pumpAndSettle();
+      },
+    );
 
-    testWidgets('ExerciseEncyclopediaView renders with zero MobX observer warnings and filter chips update store', (tester) async {
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: ExerciseEncyclopediaView(),
-        ),
-      );
-      await tester.pumpAndSettle();
+    testWidgets(
+      'ExerciseEncyclopediaView renders with zero MobX observer warnings and filter chips update store',
+      (tester) async {
+        await tester.pumpWidget(
+          const MaterialApp(home: ExerciseEncyclopediaView()),
+        );
+        await tester.pumpAndSettle();
 
-      // Tap on target muscle chip 'Chest'
-      final chestChip = find.text('Chest');
-      expect(chestChip, findsWidgets);
-      await tester.tap(chestChip.first);
-      await tester.pumpAndSettle();
-      expect(sl<ExerciseStore>().selectedBodyPart, equals('Chest'));
+        // Tap on target muscle chip 'Chest'
+        final chestChip = find.text('Chest');
+        expect(chestChip, findsWidgets);
+        await tester.tap(chestChip.first);
+        await tester.pumpAndSettle();
+        expect(sl<ExerciseStore>().selectedBodyPart, equals('Chest'));
 
-      // Tap on equipment chip 'Barbell'
-      final barbellChip = find.text('Barbell');
-      expect(barbellChip, findsWidgets);
-      await tester.tap(barbellChip.first);
-      await tester.pumpAndSettle();
-      expect(sl<ExerciseStore>().selectedEquipment, equals('Barbell'));
-    });
+        // Tap on equipment chip 'Barbell'
+        final barbellChip = find.text('Barbell');
+        expect(barbellChip, findsWidgets);
+        await tester.tap(barbellChip.first);
+        await tester.pumpAndSettle();
+        expect(sl<ExerciseStore>().selectedEquipment, equals('Barbell'));
+      },
+    );
 
-    testWidgets('SocialPostCard share button triggers Share Milestone bottom sheet, copy, and repost', (tester) async {
-      final post = SocialPost(
-        id: 'p_milestone_1',
-        userName: 'Safeer Hussain',
-        userHandle: '@safeer_h',
-        avatarInitials: 'SH',
-        postType: 'MILESTONE',
-        title: 'New Bench Press PR 140kg',
-        description: 'Clean pause reps with stable optical heart rate telemetry.',
-        metrics: {'Volume': '14,200kg', 'HRV': '72ms'},
-        likesCount: 12,
-        isLiked: false,
-        comments: [],
-        timestamp: DateTime.now(),
-      );
+    testWidgets(
+      'SocialPostCard share button triggers Share Milestone bottom sheet, copy, and repost',
+      (tester) async {
+        final post = SocialPost(
+          id: 'p_milestone_1',
+          userName: 'Safeer Hussain',
+          userHandle: '@safeer_h',
+          avatarInitials: 'SH',
+          postType: 'MILESTONE',
+          title: 'New Bench Press PR 140kg',
+          description:
+              'Clean pause reps with stable optical heart rate telemetry.',
+          metrics: {'Volume': '14,200kg', 'HRV': '72ms'},
+          likesCount: 12,
+          isLiked: false,
+          comments: [],
+          timestamp: DateTime.now(),
+        );
 
-      final socialStore = sl<SocialStore>();
-      socialRepo.feed.add(post);
-      await socialStore.loadFeed();
+        final socialStore = sl<SocialStore>();
+        socialRepo.feed.add(post);
+        await socialStore.loadFeed();
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: SocialPostCard(post: post, store: socialStore),
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: SocialPostCard(post: post, store: socialStore),
+            ),
           ),
-        ),
-      );
-      await tester.pumpAndSettle();
+        );
+        await tester.pumpAndSettle();
 
-      // Find share button and tap
-      final shareBtn = find.byTooltip('Share Milestone');
-      expect(shareBtn, findsOneWidget);
-      await tester.tap(shareBtn);
-      await tester.pumpAndSettle();
+        // Find share button and tap
+        final shareBtn = find.byTooltip('Share Milestone');
+        expect(shareBtn, findsOneWidget);
+        await tester.tap(shareBtn);
+        await tester.pumpAndSettle();
 
-      // Verify bottom sheet appeared
-      expect(find.text('Share Athlete Milestone'), findsOneWidget);
-      expect(find.text('Copy Milestone Summary'), findsOneWidget);
-      expect(find.text('Repost to My Activity Feed'), findsOneWidget);
-      expect(find.text('Export Telemetry Snapshot'), findsOneWidget);
+        // Verify bottom sheet appeared
+        expect(find.text('Share Athlete Milestone'), findsOneWidget);
+        expect(find.text('Copy Milestone Summary'), findsOneWidget);
+        expect(find.text('Repost to My Activity Feed'), findsOneWidget);
+        expect(find.text('Export Telemetry Snapshot'), findsOneWidget);
 
-      // Tap Repost to My Activity Feed
-      final repostAction = find.text('Repost to My Activity Feed');
-      await tester.tap(repostAction);
-      await tester.pumpAndSettle();
+        // Tap Repost to My Activity Feed
+        final repostAction = find.text('Repost to My Activity Feed');
+        await tester.tap(repostAction);
+        await tester.pumpAndSettle();
 
-      // Assert post has been prepended to the store
-      expect(socialStore.posts.first.title, contains('Repost: New Bench Press PR 140kg'));
+        // Assert post has been prepended to the store
+        expect(
+          socialStore.posts.first.title,
+          contains('Repost: New Bench Press PR 140kg'),
+        );
 
-      // Re-open sheet and tap Export Telemetry Snapshot
-      await tester.tap(shareBtn);
-      await tester.pumpAndSettle();
+        // Re-open sheet and tap Export Telemetry Snapshot
+        await tester.tap(shareBtn);
+        await tester.pumpAndSettle();
 
-      final exportAction = find.text('Export Telemetry Snapshot');
-      await tester.tap(exportAction);
-      await tester.pumpAndSettle();
+        final exportAction = find.text('Export Telemetry Snapshot');
+        await tester.tap(exportAction);
+        await tester.pumpAndSettle();
 
-      expect(find.text('Telemetry Snapshot'), findsOneWidget);
-      expect(find.text('Confirm Export'), findsOneWidget);
+        expect(find.text('Telemetry Snapshot'), findsOneWidget);
+        expect(find.text('Confirm Export'), findsOneWidget);
 
-      await tester.tap(find.text('Confirm Export'));
-      await tester.pumpAndSettle();
-    });
+        await tester.tap(find.text('Confirm Export'));
+        await tester.pumpAndSettle();
+      },
+    );
 
-    testWidgets('AiCoachView Clear Chat resets conversation context with confirmation dialog', (tester) async {
-      final aiStore = sl<AiCoachStore>();
-      aiStore.initialize();
-      expect(aiStore.messages.isNotEmpty, isTrue);
+    testWidgets(
+      'AiCoachView Clear Chat resets conversation context with confirmation dialog',
+      (tester) async {
+        final aiStore = sl<AiCoachStore>();
+        aiStore.initialize();
+        expect(aiStore.messages.isNotEmpty, isTrue);
 
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: AiCoachView(),
-        ),
-      );
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(const MaterialApp(home: AiCoachView()));
+        await tester.pumpAndSettle();
 
-      final clearBtn = find.byKey(const ValueKey('ai_coach_clear_chat_button'));
-      expect(clearBtn, findsOneWidget);
-      await tester.tap(clearBtn);
-      await tester.pumpAndSettle();
+        final clearBtn = find.byKey(
+          const ValueKey('ai_coach_clear_chat_button'),
+        );
+        expect(clearBtn, findsOneWidget);
+        await tester.tap(clearBtn);
+        await tester.pumpAndSettle();
 
-      expect(find.text('Reset AI Conversation?'), findsOneWidget);
-      final confirmBtn = find.text('Clear Chat');
-      await tester.tap(confirmBtn);
-      await tester.pumpAndSettle();
+        expect(find.text('Reset AI Conversation?'), findsOneWidget);
+        final confirmBtn = find.text('Clear Chat');
+        await tester.tap(confirmBtn);
+        await tester.pumpAndSettle();
 
-      expect(find.text('Reset AI Conversation?'), findsNothing);
-      expect(aiStore.messages.length, equals(1));
-    });
+        expect(find.text('Reset AI Conversation?'), findsNothing);
+        expect(aiStore.messages.length, equals(1));
+      },
+    );
 
-    testWidgets('ExerciseDetailView Add to Active Workout starts session and pushes WorkoutLoggerView', (tester) async {
-      const ex = Exercise(
-        id: 'ex_detail_01',
-        name: 'Incline Dumbbell Press',
-        bodyPart: 'Chest',
-        equipment: 'Dumbbells',
-        targetMuscles: 'Upper Chest',
-        instructions: 'Press dumbbells up at 30 degrees angle.',
-        difficulty: 'Intermediate',
-      );
+    testWidgets(
+      'ExerciseDetailView Add to Active Workout starts session and pushes WorkoutLoggerView',
+      (tester) async {
+        const ex = Exercise(
+          id: 'ex_detail_01',
+          name: 'Incline Dumbbell Press',
+          bodyPart: 'Chest',
+          equipment: 'Dumbbells',
+          targetMuscles: 'Upper Chest',
+          instructions: 'Press dumbbells up at 30 degrees angle.',
+          difficulty: 'Intermediate',
+        );
 
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: ExerciseDetailView(exercise: ex),
-        ),
-      );
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(
+          const MaterialApp(home: ExerciseDetailView(exercise: ex)),
+        );
+        await tester.pumpAndSettle();
 
-      final addBtn = find.byKey(const ValueKey('add_to_active_workout_button'));
-      expect(addBtn, findsOneWidget);
-      await tester.tap(addBtn);
-      await tester.pumpAndSettle();
+        final addBtn = find.byKey(
+          const ValueKey('add_to_active_workout_button'),
+        );
+        expect(addBtn, findsOneWidget);
+        await tester.tap(addBtn);
+        await tester.pumpAndSettle();
 
-      expect(find.byType(WorkoutLoggerView), findsOneWidget);
-      expect(sl<WorkoutLoggerStore>().isSessionActive, isTrue);
-    });
+        expect(find.byType(WorkoutLoggerView), findsOneWidget);
+        expect(sl<WorkoutLoggerStore>().isSessionActive, isTrue);
+      },
+    );
 
-    testWidgets('HydrationTrackerCard logs water and updates store with feedback', (tester) async {
-      final nutStore = sl<NutritionStore>();
-      nutStore.initialize();
+    testWidgets(
+      'HydrationTrackerCard logs water and updates store with feedback',
+      (tester) async {
+        final nutStore = sl<NutritionStore>();
+        nutStore.initialize();
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: HydrationTrackerCard(store: nutStore),
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(body: HydrationTrackerCard(store: nutStore)),
           ),
-        ),
-      );
-      await tester.pumpAndSettle();
+        );
+        await tester.pumpAndSettle();
 
-      expect(find.text('+250ml'), findsOneWidget);
-      await tester.tap(find.text('+250ml'));
-      await tester.pumpAndSettle();
+        expect(find.text('+250ml'), findsOneWidget);
+        await tester.tap(find.text('+250ml'));
+        await tester.pumpAndSettle();
 
-      expect(nutStore.dailySummary?.consumedWaterMl, equals(750));
-    });
+        expect(nutStore.dailySummary?.consumedWaterMl, equals(750));
+      },
+    );
 
-    testWidgets('SettingsView toggles Biometric Unit Standard between Metric and Imperial', (tester) async {
-      final loggerStore = sl<WorkoutLoggerStore>();
-      expect(loggerStore.unit, equals('kg'));
+    testWidgets(
+      'SettingsView toggles Biometric Unit Standard between Metric and Imperial',
+      (tester) async {
+        final loggerStore = sl<WorkoutLoggerStore>();
+        expect(loggerStore.unit, equals('kg'));
 
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: SettingsView(),
-        ),
-      );
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(const MaterialApp(home: SettingsView()));
+        await tester.pumpAndSettle();
 
-      final unitTile = find.text('Biometric Unit Standard');
-      expect(unitTile, findsOneWidget);
-      await tester.tap(unitTile);
-      await tester.pumpAndSettle();
+        final unitTile = find.text('Biometric Unit Standard');
+        expect(unitTile, findsOneWidget);
+        await tester.tap(unitTile);
+        await tester.pumpAndSettle();
 
-      expect(loggerStore.unit, equals('lbs'));
-    });
+        expect(loggerStore.unit, equals('lbs'));
+      },
+    );
 
     testWidgets('ReadinessRing opens breakdown sheet on tap', (tester) async {
       await tester.pumpWidget(
@@ -653,7 +804,9 @@ void main() {
       expect(find.text('Readiness & Recovery Intelligence'), findsOneWidget);
     });
 
-    testWidgets('EcgWaveformCard opens diagnostics sheet on tap', (tester) async {
+    testWidgets('EcgWaveformCard opens diagnostics sheet on tap', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
@@ -673,13 +826,11 @@ void main() {
       expect(find.text('Live Optical PPG & ECG Telemetry'), findsOneWidget);
     });
 
-    testWidgets('SleepArchitectureCard opens hypnogram sheet on tap', (tester) async {
+    testWidgets('SleepArchitectureCard opens hypnogram sheet on tap', (
+      tester,
+    ) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: SleepArchitectureCard(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: SleepArchitectureCard())),
       );
       await tester.pumpAndSettle();
       await tester.tap(find.byType(SleepArchitectureCard));
@@ -689,11 +840,7 @@ void main() {
 
     testWidgets('HrvTrendCard opens analytics sheet on tap', (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: HrvTrendCard(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: HrvTrendCard())),
       );
       await tester.pumpAndSettle();
       await tester.tap(find.byType(HrvTrendCard));
@@ -701,13 +848,11 @@ void main() {
       expect(find.text('Autonomic HRV Analytics'), findsOneWidget);
     });
 
-    testWidgets('LeaderboardView filter chips update category and sort items', (tester) async {
+    testWidgets('LeaderboardView filter chips update category and sort items', (
+      tester,
+    ) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: LeaderboardView(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: LeaderboardView())),
       );
       await tester.pumpAndSettle();
 

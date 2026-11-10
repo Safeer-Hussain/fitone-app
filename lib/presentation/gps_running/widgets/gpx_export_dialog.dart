@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import '../../../core/utils/app_feedback.dart';
 import '../../../core/utils/gpx_exporter.dart';
 import '../../../domain/entities/run_record.dart';
@@ -49,7 +50,9 @@ class GpxExportDialog extends StatelessWidget {
 
     return SafeArea(
       child: Padding(
-        padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
         child: Container(
           constraints: BoxConstraints(
             maxHeight: MediaQuery.of(context).size.height * 0.88,
@@ -81,7 +84,11 @@ class GpxExportDialog extends StatelessWidget {
                   Expanded(
                     child: Row(
                       children: [
-                        Icon(Icons.share_location_rounded, color: colorScheme.primary, size: 22),
+                        Icon(
+                          Icons.share_location_rounded,
+                          color: colorScheme.primary,
+                          size: 22,
+                        ),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Column(
@@ -216,7 +223,9 @@ class GpxExportDialog extends StatelessWidget {
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         side: BorderSide(color: colorScheme.outlineVariant),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                     ),
                   ),
@@ -231,7 +240,9 @@ class GpxExportDialog extends StatelessWidget {
                         backgroundColor: colorScheme.primary,
                         foregroundColor: colorScheme.onPrimary,
                         padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                     ),
                   ),

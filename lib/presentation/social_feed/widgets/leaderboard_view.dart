@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../core/utils/app_feedback.dart';
 
 class LeaderboardView extends StatefulWidget {
@@ -83,11 +84,18 @@ class _LeaderboardViewState extends State<LeaderboardView> {
   List<Map<String, dynamic>> _getFilteredAthletes() {
     final list = List<Map<String, dynamic>>.from(_allAthletes);
     if (_selectedCategory == 'Tonnage') {
-      list.sort((a, b) => (b['volumeKg'] as num).compareTo(a['volumeKg'] as num));
+      list.sort(
+        (a, b) => (b['volumeKg'] as num).compareTo(a['volumeKg'] as num),
+      );
     } else if (_selectedCategory == 'Distance') {
-      list.sort((a, b) => (b['distanceKm'] as num).compareTo(a['distanceKm'] as num));
+      list.sort(
+        (a, b) => (b['distanceKm'] as num).compareTo(a['distanceKm'] as num),
+      );
     } else if (_selectedCategory == 'Readiness') {
-      list.sort((a, b) => (b['readinessScore'] as num).compareTo(a['readinessScore'] as num));
+      list.sort(
+        (a, b) =>
+            (b['readinessScore'] as num).compareTo(a['readinessScore'] as num),
+      );
     }
     return list;
   }
@@ -106,11 +114,17 @@ class _LeaderboardViewState extends State<LeaderboardView> {
           decoration: BoxDecoration(
             color: colorScheme.surface,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: colorScheme.primary.withValues(alpha: 0.4)),
+            border: Border.all(
+              color: colorScheme.primary.withValues(alpha: 0.4),
+            ),
           ),
           child: Row(
             children: [
-              Icon(Icons.military_tech_outlined, color: colorScheme.primary, size: 28),
+              Icon(
+                Icons.military_tech_outlined,
+                color: colorScheme.primary,
+                size: 28,
+              ),
               const SizedBox(width: 14),
               Expanded(
                 child: Column(
@@ -118,11 +132,18 @@ class _LeaderboardViewState extends State<LeaderboardView> {
                   children: [
                     Text(
                       'Global Tonnage & Distance League',
-                      style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14, color: colorScheme.onSurface),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 14,
+                        color: colorScheme.onSurface,
+                      ),
                     ),
                     Text(
                       'Weekly cohort resetting in 2 days 14 hours',
-                      style: TextStyle(fontSize: 11, color: colorScheme.onSurfaceVariant),
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
                     ),
                   ],
                 ),
@@ -147,7 +168,10 @@ class _LeaderboardViewState extends State<LeaderboardView> {
                   onSelected: (selected) {
                     if (selected) {
                       setState(() => _selectedCategory = cat);
-                      AppFeedback.showInfo(context, 'Leaderboard filtered by $cat');
+                      AppFeedback.showInfo(
+                        context,
+                        'Leaderboard filtered by $cat',
+                      );
                     }
                   },
                 ),
@@ -174,10 +198,14 @@ class _LeaderboardViewState extends State<LeaderboardView> {
               margin: const EdgeInsets.only(bottom: 10),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
-                color: isUser ? colorScheme.primary.withValues(alpha: 0.12) : colorScheme.surface,
+                color: isUser
+                    ? colorScheme.primary.withValues(alpha: 0.12)
+                    : colorScheme.surface,
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: isUser ? colorScheme.primary : colorScheme.outlineVariant,
+                  color: isUser
+                      ? colorScheme.primary
+                      : colorScheme.outlineVariant,
                   width: isUser ? 1.5 : 1.0,
                 ),
               ),
@@ -191,8 +219,10 @@ class _LeaderboardViewState extends State<LeaderboardView> {
                       color: rank == 1
                           ? const Color(0xFFEAB308)
                           : (rank == 2
-                              ? const Color(0xFF94A3B8)
-                              : (rank == 3 ? const Color(0xFFB45309) : colorScheme.surfaceContainerHighest)),
+                                ? const Color(0xFF94A3B8)
+                                : (rank == 3
+                                      ? const Color(0xFFB45309)
+                                      : colorScheme.surfaceContainerHighest)),
                       shape: BoxShape.circle,
                     ),
                     child: Text(
@@ -216,20 +246,33 @@ class _LeaderboardViewState extends State<LeaderboardView> {
                                 a['name'] as String,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14, color: colorScheme.onSurface),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 14,
+                                  color: colorScheme.onSurface,
+                                ),
                               ),
                             ),
                             if (isUser) ...[
                               const SizedBox(width: 6),
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 6,
+                                  vertical: 1,
+                                ),
                                 decoration: BoxDecoration(
-                                  color: colorScheme.primary.withValues(alpha: 0.2),
+                                  color: colorScheme.primary.withValues(
+                                    alpha: 0.2,
+                                  ),
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                                 child: Text(
                                   'YOU',
-                                  style: TextStyle(fontSize: 9, fontWeight: FontWeight.w800, color: colorScheme.primary),
+                                  style: TextStyle(
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.w800,
+                                    color: colorScheme.primary,
+                                  ),
                                 ),
                               ),
                             ],
@@ -239,7 +282,10 @@ class _LeaderboardViewState extends State<LeaderboardView> {
                           a['handle'] as String,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(fontSize: 11, color: colorScheme.onSurfaceVariant),
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: colorScheme.onSurfaceVariant,
+                          ),
                         ),
                       ],
                     ),
@@ -251,15 +297,22 @@ class _LeaderboardViewState extends State<LeaderboardView> {
                         _selectedCategory == 'Distance'
                             ? (a['distance'] as String)
                             : (_selectedCategory == 'Readiness'
-                                ? 'Score: ${a['readiness']}'
-                                : (a['volume'] as String)),
-                        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 13, color: colorScheme.primary),
+                                  ? 'Score: ${a['readiness']}'
+                                  : (a['volume'] as String)),
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 13,
+                          color: colorScheme.primary,
+                        ),
                       ),
                       Text(
                         _selectedCategory == 'Distance'
                             ? (a['volume'] as String)
                             : (a['distance'] as String),
-                        style: TextStyle(fontSize: 11, color: colorScheme.secondary),
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: colorScheme.secondary,
+                        ),
                       ),
                     ],
                   ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+
 import '../../../core/di/injection.dart';
 import '../../../core/theme/theme_store.dart';
 import '../../../core/utils/app_feedback.dart';
@@ -52,7 +53,8 @@ class _AiCoachViewState extends State<AiCoachView> {
         final _ = _themeStore.themeMode;
         final theme = Theme.of(context);
         final colorScheme = theme.colorScheme;
-        final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+        final isLandscape =
+            MediaQuery.of(context).orientation == Orientation.landscape;
 
         Widget buildChatList() {
           return Observer(
@@ -63,7 +65,8 @@ class _AiCoachViewState extends State<AiCoachView> {
               return ListView.builder(
                 controller: _scrollController,
                 physics: const ClampingScrollPhysics(),
-                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
                 padding: EdgeInsets.all(isLandscape ? 10 : 16),
                 itemCount: messages.length,
                 itemBuilder: (context, index) {
@@ -79,7 +82,10 @@ class _AiCoachViewState extends State<AiCoachView> {
             builder: (_) {
               if (!_store.isGenerating) return const SizedBox.shrink();
               return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 6,
+                  horizontal: 16,
+                ),
                 child: Row(
                   children: [
                     SizedBox(
@@ -88,13 +94,16 @@ class _AiCoachViewState extends State<AiCoachView> {
                       child: CircularProgressIndicator(
                         key: const ValueKey('streaming_indicator_spinner'),
                         strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation(colorScheme.tertiary),
+                        valueColor: AlwaysStoppedAnimation(
+                          colorScheme.tertiary,
+                        ),
                       ),
                     ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        _store.activeReasoning ?? "Analyzing telemetry context...",
+                        _store.activeReasoning ??
+                            "Analyzing telemetry context...",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -121,7 +130,9 @@ class _AiCoachViewState extends State<AiCoachView> {
               ),
               decoration: BoxDecoration(
                 color: colorScheme.surface,
-                border: Border(top: BorderSide(color: colorScheme.outlineVariant)),
+                border: Border(
+                  top: BorderSide(color: colorScheme.outlineVariant),
+                ),
               ),
               child: Row(
                 children: [
@@ -131,7 +142,8 @@ class _AiCoachViewState extends State<AiCoachView> {
                       child: TextField(
                         controller: _textController,
                         decoration: InputDecoration(
-                          hintText: 'Ask AI Coach about HRV, recovery, or macros...',
+                          hintText:
+                              'Ask AI Coach about HRV, recovery, or macros...',
                           isDense: true,
                           contentPadding: EdgeInsets.symmetric(
                             horizontal: 12,
@@ -180,7 +192,9 @@ class _AiCoachViewState extends State<AiCoachView> {
             return Container(
               padding: const EdgeInsets.symmetric(vertical: 8),
               decoration: BoxDecoration(
-                border: Border(bottom: BorderSide(color: colorScheme.outlineVariant)),
+                border: Border(
+                  bottom: BorderSide(color: colorScheme.outlineVariant),
+                ),
               ),
               child: SizedBox(
                 height: 38,
@@ -237,8 +251,12 @@ class _AiCoachViewState extends State<AiCoachView> {
                         child: SizedBox(
                           width: double.infinity,
                           child: ActionChip(
-                            backgroundColor: colorScheme.surfaceContainerHighest,
-                            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                            backgroundColor:
+                                colorScheme.surfaceContainerHighest,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 4,
+                              vertical: 2,
+                            ),
                             label: Text(
                               prompt,
                               maxLines: 2,
@@ -270,18 +288,29 @@ class _AiCoachViewState extends State<AiCoachView> {
             toolbarHeight: isLandscape ? 36 : null,
             title: Row(
               children: [
-                Icon(Icons.auto_awesome_rounded, color: colorScheme.primary, size: isLandscape ? 16 : 20),
+                Icon(
+                  Icons.auto_awesome_rounded,
+                  color: colorScheme.primary,
+                  size: isLandscape ? 16 : 20,
+                ),
                 const SizedBox(width: 6),
                 Text(
                   'On-Device AI Recovery Coach',
-                  style: TextStyle(fontSize: isLandscape ? 13 : 16, fontWeight: FontWeight.w700),
+                  style: TextStyle(
+                    fontSize: isLandscape ? 13 : 16,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ],
             ),
             actions: [
               IconButton(
                 key: const ValueKey('ai_coach_clear_chat_button'),
-                icon: Icon(Icons.delete_sweep_outlined, color: colorScheme.onSurfaceVariant, size: isLandscape ? 18 : 22),
+                icon: Icon(
+                  Icons.delete_sweep_outlined,
+                  color: colorScheme.onSurfaceVariant,
+                  size: isLandscape ? 18 : 22,
+                ),
                 tooltip: 'Clear Chat & Reset Context',
                 onPressed: () => _confirmResetChat(context, colorScheme),
               ),
@@ -296,7 +325,10 @@ class _AiCoachViewState extends State<AiCoachView> {
                         flex: 30,
                         child: buildQuickPromptsList(horizontal: false),
                       ),
-                      VerticalDivider(color: colorScheme.outlineVariant, width: 1),
+                      VerticalDivider(
+                        color: colorScheme.outlineVariant,
+                        width: 1,
+                      ),
                       // Right Pane (70% width): Chat transcript with always-visible compact bottom input bar
                       Expanded(
                         flex: 70,
@@ -330,15 +362,25 @@ class _AiCoachViewState extends State<AiCoachView> {
       builder: (dialogContext) {
         return AlertDialog(
           backgroundColor: colorScheme.surface,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           title: Row(
             children: [
-              Icon(Icons.delete_sweep_outlined, color: colorScheme.error, size: 22),
+              Icon(
+                Icons.delete_sweep_outlined,
+                color: colorScheme.error,
+                size: 22,
+              ),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   'Reset AI Conversation?',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: colorScheme.onSurface),
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: colorScheme.onSurface,
+                  ),
                 ),
               ),
             ],
@@ -350,13 +392,19 @@ class _AiCoachViewState extends State<AiCoachView> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(dialogContext),
-              child: Text('Cancel', style: TextStyle(color: colorScheme.onSurfaceVariant)),
+              child: Text(
+                'Cancel',
+                style: TextStyle(color: colorScheme.onSurfaceVariant),
+              ),
             ),
             ElevatedButton(
               onPressed: () {
                 Navigator.pop(dialogContext);
                 _store.clearChat();
-                AppFeedback.showInfo(context, 'AI conversation and context reset');
+                AppFeedback.showInfo(
+                  context,
+                  'AI conversation and context reset',
+                );
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: colorScheme.error,

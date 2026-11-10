@@ -1,6 +1,8 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+
 import '../../../core/utils/app_feedback.dart';
 import '../../../domain/entities/fasting_session.dart';
 import '../stores/fasting_store.dart';
@@ -35,7 +37,10 @@ class FastingTrackerCard extends StatelessWidget {
             children: [
               Text(
                 'Elapsed time: ${store.formattedElapsed}. Would you like to end your fast and record this session to history?',
-                style: TextStyle(fontSize: 13, color: colorScheme.onSurfaceVariant),
+                style: TextStyle(
+                  fontSize: 13,
+                  color: colorScheme.onSurfaceVariant,
+                ),
               ),
               const SizedBox(height: 12),
               TextField(
@@ -43,7 +48,9 @@ class FastingTrackerCard extends StatelessWidget {
                 decoration: InputDecoration(
                   labelText: 'Session Notes (Optional)',
                   hintText: 'e.g. Broke fast with bone broth & eggs',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
               ),
             ],
@@ -51,7 +58,10 @@ class FastingTrackerCard extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(),
-              child: Text('Cancel', style: TextStyle(color: colorScheme.onSurfaceVariant)),
+              child: Text(
+                'Cancel',
+                style: TextStyle(color: colorScheme.onSurfaceVariant),
+              ),
             ),
             ElevatedButton(
               key: const ValueKey('confirm_end_fast_dialog_button'),
@@ -118,7 +128,8 @@ class FastingTrackerCard extends StatelessWidget {
         final currentPhase = store.currentPhase;
         final progress = store.progress;
         final notifOn = store.notificationsEnabled;
-        final targetHours = store.activeSession?.targetHours ?? protocol.fastingHours;
+        final targetHours =
+            store.activeSession?.targetHours ?? protocol.fastingHours;
 
         final ringSize = isCompact ? 140.0 : 180.0;
 
@@ -138,7 +149,9 @@ class FastingTrackerCard extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.hourglass_top_rounded,
-                      color: isFasting ? currentPhase.color : colorScheme.primary,
+                      color: isFasting
+                          ? currentPhase.color
+                          : colorScheme.primary,
                       size: 20,
                     ),
                     const SizedBox(width: 8),
@@ -166,16 +179,26 @@ class FastingTrackerCard extends StatelessWidget {
                         );
                       },
                       icon: Icon(
-                        notifOn ? Icons.notifications_active_rounded : Icons.notifications_off_rounded,
+                        notifOn
+                            ? Icons.notifications_active_rounded
+                            : Icons.notifications_off_rounded,
                         size: 18,
-                        color: notifOn ? colorScheme.primary : colorScheme.onSurfaceVariant,
+                        color: notifOn
+                            ? colorScheme.primary
+                            : colorScheme.onSurfaceVariant,
                       ),
-                      tooltip: notifOn ? 'Notifications Active' : 'Notifications Muted',
+                      tooltip: notifOn
+                          ? 'Notifications Active'
+                          : 'Notifications Muted',
                     ),
                     IconButton(
                       key: const ValueKey('fasting_detail_button'),
                       onPressed: () => FastingDetailSheet.show(context, store),
-                      icon: Icon(Icons.info_outline_rounded, size: 18, color: colorScheme.primary),
+                      icon: Icon(
+                        Icons.info_outline_rounded,
+                        size: 18,
+                        color: colorScheme.primary,
+                      ),
                       tooltip: 'Metabolic Phase Details',
                     ),
                   ],
@@ -194,7 +217,9 @@ class FastingTrackerCard extends StatelessWidget {
                           size: Size(ringSize, ringSize),
                           painter: _FastingRadialRingPainter(
                             progress: progress,
-                            activeColor: isFasting ? currentPhase.color : colorScheme.primary,
+                            activeColor: isFasting
+                                ? currentPhase.color
+                                : colorScheme.primary,
                             trackColor: colorScheme.surfaceContainerHighest,
                           ),
                         ),
@@ -202,12 +227,18 @@ class FastingTrackerCard extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              isFasting ? (progress >= 1.0 ? 'GOAL REACHED' : 'FASTING') : 'EATING WINDOW',
+                              isFasting
+                                  ? (progress >= 1.0
+                                        ? 'GOAL REACHED'
+                                        : 'FASTING')
+                                  : 'EATING WINDOW',
                               style: TextStyle(
                                 fontSize: 10,
                                 fontWeight: FontWeight.w800,
                                 letterSpacing: 1.0,
-                                color: isFasting ? currentPhase.color : colorScheme.primary,
+                                color: isFasting
+                                    ? currentPhase.color
+                                    : colorScheme.primary,
                               ),
                             ),
                             const SizedBox(height: 2),
@@ -221,24 +252,40 @@ class FastingTrackerCard extends StatelessWidget {
                             ),
                             const SizedBox(height: 2),
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 6,
+                                vertical: 2,
+                              ),
                               decoration: BoxDecoration(
-                                color: (isFasting ? currentPhase.color : colorScheme.primary).withOpacity(0.18),
+                                color:
+                                    (isFasting
+                                            ? currentPhase.color
+                                            : colorScheme.primary)
+                                        .withOpacity(0.18),
                                 borderRadius: BorderRadius.circular(4),
                               ),
                               child: Text(
-                                isFasting ? currentPhase.name.toUpperCase() : protocol.label,
+                                isFasting
+                                    ? currentPhase.name.toUpperCase()
+                                    : protocol.label,
                                 style: TextStyle(
                                   fontSize: 9,
                                   fontWeight: FontWeight.w800,
-                                  color: isFasting ? currentPhase.color : colorScheme.primary,
+                                  color: isFasting
+                                      ? currentPhase.color
+                                      : colorScheme.primary,
                                 ),
                               ),
                             ),
                             const SizedBox(height: 2),
                             Text(
-                              isFasting ? '${targetHours.toStringAsFixed(1)}h Target' : '${protocol.eatingHours.toInt()}h window open',
-                              style: TextStyle(fontSize: 10, color: colorScheme.onSurfaceVariant),
+                              isFasting
+                                  ? '${targetHours.toStringAsFixed(1)}h Target'
+                                  : '${protocol.eatingHours.toInt()}h window open',
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: colorScheme.onSurfaceVariant,
+                              ),
                             ),
                           ],
                         ),
@@ -274,7 +321,10 @@ class FastingTrackerCard extends StatelessWidget {
                         child: OutlinedButton.icon(
                           key: const ValueKey('adjust_fast_start_time_button'),
                           onPressed: () => _showAdjustStartTimeDialog(context),
-                          icon: const Icon(Icons.edit_calendar_rounded, size: 16),
+                          icon: const Icon(
+                            Icons.edit_calendar_rounded,
+                            size: 16,
+                          ),
                           label: const Text('Adjust Start'),
                           style: OutlinedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 10),
@@ -287,7 +337,10 @@ class FastingTrackerCard extends StatelessWidget {
                         child: ElevatedButton.icon(
                           key: const ValueKey('end_fast_button'),
                           onPressed: () => _showEndFastDialog(context),
-                          icon: const Icon(Icons.stop_circle_outlined, size: 16),
+                          icon: const Icon(
+                            Icons.stop_circle_outlined,
+                            size: 16,
+                          ),
                           label: const Text('End Fast'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: colorScheme.primary,
@@ -304,25 +357,32 @@ class FastingTrackerCard extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     physics: const BouncingScrollPhysics(),
                     child: Row(
-                      children: FastingProtocol.values.where((p) => p != FastingProtocol.custom).map((p) {
-                        final isSelected = protocol == p;
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 6),
-                          child: ChoiceChip(
-                            label: Text(
-                              p.label,
-                              style: TextStyle(
-                                fontSize: 11,
-                                fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
-                                color: isSelected ? colorScheme.onPrimary : colorScheme.onSurface,
+                      children: FastingProtocol.values
+                          .where((p) => p != FastingProtocol.custom)
+                          .map((p) {
+                            final isSelected = protocol == p;
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 6),
+                              child: ChoiceChip(
+                                label: Text(
+                                  p.label,
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: isSelected
+                                        ? FontWeight.w800
+                                        : FontWeight.w600,
+                                    color: isSelected
+                                        ? colorScheme.onPrimary
+                                        : colorScheme.onSurface,
+                                  ),
+                                ),
+                                selected: isSelected,
+                                selectedColor: colorScheme.primary,
+                                onSelected: (_) => store.setProtocol(p),
                               ),
-                            ),
-                            selected: isSelected,
-                            selectedColor: colorScheme.primary,
-                            onSelected: (_) => store.setProtocol(p),
-                          ),
-                        );
-                      }).toList(),
+                            );
+                          })
+                          .toList(),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -348,7 +408,9 @@ class FastingTrackerCard extends StatelessWidget {
                         backgroundColor: colorScheme.primary,
                         foregroundColor: colorScheme.onPrimary,
                         padding: const EdgeInsets.symmetric(vertical: 12),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                     ),
                   ),
@@ -443,11 +505,15 @@ class _FastingPhaseTimeline extends StatelessWidget {
               color: isCurrent
                   ? phase.color.withOpacity(0.22)
                   : (isCompleted
-                      ? phase.color.withOpacity(0.12)
-                      : colorScheme.surfaceContainerHighest.withOpacity(0.5)),
+                        ? phase.color.withOpacity(0.12)
+                        : colorScheme.surfaceContainerHighest.withOpacity(0.5)),
               borderRadius: BorderRadius.circular(6),
               border: Border.all(
-                color: isCurrent ? phase.color : (isCompleted ? phase.color.withOpacity(0.4) : Colors.transparent),
+                color: isCurrent
+                    ? phase.color
+                    : (isCompleted
+                          ? phase.color.withOpacity(0.4)
+                          : Colors.transparent),
                 width: isCurrent ? 1.5 : 1.0,
               ),
             ),
@@ -457,7 +523,9 @@ class _FastingPhaseTimeline extends StatelessWidget {
                   width: 6,
                   height: 6,
                   decoration: BoxDecoration(
-                    color: isCurrent || isCompleted ? phase.color : colorScheme.onSurfaceVariant.withOpacity(0.4),
+                    color: isCurrent || isCompleted
+                        ? phase.color
+                        : colorScheme.onSurfaceVariant.withOpacity(0.4),
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -467,7 +535,9 @@ class _FastingPhaseTimeline extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 8.5,
                     fontWeight: isCurrent ? FontWeight.w800 : FontWeight.w500,
-                    color: isCurrent ? phase.color : colorScheme.onSurfaceVariant,
+                    color: isCurrent
+                        ? phase.color
+                        : colorScheme.onSurfaceVariant,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,

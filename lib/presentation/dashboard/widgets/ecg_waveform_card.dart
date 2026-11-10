@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+
 import '../../../core/constants/app_typography.dart';
 import '../../../core/utils/app_feedback.dart';
 
@@ -41,147 +42,187 @@ class EcgWaveformCard extends StatelessWidget {
         child: InkWell(
           onTap: () => _showEcgDiagnosticsSheet(context, colorScheme),
           child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(
-                isCompact ? 12 : 16,
-                isCompact ? 10 : 16,
-                isCompact ? 12 : 16,
-                isCompact ? 6 : 10,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            width: 8,
-                            height: 8,
-                            decoration: BoxDecoration(
-                              color: colorScheme.primary,
-                              shape: BoxShape.circle,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                padding: EdgeInsets.fromLTRB(
+                  isCompact ? 12 : 16,
+                  isCompact ? 10 : 16,
+                  isCompact ? 12 : 16,
+                  isCompact ? 6 : 10,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              width: 8,
+                              height: 8,
+                              decoration: BoxDecoration(
+                                color: colorScheme.primary,
+                                shape: BoxShape.circle,
+                              ),
                             ),
+                            const SizedBox(width: 8),
+                            Text(
+                              'LIVE PPG TELEMETRY',
+                              style: TextStyle(
+                                fontSize: isCompact ? 10 : 12,
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 0.8,
+                                color: colorScheme.onSurfaceVariant,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          'Signal $signalQuality%',
+                          style: TextStyle(
+                            fontSize: isCompact ? 10 : 11,
+                            fontWeight: FontWeight.w600,
+                            color: colorScheme.primary,
                           ),
-                          const SizedBox(width: 8),
-                          Text(
-                            'LIVE PPG TELEMETRY',
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: isCompact ? 6 : 12),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          '$heartRate',
+                          style: isCompact
+                              ? TextStyle(
+                                  fontSize: 26,
+                                  fontWeight: FontWeight.w800,
+                                  color: colorScheme.onSurface,
+                                )
+                              : AppTypography.metricLarge.copyWith(
+                                  color: colorScheme.onSurface,
+                                ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                            bottom: isCompact ? 4.0 : 8.0,
+                            left: 6,
+                          ),
+                          child: Text(
+                            'BPM',
                             style: TextStyle(
-                              fontSize: isCompact ? 10 : 12,
+                              fontSize: isCompact ? 11 : 13,
                               fontWeight: FontWeight.w700,
-                              letterSpacing: 0.8,
                               color: colorScheme.onSurfaceVariant,
                             ),
                           ),
-                        ],
-                      ),
-                      Text(
-                        'Signal $signalQuality%',
-                        style: TextStyle(
-                          fontSize: isCompact ? 10 : 11,
-                          fontWeight: FontWeight.w600,
-                          color: colorScheme.primary,
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: isCompact ? 6 : 12),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        '$heartRate',
-                        style: isCompact
-                            ? TextStyle(fontSize: 26, fontWeight: FontWeight.w800, color: colorScheme.onSurface)
-                            : AppTypography.metricLarge.copyWith(color: colorScheme.onSurface),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(bottom: isCompact ? 4.0 : 8.0, left: 6),
+                        const Spacer(),
+                        _TelemetryTag(
+                          label: 'SpO2',
+                          value: '$spo2%',
+                          isCompact: isCompact,
+                        ),
+                        const SizedBox(width: 8),
+                        _TelemetryTag(
+                          label: 'Skin Temp',
+                          value:
+                              '${skinTempDelta >= 0 ? "+" : ""}${skinTempDelta.toStringAsFixed(1)}C',
+                          isCompact: isCompact,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                width: double.infinity,
+                height: isCompact ? 75 : 95,
+                child: spots.isEmpty
+                    ? Center(
                         child: Text(
-                          'BPM',
+                          'Synchronizing waveform stream...',
                           style: TextStyle(
-                            fontSize: isCompact ? 11 : 13,
-                            fontWeight: FontWeight.w700,
                             color: colorScheme.onSurfaceVariant,
+                            fontSize: 12,
                           ),
                         ),
-                      ),
-                      const Spacer(),
-                      _TelemetryTag(label: 'SpO2', value: '$spo2%', isCompact: isCompact),
-                      const SizedBox(width: 8),
-                      _TelemetryTag(
-                        label: 'Skin Temp',
-                        value: '${skinTempDelta >= 0 ? "+" : ""}${skinTempDelta.toStringAsFixed(1)}C',
-                        isCompact: isCompact,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              width: double.infinity,
-              height: isCompact ? 75 : 95,
-              child: spots.isEmpty
-                  ? Center(
-                      child: Text(
-                        'Synchronizing waveform stream...',
-                        style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 12),
-                      ),
-                    )
-                  : LineChart(
-                      LineChartData(
-                        minX: 0,
-                        maxX: maxX,
-                        minY: -1.0,
-                        maxY: 1.8,
-                        clipData: const FlClipData.all(),
-                        gridData: const FlGridData(show: false),
-                        borderData: FlBorderData(show: false),
-                        titlesData: const FlTitlesData(
-                          show: false,
-                          leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false, reservedSize: 0)),
-                          rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false, reservedSize: 0)),
-                          topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false, reservedSize: 0)),
-                          bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: false, reservedSize: 0)),
-                        ),
-                        lineBarsData: [
-                          LineChartBarData(
-                            spots: spots,
-                            isCurved: true,
-                            curveSmoothness: 0.35,
-                            color: colorScheme.primary,
-                            barWidth: 2.2,
-                            isStrokeCapRound: true,
-                            dotData: const FlDotData(show: false),
-                            belowBarData: BarAreaData(
-                              show: true,
-                              gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  colorScheme.primary.withValues(alpha: 0.25),
-                                  colorScheme.primary.withValues(alpha: 0.0),
-                                ],
+                      )
+                    : LineChart(
+                        LineChartData(
+                          minX: 0,
+                          maxX: maxX,
+                          minY: -1.0,
+                          maxY: 1.8,
+                          clipData: const FlClipData.all(),
+                          gridData: const FlGridData(show: false),
+                          borderData: FlBorderData(show: false),
+                          titlesData: const FlTitlesData(
+                            show: false,
+                            leftTitles: AxisTitles(
+                              sideTitles: SideTitles(
+                                showTitles: false,
+                                reservedSize: 0,
+                              ),
+                            ),
+                            rightTitles: AxisTitles(
+                              sideTitles: SideTitles(
+                                showTitles: false,
+                                reservedSize: 0,
+                              ),
+                            ),
+                            topTitles: AxisTitles(
+                              sideTitles: SideTitles(
+                                showTitles: false,
+                                reservedSize: 0,
+                              ),
+                            ),
+                            bottomTitles: AxisTitles(
+                              sideTitles: SideTitles(
+                                showTitles: false,
+                                reservedSize: 0,
                               ),
                             ),
                           ),
-                        ],
+                          lineBarsData: [
+                            LineChartBarData(
+                              spots: spots,
+                              isCurved: true,
+                              curveSmoothness: 0.35,
+                              color: colorScheme.primary,
+                              barWidth: 2.2,
+                              isStrokeCapRound: true,
+                              dotData: const FlDotData(show: false),
+                              belowBarData: BarAreaData(
+                                show: true,
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    colorScheme.primary.withValues(alpha: 0.25),
+                                    colorScheme.primary.withValues(alpha: 0.0),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
-      ),
       ),
     );
   }
 
   void _showEcgDiagnosticsSheet(BuildContext context, ColorScheme colorScheme) {
-    AppFeedback.showInfo(context, 'PPG / ECG Telemetry: $heartRate BPM • $spo2% SpO2 • $signalQuality% Signal');
+    AppFeedback.showInfo(
+      context,
+      'PPG / ECG Telemetry: $heartRate BPM • $spo2% SpO2 • $signalQuality% Signal',
+    );
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -214,11 +255,19 @@ class EcgWaveformCard extends StatelessWidget {
                   const SizedBox(height: 16),
                   Row(
                     children: [
-                      Icon(Icons.monitor_heart_rounded, color: colorScheme.primary, size: 22),
+                      Icon(
+                        Icons.monitor_heart_rounded,
+                        color: colorScheme.primary,
+                        size: 22,
+                      ),
                       const SizedBox(width: 8),
                       Text(
                         'Live Optical PPG & ECG Telemetry',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: colorScheme.onSurface),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: colorScheme.onSurface,
+                        ),
                       ),
                     ],
                   ),
@@ -232,15 +281,40 @@ class EcgWaveformCard extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
-                        _buildDiagRow('Heart Rate', '$heartRate BPM', Icons.favorite_rounded, colorScheme),
+                        _buildDiagRow(
+                          'Heart Rate',
+                          '$heartRate BPM',
+                          Icons.favorite_rounded,
+                          colorScheme,
+                        ),
                         Divider(color: colorScheme.outlineVariant, height: 16),
-                        _buildDiagRow('Blood Oxygen (SpO2)', '$spo2%', Icons.water_drop_rounded, colorScheme),
+                        _buildDiagRow(
+                          'Blood Oxygen (SpO2)',
+                          '$spo2%',
+                          Icons.water_drop_rounded,
+                          colorScheme,
+                        ),
                         Divider(color: colorScheme.outlineVariant, height: 16),
-                        _buildDiagRow('Optical Signal Fidelity', '$signalQuality%', Icons.wifi_rounded, colorScheme),
+                        _buildDiagRow(
+                          'Optical Signal Fidelity',
+                          '$signalQuality%',
+                          Icons.wifi_rounded,
+                          colorScheme,
+                        ),
                         Divider(color: colorScheme.outlineVariant, height: 16),
-                        _buildDiagRow('Skin Temp Differential', '${skinTempDelta >= 0 ? '+' : ''}${skinTempDelta.toStringAsFixed(1)}°C', Icons.thermostat_rounded, colorScheme),
+                        _buildDiagRow(
+                          'Skin Temp Differential',
+                          '${skinTempDelta >= 0 ? '+' : ''}${skinTempDelta.toStringAsFixed(1)}°C',
+                          Icons.thermostat_rounded,
+                          colorScheme,
+                        ),
                         Divider(color: colorScheme.outlineVariant, height: 16),
-                        _buildDiagRow('Active Telemetry Lead', 'Dual Ring Transceiver Lead I', Icons.cable_rounded, colorScheme),
+                        _buildDiagRow(
+                          'Active Telemetry Lead',
+                          'Dual Ring Transceiver Lead I',
+                          Icons.cable_rounded,
+                          colorScheme,
+                        ),
                       ],
                     ),
                   ),
@@ -265,7 +339,12 @@ class EcgWaveformCard extends StatelessWidget {
     );
   }
 
-  Widget _buildDiagRow(String label, String value, IconData icon, ColorScheme colorScheme) {
+  Widget _buildDiagRow(
+    String label,
+    String value,
+    IconData icon,
+    ColorScheme colorScheme,
+  ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -274,12 +353,24 @@ class EcgWaveformCard extends StatelessWidget {
             children: [
               Icon(icon, size: 16, color: colorScheme.primary),
               const SizedBox(width: 8),
-              Flexible(child: Text(label, style: TextStyle(fontSize: 12, color: colorScheme.onSurface))),
+              Flexible(
+                child: Text(
+                  label,
+                  style: TextStyle(fontSize: 12, color: colorScheme.onSurface),
+                ),
+              ),
             ],
           ),
         ),
         const SizedBox(width: 8),
-        Text(value, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: colorScheme.onSurface)),
+        Text(
+          value,
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w700,
+            color: colorScheme.onSurface,
+          ),
+        ),
       ],
     );
   }
@@ -290,14 +381,21 @@ class _TelemetryTag extends StatelessWidget {
   final String value;
   final bool isCompact;
 
-  const _TelemetryTag({required this.label, required this.value, this.isCompact = false});
+  const _TelemetryTag({
+    required this.label,
+    required this.value,
+    this.isCompact = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: isCompact ? 8 : 10, vertical: isCompact ? 4 : 6),
+      padding: EdgeInsets.symmetric(
+        horizontal: isCompact ? 8 : 10,
+        vertical: isCompact ? 4 : 6,
+      ),
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainer,
         borderRadius: BorderRadius.circular(10),

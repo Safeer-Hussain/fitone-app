@@ -34,10 +34,12 @@ class BarbellPlateCalculatorSheet extends StatefulWidget {
   }
 
   @override
-  State<BarbellPlateCalculatorSheet> createState() => _BarbellPlateCalculatorSheetState();
+  State<BarbellPlateCalculatorSheet> createState() =>
+      _BarbellPlateCalculatorSheetState();
 }
 
-class _BarbellPlateCalculatorSheetState extends State<BarbellPlateCalculatorSheet> {
+class _BarbellPlateCalculatorSheetState
+    extends State<BarbellPlateCalculatorSheet> {
   late BarbellUnit _unit;
   late double _targetWeight;
   late double _barWeight;
@@ -45,8 +47,12 @@ class _BarbellPlateCalculatorSheetState extends State<BarbellPlateCalculatorShee
   @override
   void initState() {
     super.initState();
-    _unit = widget.unit.toLowerCase() == 'lbs' ? BarbellUnit.lbs : BarbellUnit.kg;
-    _targetWeight = widget.initialWeight > 0 ? widget.initialWeight : (_unit == BarbellUnit.kg ? 100.0 : 225.0);
+    _unit = widget.unit.toLowerCase() == 'lbs'
+        ? BarbellUnit.lbs
+        : BarbellUnit.kg;
+    _targetWeight = widget.initialWeight > 0
+        ? widget.initialWeight
+        : (_unit == BarbellUnit.kg ? 100.0 : 225.0);
     _barWeight = _unit == BarbellUnit.kg
         ? BarbellPlateCalculator.defaultBarWeightKg
         : BarbellPlateCalculator.defaultBarWeightLbs;
@@ -56,11 +62,15 @@ class _BarbellPlateCalculatorSheetState extends State<BarbellPlateCalculatorShee
     setState(() {
       if (_unit == BarbellUnit.kg) {
         _unit = BarbellUnit.lbs;
-        _targetWeight = double.parse((_targetWeight * 2.20462).round().toString());
+        _targetWeight = double.parse(
+          (_targetWeight * 2.20462).round().toString(),
+        );
         _barWeight = 45.0;
       } else {
         _unit = BarbellUnit.kg;
-        _targetWeight = double.parse((_targetWeight / 2.20462).round().toString());
+        _targetWeight = double.parse(
+          (_targetWeight / 2.20462).round().toString(),
+        );
         _barWeight = 20.0;
       }
     });
@@ -86,7 +96,9 @@ class _BarbellPlateCalculatorSheetState extends State<BarbellPlateCalculatorShee
   }
 
   void _showCustomWeightDialog() {
-    final controller = TextEditingController(text: _targetWeight.toStringAsFixed(1));
+    final controller = TextEditingController(
+      text: _targetWeight.toStringAsFixed(1),
+    );
     showDialog(
       context: context,
       builder: (dialogContext) {
@@ -104,13 +116,18 @@ class _BarbellPlateCalculatorSheetState extends State<BarbellPlateCalculatorShee
             autofocus: true,
             decoration: InputDecoration(
               suffixText: _unit == BarbellUnit.kg ? 'kg' : 'lbs',
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(),
-              child: Text('Cancel', style: TextStyle(color: colorScheme.onSurfaceVariant)),
+              child: Text(
+                'Cancel',
+                style: TextStyle(color: colorScheme.onSurfaceVariant),
+              ),
             ),
             ElevatedButton(
               onPressed: () {
@@ -141,7 +158,8 @@ class _BarbellPlateCalculatorSheetState extends State<BarbellPlateCalculatorShee
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
 
     final result = BarbellPlateCalculator.calculate(
       targetWeight: _targetWeight,
@@ -157,7 +175,9 @@ class _BarbellPlateCalculatorSheetState extends State<BarbellPlateCalculatorShee
       child: SafeArea(
         child: Container(
           constraints: BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height * (isLandscape ? 0.96 : 0.88),
+            maxHeight:
+                MediaQuery.of(context).size.height *
+                (isLandscape ? 0.96 : 0.88),
           ),
           decoration: BoxDecoration(
             color: theme.scaffoldBackgroundColor,
@@ -177,15 +197,25 @@ class _BarbellPlateCalculatorSheetState extends State<BarbellPlateCalculatorShee
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
                 child: Row(
                   children: [
-                    Icon(Icons.fitness_center_rounded, color: colorScheme.primary, size: 22),
+                    Icon(
+                      Icons.fitness_center_rounded,
+                      color: colorScheme.primary,
+                      size: 22,
+                    ),
                     const SizedBox(width: 8),
                     const Expanded(
                       child: Text(
                         'Plate Loading Calculator',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -194,7 +224,10 @@ class _BarbellPlateCalculatorSheetState extends State<BarbellPlateCalculatorShee
                     OutlinedButton(
                       onPressed: _toggleUnit,
                       style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
                         minimumSize: Size.zero,
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         side: BorderSide(color: colorScheme.primary),
@@ -245,9 +278,17 @@ class _BarbellPlateCalculatorSheetState extends State<BarbellPlateCalculatorShee
                               flex: 6,
                               child: Column(
                                 children: [
-                                  _buildVisualBarbellCard(result, colorScheme, unitStr),
+                                  _buildVisualBarbellCard(
+                                    result,
+                                    colorScheme,
+                                    unitStr,
+                                  ),
                                   const SizedBox(height: 12),
-                                  _buildBreakdownSummary(result, colorScheme, unitStr),
+                                  _buildBreakdownSummary(
+                                    result,
+                                    colorScheme,
+                                    unitStr,
+                                  ),
                                   const SizedBox(height: 16),
                                   _buildActionButtons(result, colorScheme),
                                 ],
@@ -259,9 +300,17 @@ class _BarbellPlateCalculatorSheetState extends State<BarbellPlateCalculatorShee
                           children: [
                             _buildTargetWeightHero(colorScheme, unitStr),
                             const SizedBox(height: 16),
-                            _buildVisualBarbellCard(result, colorScheme, unitStr),
+                            _buildVisualBarbellCard(
+                              result,
+                              colorScheme,
+                              unitStr,
+                            ),
                             const SizedBox(height: 16),
-                            _buildBreakdownSummary(result, colorScheme, unitStr),
+                            _buildBreakdownSummary(
+                              result,
+                              colorScheme,
+                              unitStr,
+                            ),
                             const SizedBox(height: 16),
                             _buildBarWeightSelector(colorScheme, unitStr),
                             const SizedBox(height: 16),
@@ -449,7 +498,10 @@ class _BarbellPlateCalculatorSheetState extends State<BarbellPlateCalculatorShee
               padding: const EdgeInsets.symmetric(vertical: 4),
               child: Text(
                 'Empty sleeve. No plates required.',
-                style: TextStyle(fontSize: 13, color: colorScheme.onSurfaceVariant),
+                style: TextStyle(
+                  fontSize: 13,
+                  color: colorScheme.onSurfaceVariant,
+                ),
               ),
             )
           else
@@ -458,7 +510,10 @@ class _BarbellPlateCalculatorSheetState extends State<BarbellPlateCalculatorShee
               runSpacing: 8,
               children: result.platesPerSide.map((lp) {
                 return Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 6,
+                  ),
                   decoration: BoxDecoration(
                     color: lp.plate.color.withOpacity(0.18),
                     borderRadius: BorderRadius.circular(8),
@@ -500,7 +555,11 @@ class _BarbellPlateCalculatorSheetState extends State<BarbellPlateCalculatorShee
               ),
               child: Row(
                 children: [
-                  Icon(Icons.info_outline_rounded, size: 16, color: colorScheme.error),
+                  Icon(
+                    Icons.info_outline_rounded,
+                    size: 16,
+                    color: colorScheme.error,
+                  ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
@@ -546,8 +605,12 @@ class _BarbellPlateCalculatorSheetState extends State<BarbellPlateCalculatorShee
             children: bars.map((b) {
               final isSelected = (_barWeight - b).abs() < 0.1;
               final label = _unit == BarbellUnit.kg
-                  ? (b == 20.0 ? '20kg Olympic' : (b == 15.0 ? '15kg Women\'s' : '10kg Technique'))
-                  : (b == 45.0 ? '45lb Olympic' : (b == 35.0 ? '35lb Women\'s' : '25lb Technique'));
+                  ? (b == 20.0
+                        ? '20kg Olympic'
+                        : (b == 15.0 ? '15kg Women\'s' : '10kg Technique'))
+                  : (b == 45.0
+                        ? '45lb Olympic'
+                        : (b == 35.0 ? '35lb Women\'s' : '25lb Technique'));
 
               return Padding(
                 padding: const EdgeInsets.only(right: 6),
@@ -556,8 +619,12 @@ class _BarbellPlateCalculatorSheetState extends State<BarbellPlateCalculatorShee
                     label,
                     style: TextStyle(
                       fontSize: 11,
-                      fontWeight: isSelected ? FontWeight.w800 : FontWeight.w500,
-                      color: isSelected ? colorScheme.onPrimary : colorScheme.onSurface,
+                      fontWeight: isSelected
+                          ? FontWeight.w800
+                          : FontWeight.w500,
+                      color: isSelected
+                          ? colorScheme.onPrimary
+                          : colorScheme.onSurface,
                     ),
                   ),
                   selected: isSelected,
@@ -573,8 +640,30 @@ class _BarbellPlateCalculatorSheetState extends State<BarbellPlateCalculatorShee
   }
 
   Widget _buildQuickStepButtons(ColorScheme colorScheme) {
-    final stepsKg = [-20.0, -10.0, -5.0, -2.5, -1.25, 1.25, 2.5, 5.0, 10.0, 20.0];
-    final stepsLbs = [-45.0, -25.0, -10.0, -5.0, -2.5, 2.5, 5.0, 10.0, 25.0, 45.0];
+    final stepsKg = [
+      -20.0,
+      -10.0,
+      -5.0,
+      -2.5,
+      -1.25,
+      1.25,
+      2.5,
+      5.0,
+      10.0,
+      20.0,
+    ];
+    final stepsLbs = [
+      -45.0,
+      -25.0,
+      -10.0,
+      -5.0,
+      -2.5,
+      2.5,
+      5.0,
+      10.0,
+      25.0,
+      45.0,
+    ];
     final steps = _unit == BarbellUnit.kg ? stepsKg : stepsLbs;
 
     return Column(
@@ -596,7 +685,8 @@ class _BarbellPlateCalculatorSheetState extends State<BarbellPlateCalculatorShee
           child: Row(
             children: steps.map((s) {
               final isPositive = s > 0;
-              final text = '${isPositive ? '+' : ''}${s.toStringAsFixed(s.truncateToDouble() == s ? 0 : 2)}';
+              final text =
+                  '${isPositive ? '+' : ''}${s.toStringAsFixed(s.truncateToDouble() == s ? 0 : 2)}';
               return Padding(
                 padding: const EdgeInsets.only(right: 6),
                 child: ActionChip(
@@ -605,7 +695,9 @@ class _BarbellPlateCalculatorSheetState extends State<BarbellPlateCalculatorShee
                     style: TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.w700,
-                      color: isPositive ? colorScheme.primary : colorScheme.error,
+                      color: isPositive
+                          ? colorScheme.primary
+                          : colorScheme.error,
                     ),
                   ),
                   side: BorderSide(
@@ -654,8 +746,12 @@ class _BarbellPlateCalculatorSheetState extends State<BarbellPlateCalculatorShee
                     '${p.toInt()} $unitStr',
                     style: TextStyle(
                       fontSize: 11,
-                      fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
-                      color: isSelected ? colorScheme.onPrimary : colorScheme.onSurface,
+                      fontWeight: isSelected
+                          ? FontWeight.w800
+                          : FontWeight.w600,
+                      color: isSelected
+                          ? colorScheme.onPrimary
+                          : colorScheme.onSurface,
                     ),
                   ),
                   selected: isSelected,
@@ -670,7 +766,10 @@ class _BarbellPlateCalculatorSheetState extends State<BarbellPlateCalculatorShee
     );
   }
 
-  Widget _buildActionButtons(BarbellPlateResult result, ColorScheme colorScheme) {
+  Widget _buildActionButtons(
+    BarbellPlateResult result,
+    ColorScheme colorScheme,
+  ) {
     return Row(
       children: [
         Expanded(
@@ -681,7 +780,9 @@ class _BarbellPlateCalculatorSheetState extends State<BarbellPlateCalculatorShee
             style: OutlinedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 14),
               side: BorderSide(color: colorScheme.outlineVariant),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
           ),
         ),
@@ -703,7 +804,9 @@ class _BarbellPlateCalculatorSheetState extends State<BarbellPlateCalculatorShee
                 backgroundColor: colorScheme.primary,
                 foregroundColor: colorScheme.onPrimary,
                 padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
             ),
           ),
@@ -746,7 +849,9 @@ class _OlympicBarbellGraphic extends StatelessWidget {
                 Colors.grey.shade500,
               ],
             ),
-            borderRadius: const BorderRadius.horizontal(left: Radius.circular(4)),
+            borderRadius: const BorderRadius.horizontal(
+              left: Radius.circular(4),
+            ),
             border: Border.all(color: Colors.grey.shade600, width: 0.5),
           ),
           child: Center(
@@ -872,7 +977,10 @@ class _OlympicBarbellGraphic extends StatelessWidget {
           decoration: BoxDecoration(
             color: colorScheme.primary,
             borderRadius: BorderRadius.circular(2),
-            border: Border.all(color: colorScheme.onPrimary.withOpacity(0.4), width: 0.5),
+            border: Border.all(
+              color: colorScheme.onPrimary.withOpacity(0.4),
+              width: 0.5,
+            ),
           ),
           child: Center(
             child: Container(
@@ -897,7 +1005,9 @@ class _OlympicBarbellGraphic extends StatelessWidget {
                 Colors.grey.shade500,
               ],
             ),
-            borderRadius: const BorderRadius.horizontal(right: Radius.circular(3)),
+            borderRadius: const BorderRadius.horizontal(
+              right: Radius.circular(3),
+            ),
             border: Border.all(color: Colors.grey.shade600, width: 0.5),
           ),
         ),

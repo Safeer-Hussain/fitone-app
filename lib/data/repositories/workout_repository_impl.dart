@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:sqflite/sqflite.dart';
+
 import '../../core/database/app_database.dart';
 import '../../domain/entities/exercise.dart';
 import '../../domain/repositories/workout_repository.dart';
@@ -18,13 +19,16 @@ class WorkoutRepositoryImpl implements WorkoutRepository {
     int limit = 60,
   }) async {
     try {
-      final response = await dio.get('/api/v1/exercises', queryParameters: {
-        if (bodyPart != null && bodyPart != 'All') 'bodyPart': bodyPart,
-        if (equipment != null && equipment != 'All') 'equipment': equipment,
-        if (search != null && search.isNotEmpty) 'search': search,
-        'page': page,
-        'limit': limit,
-      });
+      final response = await dio.get(
+        '/api/v1/exercises',
+        queryParameters: {
+          if (bodyPart != null && bodyPart != 'All') 'bodyPart': bodyPart,
+          if (equipment != null && equipment != 'All') 'equipment': equipment,
+          if (search != null && search.isNotEmpty) 'search': search,
+          'page': page,
+          'limit': limit,
+        },
+      );
 
       if (response.statusCode == 200) {
         final list = (response.data['data'] as List<dynamic>)
@@ -70,7 +74,12 @@ class WorkoutRepositoryImpl implements WorkoutRepository {
   @override
   Future<Exercise?> getExerciseById(String id) async {
     final db = await AppDatabase.instance.database;
-    final rows = await db.query('exercises', where: 'id = ?', whereArgs: [id], limit: 1);
+    final rows = await db.query(
+      'exercises',
+      where: 'id = ?',
+      whereArgs: [id],
+      limit: 1,
+    );
     if (rows.isNotEmpty) {
       return Exercise.fromMap(rows.first);
     }
@@ -87,7 +96,11 @@ class WorkoutRepositoryImpl implements WorkoutRepository {
   @override
   Future<void> saveWorkoutPlan(WorkoutPlan plan) async {
     final db = await AppDatabase.instance.database;
-    await db.insert('workout_plans', plan.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+    await db.insert(
+      'workout_plans',
+      plan.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
   }
 
   @override
@@ -113,9 +126,17 @@ class WorkoutRepositoryImpl implements WorkoutRepository {
   Future<void> saveWorkoutSession(WorkoutSession session) async {
     final db = await AppDatabase.instance.database;
     await db.transaction((txn) async {
-      await txn.insert('workouts', session.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+      await txn.insert(
+        'workouts',
+        session.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
       for (final set in session.sets) {
-        await txn.insert('workout_sets', set.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+        await txn.insert(
+          'workout_sets',
+          set.toMap(),
+          conflictAlgorithm: ConflictAlgorithm.replace,
+        );
       }
     });
   }

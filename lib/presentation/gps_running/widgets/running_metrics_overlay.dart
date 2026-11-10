@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+
 import '../stores/gps_running_store.dart';
 
 class RunningMetricsOverlay extends StatelessWidget {
   final GpsRunningStore store;
   final bool isCompact;
 
-  const RunningMetricsOverlay({super.key, required this.store, this.isCompact = false});
+  const RunningMetricsOverlay({
+    super.key,
+    required this.store,
+    this.isCompact = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +38,10 @@ class RunningMetricsOverlay extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                padding: EdgeInsets.symmetric(horizontal: isCompact ? 6 : 10, vertical: isCompact ? 2 : 4),
+                padding: EdgeInsets.symmetric(
+                  horizontal: isCompact ? 6 : 10,
+                  vertical: isCompact ? 2 : 4,
+                ),
                 decoration: BoxDecoration(
                   color: colorScheme.primary.withValues(alpha: 0.18),
                   borderRadius: BorderRadius.circular(8),
@@ -43,7 +51,10 @@ class RunningMetricsOverlay extends StatelessWidget {
                     Container(
                       width: 6,
                       height: 6,
-                      decoration: BoxDecoration(color: colorScheme.primary, shape: BoxShape.circle),
+                      decoration: BoxDecoration(
+                        color: colorScheme.primary,
+                        shape: BoxShape.circle,
+                      ),
                     ),
                     const SizedBox(width: 4),
                     Text(
@@ -58,7 +69,10 @@ class RunningMetricsOverlay extends StatelessWidget {
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: isCompact ? 6 : 8, vertical: isCompact ? 2 : 4),
+                padding: EdgeInsets.symmetric(
+                  horizontal: isCompact ? 6 : 8,
+                  vertical: isCompact ? 2 : 4,
+                ),
                 decoration: BoxDecoration(
                   color: colorScheme.error.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(8),
@@ -78,9 +92,24 @@ class RunningMetricsOverlay extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _MetricItem(label: 'TIME', value: store.formattedDuration, colorScheme: colorScheme, isCompact: isCompact),
-              _MetricItem(label: 'DISTANCE', value: '${store.distanceKm.toStringAsFixed(2)} km', colorScheme: colorScheme, isCompact: isCompact),
-              _MetricItem(label: 'PACE', value: store.formattedPace, colorScheme: colorScheme, isCompact: isCompact),
+              _MetricItem(
+                label: 'TIME',
+                value: store.formattedDuration,
+                colorScheme: colorScheme,
+                isCompact: isCompact,
+              ),
+              _MetricItem(
+                label: 'DISTANCE',
+                value: '${store.distanceKm.toStringAsFixed(2)} km',
+                colorScheme: colorScheme,
+                isCompact: isCompact,
+              ),
+              _MetricItem(
+                label: 'PACE',
+                value: store.formattedPace,
+                colorScheme: colorScheme,
+                isCompact: isCompact,
+              ),
             ],
           ),
           SizedBox(height: isCompact ? 8 : 14),
@@ -191,7 +220,10 @@ class _SubMetric extends StatelessWidget {
           children: [
             Text(
               label,
-              style: TextStyle(fontSize: isCompact ? 9 : 10, color: colorScheme.onSurfaceVariant),
+              style: TextStyle(
+                fontSize: isCompact ? 9 : 10,
+                color: colorScheme.onSurfaceVariant,
+              ),
             ),
             Text(
               value,

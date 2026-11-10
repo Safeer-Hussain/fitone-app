@@ -87,7 +87,9 @@ class WorkoutSet {
       reps: (map['reps'] as num).toInt(),
       rpe: (map['rpe'] as num).toDouble(),
       isCompleted: (map['is_completed'] as int) == 1,
-      timestamp: DateTime.fromMillisecondsSinceEpoch((map['timestamp'] as num).toInt()),
+      timestamp: DateTime.fromMillisecondsSinceEpoch(
+        (map['timestamp'] as num).toInt(),
+      ),
     );
   }
 
@@ -127,13 +129,20 @@ class WorkoutSession {
     required this.sets,
   });
 
-  factory WorkoutSession.fromMap(Map<String, dynamic> map, List<WorkoutSet> sets) {
+  factory WorkoutSession.fromMap(
+    Map<String, dynamic> map,
+    List<WorkoutSet> sets,
+  ) {
     return WorkoutSession(
       id: map['id'] as String,
       title: map['title'] as String,
-      startTime: DateTime.fromMillisecondsSinceEpoch((map['start_time'] as num).toInt()),
+      startTime: DateTime.fromMillisecondsSinceEpoch(
+        (map['start_time'] as num).toInt(),
+      ),
       endTime: map['end_time'] != null
-          ? DateTime.fromMillisecondsSinceEpoch((map['end_time'] as num).toInt())
+          ? DateTime.fromMillisecondsSinceEpoch(
+              (map['end_time'] as num).toInt(),
+            )
           : null,
       totalVolumeKg: (map['total_volume_kg'] as num).toDouble(),
       completedSets: (map['completed_sets'] as num).toInt(),
@@ -172,7 +181,9 @@ class WorkoutPlan {
 
   factory WorkoutPlan.fromMap(Map<String, dynamic> map) {
     final raw = jsonDecode(map['schedule_json'] as String) as List<dynamic>;
-    final schedule = raw.map((e) => Map<String, dynamic>.from(e as Map)).toList();
+    final schedule = raw
+        .map((e) => Map<String, dynamic>.from(e as Map))
+        .toList();
 
     return WorkoutPlan(
       id: map['id'] as String,

@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -19,11 +20,7 @@ class AppDatabase {
     final docsDir = await getApplicationDocumentsDirectory();
     final dbPath = p.join(docsDir.path, 'fitone_core.db');
 
-    return await openDatabase(
-      dbPath,
-      version: 1,
-      onCreate: _onCreate,
-    );
+    return await openDatabase(dbPath, version: 1, onCreate: _onCreate);
   }
 
   Future<void> _onCreate(Database db, int version) async {
@@ -178,18 +175,20 @@ class AppDatabase {
         'name': 'Barbell Bench Press',
         'body_part': 'Chest',
         'equipment': 'Barbell',
-        'target_muscles': 'Pectoralis Major, Anterior Deltoids, Triceps Brachii',
+        'target_muscles':
+            'Pectoralis Major, Anterior Deltoids, Triceps Brachii',
         'instructions': 'Lie flat on the bench, grip bar slightly wider than shoulder width. Retract scapula, lower bar with control to lower chest, press upward explosively.',
-        'difficulty': 'Intermediate'
+        'difficulty': 'Intermediate',
       },
       {
         'id': 'ex_02',
         'name': 'Incline Dumbbell Press',
         'body_part': 'Chest',
         'equipment': 'Dumbbells',
-        'target_muscles': 'Clavicular Pectoral Head, Anterior Deltoids, Triceps',
+        'target_muscles':
+            'Clavicular Pectoral Head, Anterior Deltoids, Triceps',
         'instructions': 'Set bench to 30-45 degrees incline. Press dumbbells vertically while maintaining retracted shoulder girdle.',
-        'difficulty': 'Intermediate'
+        'difficulty': 'Intermediate',
       },
       {
         'id': 'ex_03',
@@ -198,7 +197,7 @@ class AppDatabase {
         'equipment': 'Cables',
         'target_muscles': 'Sternal Pectoral Head, Sternal Fibers',
         'instructions': 'Position dual pulleys at chest height. Step forward into staggered stance, bring hands together in wide sweeping arc.',
-        'difficulty': 'Beginner'
+        'difficulty': 'Beginner',
       },
       {
         'id': 'ex_04',
@@ -207,7 +206,7 @@ class AppDatabase {
         'equipment': 'Bodyweight',
         'target_muscles': 'Lower Pectorals, Anterior Deltoids, Triceps',
         'instructions': 'Lean torso forward at 30 degrees, lower body until upper arms parallel floor, press up through palms.',
-        'difficulty': 'Advanced'
+        'difficulty': 'Advanced',
       },
       {
         'id': 'ex_05',
@@ -216,7 +215,7 @@ class AppDatabase {
         'equipment': 'Gym Machines',
         'target_muscles': 'Pectoralis Major Sternal Head',
         'instructions': 'Adjust seat height so handles align with mid-chest. Contract chest to bring levers together, squeeze peak contraction.',
-        'difficulty': 'Beginner'
+        'difficulty': 'Beginner',
       },
       {
         'id': 'ex_06',
@@ -225,7 +224,7 @@ class AppDatabase {
         'equipment': 'Bodyweight',
         'target_muscles': 'Pectoralis Major, Triceps, Core Stabilizers',
         'instructions': 'High plank position with hands under shoulders. Lower chest to 2cm above floor, drive ground away.',
-        'difficulty': 'Beginner'
+        'difficulty': 'Beginner',
       },
       {
         'id': 'ex_07',
@@ -234,7 +233,7 @@ class AppDatabase {
         'equipment': 'Barbell',
         'target_muscles': 'Costal Pectorals, Triceps',
         'instructions': 'Secure legs on decline bench. Lower barbell to inferolateral sternum, drive upward locking elbows.',
-        'difficulty': 'Intermediate'
+        'difficulty': 'Intermediate',
       },
       {
         'id': 'ex_08',
@@ -243,16 +242,17 @@ class AppDatabase {
         'equipment': 'Kettlebells',
         'target_muscles': 'Pectoralis Major, Triceps, Forearm Flexors',
         'instructions': 'Lie supine on floor, press kettlebells until elbows lock out, minimizing shoulder hyper-extension.',
-        'difficulty': 'Intermediate'
+        'difficulty': 'Intermediate',
       },
       {
         'id': 'ex_09',
         'name': 'Deadlift (Conventional)',
         'body_part': 'Back',
         'equipment': 'Barbell',
-        'target_muscles': 'Erector Spinae, Latissimus Dorsi, Gluteus Maximus, Hamstrings',
+        'target_muscles':
+            'Erector Spinae, Latissimus Dorsi, Gluteus Maximus, Hamstrings',
         'instructions': 'Feet hip width under bar. Hinge hips back, brace abdominal wall, pull slack from bar, drive hips through.',
-        'difficulty': 'Advanced'
+        'difficulty': 'Advanced',
       },
       {
         'id': 'ex_10',
@@ -261,7 +261,7 @@ class AppDatabase {
         'equipment': 'Barbell',
         'target_muscles': 'Latissimus Dorsi, Rhomboids, Trapezius, Biceps',
         'instructions': 'Hinge torso to 45 degrees, pull barbell to lower ribcage while driving elbows upward and back.',
-        'difficulty': 'Intermediate'
+        'difficulty': 'Intermediate',
       },
       {
         'id': 'ex_11',
@@ -270,7 +270,7 @@ class AppDatabase {
         'equipment': 'Bodyweight',
         'target_muscles': 'Latissimus Dorsi, Teres Major, Biceps Brachii',
         'instructions': 'Hang with pronated grip outside shoulder width. Drive elbows down into back pockets until chin clears bar.',
-        'difficulty': 'Intermediate'
+        'difficulty': 'Intermediate',
       },
       {
         'id': 'ex_12',
@@ -279,7 +279,7 @@ class AppDatabase {
         'equipment': 'Cables',
         'target_muscles': 'Mid Trapezius, Rhomboids, Latissimus Dorsi',
         'instructions': 'Sit upright with feet on plates. Retract shoulder blades and pull V-bar to upper abdomen.',
-        'difficulty': 'Beginner'
+        'difficulty': 'Beginner',
       },
       {
         'id': 'ex_13',
@@ -288,7 +288,7 @@ class AppDatabase {
         'equipment': 'Gym Machines',
         'target_muscles': 'Latissimus Dorsi, Biceps, Posterior Deltoid',
         'instructions': 'Thighs locked under pads, grab wide bar. Depress scapula and pull bar toward upper sternum.',
-        'difficulty': 'Beginner'
+        'difficulty': 'Beginner',
       },
       {
         'id': 'ex_14',
@@ -297,7 +297,7 @@ class AppDatabase {
         'equipment': 'Dumbbells',
         'target_muscles': 'Latissimus Dorsi, Rhomboids, Posterior Deltoid',
         'instructions': 'Place one knee and hand on flat bench. Pull dumbbell vertically to hip pocket, pause and lower under control.',
-        'difficulty': 'Beginner'
+        'difficulty': 'Beginner',
       },
       {
         'id': 'ex_15',
@@ -306,16 +306,17 @@ class AppDatabase {
         'equipment': 'Kettlebells',
         'target_muscles': 'Upper Back, Rhomboids, Core Anti-Rotation',
         'instructions': 'Hinge with two kettlebells between feet. Row one side while pressing opposite bell firmly into floor.',
-        'difficulty': 'Intermediate'
+        'difficulty': 'Intermediate',
       },
       {
         'id': 'ex_16',
         'name': 'Barbell Back Squat',
         'body_part': 'Legs',
         'equipment': 'Barbell',
-        'target_muscles': 'Quadriceps, Gluteus Maximus, Adductor Magnus, Soleus',
+        'target_muscles':
+            'Quadriceps, Gluteus Maximus, Adductor Magnus, Soleus',
         'instructions': 'Bar resting on mid-trapezius shelf. Descend below parallel keeping knees tracking over second toes, drive upward through mid-foot.',
-        'difficulty': 'Advanced'
+        'difficulty': 'Advanced',
       },
       {
         'id': 'ex_17',
@@ -324,7 +325,7 @@ class AppDatabase {
         'equipment': 'Barbell',
         'target_muscles': 'Hamstrings, Gluteus Maximus, Erector Spinae',
         'instructions': 'Hold bar at hips with soft knee bend. Push hips posterior until deep hamstring stretch, drive hips forward.',
-        'difficulty': 'Intermediate'
+        'difficulty': 'Intermediate',
       },
       {
         'id': 'ex_18',
@@ -333,7 +334,7 @@ class AppDatabase {
         'equipment': 'Gym Machines',
         'target_muscles': 'Quadriceps, Glutes',
         'instructions': 'Feet shoulder width on sled. Release safety handles, lower sled to 90 degrees knee angle, press platform away.',
-        'difficulty': 'Beginner'
+        'difficulty': 'Beginner',
       },
       {
         'id': 'ex_19',
@@ -342,7 +343,7 @@ class AppDatabase {
         'equipment': 'Dumbbells',
         'target_muscles': 'Quadriceps, Gluteus Medius, Hamstrings',
         'instructions': 'Rear foot elevated on bench. Lower hips vertically until front thigh parallel to floor, drive up through front heel.',
-        'difficulty': 'Intermediate'
+        'difficulty': 'Intermediate',
       },
       {
         'id': 'ex_20',
@@ -351,7 +352,7 @@ class AppDatabase {
         'equipment': 'Kettlebells',
         'target_muscles': 'Quadriceps, Core Stabilizers',
         'instructions': 'Hold kettlebell at chest by the horns. Squat deep between hips with elbows inside knees.',
-        'difficulty': 'Beginner'
+        'difficulty': 'Beginner',
       },
       {
         'id': 'ex_21',
@@ -360,7 +361,7 @@ class AppDatabase {
         'equipment': 'Gym Machines',
         'target_muscles': 'Rectus Femoris, Vastus Lateralis/Medialis',
         'instructions': 'Sit with pad against lower shins. Extend knees fully, hold peak contraction for 1 second, lower smoothly.',
-        'difficulty': 'Beginner'
+        'difficulty': 'Beginner',
       },
       {
         'id': 'ex_22',
@@ -369,7 +370,7 @@ class AppDatabase {
         'equipment': 'Gym Machines',
         'target_muscles': 'Biceps Femoris, Semitendinosus, Semimembranosus',
         'instructions': 'Thigh pad secure, heel pad behind Achilles tendon. Flex knees curling pad downward behind calves.',
-        'difficulty': 'Beginner'
+        'difficulty': 'Beginner',
       },
       {
         'id': 'ex_23',
@@ -378,7 +379,7 @@ class AppDatabase {
         'equipment': 'Gym Machines',
         'target_muscles': 'Gastrocnemius, Soleus',
         'instructions': 'Shoulder pads resting, balls of feet on edge. Lower heels for maximal dorsiflexion, plantarflex onto big toes.',
-        'difficulty': 'Beginner'
+        'difficulty': 'Beginner',
       },
       {
         'id': 'ex_24',
@@ -387,16 +388,17 @@ class AppDatabase {
         'equipment': 'Bodyweight',
         'target_muscles': 'Quadriceps, Glutes, Ankle Mobility',
         'instructions': 'Single leg balance with opposite leg extended forward. Descend until hamstring contacts calf, rise under control.',
-        'difficulty': 'Advanced'
+        'difficulty': 'Advanced',
       },
       {
         'id': 'ex_25',
         'name': 'Overhead Barbell Press',
         'body_part': 'Shoulders',
         'equipment': 'Barbell',
-        'target_muscles': 'Anterior Deltoids, Lateral Deltoids, Triceps, Serratus Anterior',
+        'target_muscles':
+            'Anterior Deltoids, Lateral Deltoids, Triceps, Serratus Anterior',
         'instructions': 'Bar at collarbone height. Squeeze glutes and core, press barbell vertically overhead clearing face.',
-        'difficulty': 'Intermediate'
+        'difficulty': 'Intermediate',
       },
       {
         'id': 'ex_26',
@@ -405,7 +407,7 @@ class AppDatabase {
         'equipment': 'Dumbbells',
         'target_muscles': 'Lateral Deltoids',
         'instructions': 'Slight forward lean with dumbbells at sides. Raise arms in scapular plane until parallel to floor, lead with elbows.',
-        'difficulty': 'Beginner'
+        'difficulty': 'Beginner',
       },
       {
         'id': 'ex_27',
@@ -414,7 +416,7 @@ class AppDatabase {
         'equipment': 'Cables',
         'target_muscles': 'Posterior Deltoids, Infraspinatus, Rhomboids',
         'instructions': 'Rope attachment at eye level. Pull rope toward forehead while externally rotating forearms backwards.',
-        'difficulty': 'Beginner'
+        'difficulty': 'Beginner',
       },
       {
         'id': 'ex_28',
@@ -423,7 +425,7 @@ class AppDatabase {
         'equipment': 'Dumbbells',
         'target_muscles': 'Anterior and Lateral Deltoids',
         'instructions': 'Start with palms facing chest. Rotate wrists outward while pressing dumbbells overhead in continuous motion.',
-        'difficulty': 'Intermediate'
+        'difficulty': 'Intermediate',
       },
       {
         'id': 'ex_29',
@@ -432,7 +434,7 @@ class AppDatabase {
         'equipment': 'Gym Machines',
         'target_muscles': 'Anterior Deltoids, Triceps',
         'instructions': 'Grip neutral or pronated handles at ear level. Press upward to full extension without locking elbows violently.',
-        'difficulty': 'Beginner'
+        'difficulty': 'Beginner',
       },
       {
         'id': 'ex_30',
@@ -441,7 +443,7 @@ class AppDatabase {
         'equipment': 'Kettlebells',
         'target_muscles': 'Full Deltoid Complex, Trapezius, Core',
         'instructions': 'Swing kettlebell from floor into rack position at chest, press upward explosively overhead.',
-        'difficulty': 'Advanced'
+        'difficulty': 'Advanced',
       },
       {
         'id': 'ex_31',
@@ -450,7 +452,7 @@ class AppDatabase {
         'equipment': 'Barbell',
         'target_muscles': 'Biceps Brachii, Brachialis',
         'instructions': 'Shoulder width supinated grip. Keep elbows pinned to sides, curl barbell up to upper chest, lower under tension.',
-        'difficulty': 'Beginner'
+        'difficulty': 'Beginner',
       },
       {
         'id': 'ex_32',
@@ -459,7 +461,7 @@ class AppDatabase {
         'equipment': 'Dumbbells',
         'target_muscles': 'Biceps Long Head',
         'instructions': 'Bench at 60 degree incline. Allow arms to hang vertically behind torso for maximal long head stretch, curl forward.',
-        'difficulty': 'Intermediate'
+        'difficulty': 'Intermediate',
       },
       {
         'id': 'ex_33',
@@ -468,7 +470,7 @@ class AppDatabase {
         'equipment': 'Cables',
         'target_muscles': 'Triceps Lateral and Medial Heads',
         'instructions': 'Elbows pinned to ribcage. Push rope down, flaring ends outward at bottom for peak triceps contraction.',
-        'difficulty': 'Beginner'
+        'difficulty': 'Beginner',
       },
       {
         'id': 'ex_34',
@@ -477,7 +479,7 @@ class AppDatabase {
         'equipment': 'Barbell',
         'target_muscles': 'Triceps Long Head',
         'instructions': 'Lying on bench with EZ curl bar. Lower bar behind crown of head by flexing elbows, extend back upward.',
-        'difficulty': 'Intermediate'
+        'difficulty': 'Intermediate',
       },
       {
         'id': 'ex_35',
@@ -486,7 +488,7 @@ class AppDatabase {
         'equipment': 'Gym Machines',
         'target_muscles': 'Brachialis, Biceps Short Head',
         'instructions': 'Armpits nestled against slanted preacher pad. Curl lever toward chin, preventing shoulder movement.',
-        'difficulty': 'Beginner'
+        'difficulty': 'Beginner',
       },
       {
         'id': 'ex_36',
@@ -495,7 +497,7 @@ class AppDatabase {
         'equipment': 'Bodyweight',
         'target_muscles': 'Triceps Brachii, Inner Chest',
         'instructions': 'Hands forming diamond index and thumb shape under sternum. Lower chest to hands, press back up.',
-        'difficulty': 'Intermediate'
+        'difficulty': 'Intermediate',
       },
       {
         'id': 'ex_37',
@@ -504,7 +506,7 @@ class AppDatabase {
         'equipment': 'Dumbbells',
         'target_muscles': 'Brachioradialis, Brachialis',
         'instructions': 'Neutral grip with thumbs pointing upward. Curl weights alternately or simultaneously without torso swing.',
-        'difficulty': 'Beginner'
+        'difficulty': 'Beginner',
       },
       {
         'id': 'ex_38',
@@ -513,7 +515,7 @@ class AppDatabase {
         'equipment': 'Cables',
         'target_muscles': 'Triceps Long Head',
         'instructions': 'Rope high pulley, face away from stack in staggered stance. Extend arms forward and upward.',
-        'difficulty': 'Intermediate'
+        'difficulty': 'Intermediate',
       },
       {
         'id': 'ex_39',
@@ -522,7 +524,7 @@ class AppDatabase {
         'equipment': 'Bodyweight',
         'target_muscles': 'Rectus Abdominis, Iliopsoas',
         'instructions': 'Hang from pull-up bar. Posterior pelvic tilt, raise straight legs until parallel to floor or toes touch bar.',
-        'difficulty': 'Advanced'
+        'difficulty': 'Advanced',
       },
       {
         'id': 'ex_40',
@@ -531,7 +533,7 @@ class AppDatabase {
         'equipment': 'Cables',
         'target_muscles': 'Internal & External Obliques, Transverse Abdominis',
         'instructions': 'High pulley grip with both hands. Rotate torso diagonally down across body to opposite hip.',
-        'difficulty': 'Intermediate'
+        'difficulty': 'Intermediate',
       },
       {
         'id': 'ex_41',
@@ -540,7 +542,7 @@ class AppDatabase {
         'equipment': 'Bodyweight',
         'target_muscles': 'Rectus Abdominis, Core Anti-Extension',
         'instructions': 'Kneel on mat holding roller handles. Roll forward extending hips and arms, pull back using core contraction.',
-        'difficulty': 'Advanced'
+        'difficulty': 'Advanced',
       },
       {
         'id': 'ex_42',
@@ -549,7 +551,7 @@ class AppDatabase {
         'equipment': 'Kettlebells',
         'target_muscles': 'Obliques, Rectus Abdominis',
         'instructions': 'V-sit position with heels hovering above floor. Rotate kettlebell from side to side tapping ground lightly.',
-        'difficulty': 'Intermediate'
+        'difficulty': 'Intermediate',
       },
       {
         'id': 'ex_43',
@@ -558,7 +560,7 @@ class AppDatabase {
         'equipment': 'Bodyweight',
         'target_muscles': 'Transverse Abdominis, Glutes, Shoulders',
         'instructions': 'Forearms on floor under shoulders. Maintain neutral spine with active posterior pelvic tilt and glute squeeze.',
-        'difficulty': 'Beginner'
+        'difficulty': 'Beginner',
       },
       {
         'id': 'ex_44',
@@ -567,7 +569,7 @@ class AppDatabase {
         'equipment': 'Gym Machines',
         'target_muscles': 'Upper Rectus Abdominis',
         'instructions': 'Seat positioned so pivot point aligns with lower ribs. Contract abdomen rolling ribs towards pelvis.',
-        'difficulty': 'Beginner'
+        'difficulty': 'Beginner',
       },
       {
         'id': 'ex_45',
@@ -576,7 +578,7 @@ class AppDatabase {
         'equipment': 'Kettlebells',
         'target_muscles': 'Shoulder Stability, Core, Glutes, Hip Hinge',
         'instructions': 'Sequential roll from floor to standing while balancing kettlebell locked out overhead continuously.',
-        'difficulty': 'Advanced'
+        'difficulty': 'Advanced',
       },
       {
         'id': 'ex_46',
@@ -585,7 +587,7 @@ class AppDatabase {
         'equipment': 'Barbell',
         'target_muscles': 'Posterior Chain, Traps, Quads, Deltoids',
         'instructions': 'Explosive triple extension from floor to shoulders, split jerk barbell locked out overhead.',
-        'difficulty': 'Advanced'
+        'difficulty': 'Advanced',
       },
       {
         'id': 'ex_47',
@@ -594,7 +596,7 @@ class AppDatabase {
         'equipment': 'Kettlebells',
         'target_muscles': 'Glutes, Hamstrings, Core, Latissimus Dorsi',
         'instructions': 'Dynamic hip hinge projection. Snap hips forward to float kettlebell to chest level, absorb on backswing.',
-        'difficulty': 'Intermediate'
+        'difficulty': 'Intermediate',
       },
       {
         'id': 'ex_48',
@@ -603,7 +605,7 @@ class AppDatabase {
         'equipment': 'Bodyweight',
         'target_muscles': 'Cardiovascular, Pectorals, Quads, Deltoids',
         'instructions': 'Drop into squat, kick feet back to plank, perform push-up, jump feet in, explode upward with overhead reach.',
-        'difficulty': 'Intermediate'
+        'difficulty': 'Intermediate',
       },
       {
         'id': 'ex_49',
@@ -612,7 +614,7 @@ class AppDatabase {
         'equipment': 'Barbell',
         'target_muscles': 'Traps, Posterior Chain, Deltoids, Core',
         'instructions': 'Wide grip single continuous explosive pull from floor directly into full overhead squat reception.',
-        'difficulty': 'Advanced'
+        'difficulty': 'Advanced',
       },
       {
         'id': 'ex_50',
@@ -621,7 +623,7 @@ class AppDatabase {
         'equipment': 'Dumbbells',
         'target_muscles': 'Forearms, Trapezius, Core Anti-Lateral Flexion',
         'instructions': 'Pick up heavy dumbbells from floor. Walk upright with short purposeful steps for prescribed distance.',
-        'difficulty': 'Beginner'
+        'difficulty': 'Beginner',
       },
       {
         'id': 'ex_51',
@@ -630,7 +632,7 @@ class AppDatabase {
         'equipment': 'Gym Machines',
         'target_muscles': 'Shoulders, Core, Forearms, Cardiovascular',
         'instructions': 'Athletic quarter-squat stance. Alternate rhythmic vertical whipping waves of ropes into floor.',
-        'difficulty': 'Beginner'
+        'difficulty': 'Beginner',
       },
       {
         'id': 'ex_52',
@@ -639,7 +641,7 @@ class AppDatabase {
         'equipment': 'Gym Machines',
         'target_muscles': 'Quads, Calves, Glutes, Core',
         'instructions': 'Hands low on sled handles, lean body at 45 degrees, drive balls of feet down with piston leg motion.',
-        'difficulty': 'Intermediate'
+        'difficulty': 'Intermediate',
       },
       {
         'id': 'ex_53',
@@ -648,7 +650,7 @@ class AppDatabase {
         'equipment': 'Dumbbells',
         'target_muscles': 'Core, Latissimus Dorsi, Posterior Deltoid',
         'instructions': 'High plank position gripping hex dumbbells on floor. Row one dumbbell to hip while resisting hip twist.',
-        'difficulty': 'Advanced'
+        'difficulty': 'Advanced',
       },
       {
         'id': 'ex_54',
@@ -657,7 +659,7 @@ class AppDatabase {
         'equipment': 'Gym Machines',
         'target_muscles': 'Full Body Anaerobic Lactic System',
         'instructions': 'Maximal exertion push-pull handle cycling coupled with leg pedaling for high intensity intervals.',
-        'difficulty': 'Intermediate'
+        'difficulty': 'Intermediate',
       },
       {
         'id': 'ex_55',
@@ -666,7 +668,7 @@ class AppDatabase {
         'equipment': 'Bodyweight',
         'target_muscles': 'Posterior Chain, Quadriceps, Ankle Stiffness',
         'instructions': 'Sprint uphill at 100% effort with forward torso lean and high knee drive. Walk down to recover.',
-        'difficulty': 'Advanced'
+        'difficulty': 'Advanced',
       },
       {
         'id': 'ex_56',
@@ -675,7 +677,7 @@ class AppDatabase {
         'equipment': 'Cables',
         'target_muscles': 'Core Anti-Rotation, Obliques',
         'instructions': 'Hold cable handle at sternum with sideways stance. Press handle forward resisting rotational pull.',
-        'difficulty': 'Beginner'
+        'difficulty': 'Beginner',
       },
       {
         'id': 'ex_57',
@@ -684,7 +686,7 @@ class AppDatabase {
         'equipment': 'Barbell',
         'target_muscles': 'Gluteus Maximus, Hamstrings',
         'instructions': 'Upper back against flat bench, padded barbell across hip crease. Drive hips to full lockout squeeze.',
-        'difficulty': 'Intermediate'
+        'difficulty': 'Intermediate',
       },
       {
         'id': 'ex_58',
@@ -693,7 +695,7 @@ class AppDatabase {
         'equipment': 'Gym Machines',
         'target_muscles': 'Soleus',
         'instructions': 'Knees flexed at 90 degrees with thigh pad. Plantarflex ankles targeting deep slow-twitch soleus.',
-        'difficulty': 'Beginner'
+        'difficulty': 'Beginner',
       },
       {
         'id': 'ex_59',
@@ -702,7 +704,7 @@ class AppDatabase {
         'equipment': 'Cables',
         'target_muscles': 'Brachioradialis, Biceps Brachii',
         'instructions': 'Low pulley rope attachment. Neutral grip hammer curl upward keeping constant mechanical tension.',
-        'difficulty': 'Beginner'
+        'difficulty': 'Beginner',
       },
       {
         'id': 'ex_60',
@@ -711,8 +713,8 @@ class AppDatabase {
         'equipment': 'Dumbbells',
         'target_muscles': 'Quadriceps, Thoracic Extensors, Core',
         'instructions': 'Dumbbells rested vertically on anterior deltoid heads. Squat deep maintaining upright torso.',
-        'difficulty': 'Intermediate'
-      }
+        'difficulty': 'Intermediate',
+      },
     ];
   }
 
@@ -730,8 +732,8 @@ class AppDatabase {
           {'day': 'Thursday', 'focus': 'Push Strength', 'exerciseCount': 5},
           {'day': 'Friday', 'focus': 'Pull Strength', 'exerciseCount': 5},
           {'day': 'Saturday', 'focus': 'Legs Strength', 'exerciseCount': 5},
-          {'day': 'Sunday', 'focus': 'Active Recovery', 'exerciseCount': 0}
-        ])
+          {'day': 'Sunday', 'focus': 'Active Recovery', 'exerciseCount': 0},
+        ]),
       },
       {
         'id': 'plan_upper_lower',
@@ -740,20 +742,33 @@ class AppDatabase {
         'days_per_week': 4,
         'schedule_json': jsonEncode([
           {'day': 'Monday', 'focus': 'Upper Body Power', 'exerciseCount': 5},
-          {'day': 'Tuesday', 'focus': 'Lower Body Strength', 'exerciseCount': 5},
-          {'day': 'Wednesday', 'focus': 'Cardio & Mobility', 'exerciseCount': 0},
-          {'day': 'Thursday', 'focus': 'Upper Body Hypertrophy', 'exerciseCount': 6},
+          {
+            'day': 'Tuesday',
+            'focus': 'Lower Body Strength',
+            'exerciseCount': 5,
+          },
+          {
+            'day': 'Wednesday',
+            'focus': 'Cardio & Mobility',
+            'exerciseCount': 0,
+          },
+          {
+            'day': 'Thursday',
+            'focus': 'Upper Body Hypertrophy',
+            'exerciseCount': 6,
+          },
           {'day': 'Friday', 'focus': 'Lower Body Volume', 'exerciseCount': 6},
           {'day': 'Saturday', 'focus': 'Zone 2 Running', 'exerciseCount': 0},
-          {'day': 'Sunday', 'focus': 'Rest & Recovery', 'exerciseCount': 0}
-        ])
-      }
+          {'day': 'Sunday', 'focus': 'Rest & Recovery', 'exerciseCount': 0},
+        ]),
+      },
     ];
   }
 
   List<Map<String, dynamic>> _getInitialNutritionLogs() {
     final now = DateTime.now();
-    final todayStr = '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
+    final todayStr =
+        '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
 
     return [
       {
@@ -765,7 +780,9 @@ class AppDatabase {
         'protein_g': 42.0,
         'carbs_g': 62.0,
         'fat_g': 8.0,
-        'timestamp': now.subtract(const Duration(hours: 6)).millisecondsSinceEpoch
+        'timestamp': now
+            .subtract(const Duration(hours: 6))
+            .millisecondsSinceEpoch,
       },
       {
         'id': 'nut_02',
@@ -776,7 +793,9 @@ class AppDatabase {
         'protein_g': 58.0,
         'carbs_g': 54.0,
         'fat_g': 14.0,
-        'timestamp': now.subtract(const Duration(hours: 3)).millisecondsSinceEpoch
+        'timestamp': now
+            .subtract(const Duration(hours: 3))
+            .millisecondsSinceEpoch,
       },
       {
         'id': 'nut_03',
@@ -787,40 +806,51 @@ class AppDatabase {
         'protein_g': 24.0,
         'carbs_g': 22.0,
         'fat_g': 11.0,
-        'timestamp': now.subtract(const Duration(hours: 1)).millisecondsSinceEpoch
-      }
+        'timestamp': now
+            .subtract(const Duration(hours: 1))
+            .millisecondsSinceEpoch,
+      },
     ];
   }
 
   List<Map<String, dynamic>> _getInitialHydrationLogs() {
     final now = DateTime.now();
-    final todayStr = '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
+    final todayStr =
+        '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
 
     return [
       {
         'id': 'hyd_01',
         'date_str': todayStr,
         'amount_ml': 500,
-        'timestamp': now.subtract(const Duration(hours: 8)).millisecondsSinceEpoch
+        'timestamp': now
+            .subtract(const Duration(hours: 8))
+            .millisecondsSinceEpoch,
       },
       {
         'id': 'hyd_02',
         'date_str': todayStr,
         'amount_ml': 500,
-        'timestamp': now.subtract(const Duration(hours: 5)).millisecondsSinceEpoch
+        'timestamp': now
+            .subtract(const Duration(hours: 5))
+            .millisecondsSinceEpoch,
       },
       {
         'id': 'hyd_03',
         'date_str': todayStr,
         'amount_ml': 750,
-        'timestamp': now.subtract(const Duration(hours: 2)).millisecondsSinceEpoch
+        'timestamp': now
+            .subtract(const Duration(hours: 2))
+            .millisecondsSinceEpoch,
       },
       {
         'id': 'hyd_04',
         'date_str': todayStr,
         'amount_ml': 250,
-        'timestamp': now.subtract(const Duration(minutes: 30)).millisecondsSinceEpoch
-      }
+        'timestamp': now
+            .subtract(const Duration(minutes: 30))
+            .millisecondsSinceEpoch,
+      },
     ];
   }
 
@@ -841,7 +871,7 @@ class AppDatabase {
       {'lat': 31.5285, 'lng': 74.3810},
       {'lat': 31.5255, 'lng': 74.3780},
       {'lat': 31.5225, 'lng': 74.3740},
-      {'lat': 31.5204, 'lng': 74.3587}
+      {'lat': 31.5204, 'lng': 74.3587},
     ];
 
     final splits = [
@@ -849,14 +879,16 @@ class AppDatabase {
       {'km': 2, 'paceSec': 298, 'elevationDelta': 3.2, 'avgHeartRate': 154},
       {'km': 3, 'paceSec': 304, 'elevationDelta': -1.2, 'avgHeartRate': 157},
       {'km': 4, 'paceSec': 292, 'elevationDelta': 2.0, 'avgHeartRate': 162},
-      {'km': 5, 'paceSec': 285, 'elevationDelta': 5.8, 'avgHeartRate': 168}
+      {'km': 5, 'paceSec': 285, 'elevationDelta': 5.8, 'avgHeartRate': 168},
     ];
 
     return [
       {
         'id': 'run_lahore_liberty',
         'title': 'Liberty Roundabout to Gulberg Linear Tempo',
-        'start_time': now.subtract(const Duration(days: 1, hours: 2)).millisecondsSinceEpoch,
+        'start_time': now
+            .subtract(const Duration(days: 1, hours: 2))
+            .millisecondsSinceEpoch,
         'duration_seconds': 1491,
         'distance_km': 5.0,
         'avg_pace_sec_per_km': 298,
@@ -864,8 +896,8 @@ class AppDatabase {
         'calories_burned': 415.0,
         'avg_heart_rate': 158,
         'coordinates_json': jsonEncode(lahoreCoordinates),
-        'splits_json': jsonEncode(splits)
-      }
+        'splits_json': jsonEncode(splits),
+      },
     ];
   }
 
@@ -881,14 +913,27 @@ class AppDatabase {
         'post_type': 'WORKOUT_MILESTONE',
         'title': 'New 1RM PR: Barbell Bench Press at 135 kg',
         'description': 'AuraRing Readiness was 91 this morning. Hit 135kg x 1 rep at RPE 9.5 followed by 4x4 backoff sets at 112.5kg.',
-        'metrics_json': jsonEncode({'volumeKg': 4280, 'sets': 18, 'recoveryScore': 91}),
+        'metrics_json': jsonEncode({
+          'volumeKg': 4280,
+          'sets': 18,
+          'recoveryScore': 91,
+        }),
         'likes_count': 42,
         'is_liked': 1,
         'comments_json': jsonEncode([
-          {'author': 'Marcus Vance', 'text': 'Clean lockout velocity. What program cycle are you running?'},
-          {'author': 'Elena Rostova', 'text': 'Outstanding recovery numbers. My ring had me at 74 today.'}
+          {
+            'author': 'Marcus Vance',
+            'text':
+                'Clean lockout velocity. What program cycle are you running?',
+          },
+          {
+            'author': 'Elena Rostova',
+            'text': 'Outstanding recovery numbers. My ring had me at 74 today.',
+          },
         ]),
-        'timestamp': now.subtract(const Duration(hours: 4)).millisecondsSinceEpoch
+        'timestamp': now
+            .subtract(const Duration(hours: 4))
+            .millisecondsSinceEpoch,
       },
       {
         'id': 'post_02',
@@ -898,13 +943,22 @@ class AppDatabase {
         'post_type': 'RUN_ROUTE',
         'title': 'Sunrise 10K Tempo - Model Town Park Loop',
         'description': 'Maintained Zone 3 aerobic threshold at 4:48 min/km pace. Telemetry stream stayed rock solid with zero GPS dropouts.',
-        'metrics_json': jsonEncode({'distanceKm': 10.2, 'pace': '4:48/km', 'avgBpm': 156}),
+        'metrics_json': jsonEncode({
+          'distanceKm': 10.2,
+          'pace': '4:48/km',
+          'avgBpm': 156,
+        }),
         'likes_count': 78,
         'is_liked': 0,
         'comments_json': jsonEncode([
-          {'author': 'Safeer Hussain', 'text': 'Consistent cadence throughout the middle splits!'}
+          {
+            'author': 'Safeer Hussain',
+            'text': 'Consistent cadence throughout the middle splits!',
+          },
         ]),
-        'timestamp': now.subtract(const Duration(hours: 7)).millisecondsSinceEpoch
+        'timestamp': now
+            .subtract(const Duration(hours: 7))
+            .millisecondsSinceEpoch,
       },
       {
         'id': 'post_03',
@@ -914,12 +968,18 @@ class AppDatabase {
         'post_type': 'RECOVERY_BENCHMARK',
         'title': '94 Sleep Score: 2h 14m Deep Sleep Registered',
         'description': 'KinetixRing Ultra tracked a skin temperature drop of -0.3C and average resting HR of 47 BPM during slow-wave sleep.',
-        'metrics_json': jsonEncode({'sleepScore': 94, 'hrvMs': 76, 'restingHr': 47}),
+        'metrics_json': jsonEncode({
+          'sleepScore': 94,
+          'hrvMs': 76,
+          'restingHr': 47,
+        }),
         'likes_count': 56,
         'is_liked': 0,
         'comments_json': jsonEncode([]),
-        'timestamp': now.subtract(const Duration(hours: 12)).millisecondsSinceEpoch
-      }
+        'timestamp': now
+            .subtract(const Duration(hours: 12))
+            .millisecondsSinceEpoch,
+      },
     ];
   }
 }

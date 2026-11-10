@@ -1,5 +1,7 @@
 import 'dart:async';
+
 import 'package:mobx/mobx.dart';
+
 import '../../../domain/entities/ring_telemetry.dart';
 import '../../../domain/repositories/ring_repository.dart';
 
@@ -60,8 +62,12 @@ class DashboardStore {
         // Dynamically compute readiness score (0-100)
         // High HRV and normal resting HR yield high readiness
         final hrvBonus = ((telemetry.hrv - 50) * 0.5).clamp(-10.0, 15.0);
-        final hrPenalty = telemetry.heartRate > 85 ? (telemetry.heartRate - 85) * 0.4 : 0.0;
-        final computed = (85.0 + hrvBonus - hrPenalty).clamp(40.0, 99.0).round();
+        final hrPenalty = telemetry.heartRate > 85
+            ? (telemetry.heartRate - 85) * 0.4
+            : 0.0;
+        final computed = (85.0 + hrvBonus - hrPenalty)
+            .clamp(40.0, 99.0)
+            .round();
         _readinessScore.value = computed;
       });
     });

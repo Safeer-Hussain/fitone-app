@@ -1,12 +1,18 @@
 import 'dart:async';
 import 'dart:math';
+
 import 'package:flutter/services.dart';
+
 import '../../domain/entities/ring_telemetry.dart';
 import '../../core/network/network_monitor.dart';
 
 class NativeRingChannelDataSource {
-  static const MethodChannel _controlChannel = MethodChannel('com.safeer.fitone/ring_control');
-  static const EventChannel _telemetryChannel = EventChannel('com.safeer.fitone/ring_telemetry');
+  static const MethodChannel _controlChannel = MethodChannel(
+    'com.safeer.fitone/ring_control',
+  );
+  static const EventChannel _telemetryChannel = EventChannel(
+    'com.safeer.fitone/ring_telemetry',
+  );
 
   Stream<RingTelemetry>? _telemetryStream;
   StreamController<RingTelemetry>? _fallbackStreamController;
@@ -19,9 +25,13 @@ class NativeRingChannelDataSource {
 
   Future<List<RingDevice>> scanDevices() async {
     try {
-      final List<dynamic>? raw = await _controlChannel.invokeMethod('scanDevices');
+      final List<dynamic>? raw = await _controlChannel.invokeMethod(
+        'scanDevices',
+      );
       if (raw != null) {
-        return raw.map((item) => RingDevice.fromMap(item as Map<dynamic, dynamic>)).toList();
+        return raw
+            .map((item) => RingDevice.fromMap(item as Map<dynamic, dynamic>))
+            .toList();
       }
     } catch (_) {
       // Fallback for desktop/test environment
@@ -80,7 +90,9 @@ class NativeRingChannelDataSource {
 
   Future<HardwareDiagnostics> runHardwareDiagnostics() async {
     try {
-      final Map<dynamic, dynamic>? raw = await _controlChannel.invokeMethod('runHardwareDiagnostics');
+      final Map<dynamic, dynamic>? raw = await _controlChannel.invokeMethod(
+        'runHardwareDiagnostics',
+      );
       if (raw != null) {
         return HardwareDiagnostics.fromMap(raw);
       }
@@ -100,11 +112,14 @@ class NativeRingChannelDataSource {
     if (_telemetryStream != null) return _telemetryStream!;
 
     try {
-      _telemetryStream = _telemetryChannel.receiveBroadcastStream().map((dynamic event) {
-        return RingTelemetry.fromMap(event as Map<dynamic, dynamic>);
-      }).handleError((error) {
-        return _createFallbackPacket();
-      });
+      _telemetryStream = _telemetryChannel
+          .receiveBroadcastStream()
+          .map((dynamic event) {
+            return RingTelemetry.fromMap(event as Map<dynamic, dynamic>);
+          })
+          .handleError((error) {
+            return _createFallbackPacket();
+          });
       return _telemetryStream!;
     } catch (_) {
       return _getFallbackStream();
@@ -113,7 +128,8 @@ class NativeRingChannelDataSource {
 
   Stream<RingTelemetry> _getFallbackStream() {
     _fallbackStreamController ??= StreamController<RingTelemetry>.broadcast(
-      onListen: () => _restartFallbackTimer(NetworkMonitor.instance.telemetryIntervalMs),
+      onListen: () =>
+          _restartFallbackTimer(NetworkMonitor.instance.telemetryIntervalMs),
       onCancel: () {
         _fallbackTimer?.cancel();
         _fallbackTimer = null;
@@ -126,17 +142,24 @@ class NativeRingChannelDataSource {
     _fallbackTimer?.cancel();
     if (!_isConnected) return;
 
-    _fallbackTimer = Timer.periodic(Duration(milliseconds: max(500, intervalMs)), (timer) {
-      if (_fallbackStreamController != null && !_fallbackStreamController!.isClosed && _isConnected) {
-        _fallbackStreamController!.add(_createFallbackPacket());
-      }
-    });
+    _fallbackTimer = Timer.periodic(
+      Duration(milliseconds: max(500, intervalMs)),
+      (timer) {
+        if (_fallbackStreamController != null &&
+            !_fallbackStreamController!.isClosed &&
+            _isConnected) {
+          _fallbackStreamController!.add(_createFallbackPacket());
+        }
+      },
+    );
   }
 
   RingTelemetry _createFallbackPacket() {
     _fallbackPacketCounter++;
     _fallbackStepCount += Random().nextInt(3) + 1;
-    final hr = _activeSdk == 'SDK_A' ? 68 + Random().nextInt(7) : 71 + Random().nextInt(6);
+    final hr = _activeSdk == 'SDK_A'
+        ? 68 + Random().nextInt(7)
+        : 71 + Random().nextInt(6);
     final hrv = 64 + Random().nextInt(8) - 4;
     final spo2 = 98 + Random().nextInt(2);
     final tempDelta = (Random().nextInt(30) - 10) / 100.0;

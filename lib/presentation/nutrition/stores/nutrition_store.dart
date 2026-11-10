@@ -1,5 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:uuid/uuid.dart';
+
 import '../../../domain/entities/nutrition_day.dart';
 import '../../../domain/repositories/nutrition_repository.dart';
 
@@ -25,7 +26,8 @@ class NutritionStore {
 
   void initialize() {
     final now = DateTime.now();
-    _selectedDateStr.value = '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
+    _selectedDateStr.value =
+        '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
     loadDailySummary();
   }
 
@@ -36,7 +38,9 @@ class NutritionStore {
     });
 
     try {
-      final summary = await nutritionRepository.getDailySummary(_selectedDateStr.value);
+      final summary = await nutritionRepository.getDailySummary(
+        _selectedDateStr.value,
+      );
       runInAction(() {
         _dailySummary.value = summary;
       });

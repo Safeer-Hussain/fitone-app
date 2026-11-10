@@ -8,15 +8,13 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('Core Presentation Widget Tests', () {
-    testWidgets('ReadinessRing renders score and metric labels', (WidgetTester tester) async {
+    testWidgets('ReadinessRing renders score and metric labels', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: ReadinessRing(
-              score: 92,
-              hrvMs: 74,
-              restingHr: 52,
-            ),
+            body: ReadinessRing(score: 92, hrvMs: 74, restingHr: 52),
           ),
         ),
       );
@@ -28,7 +26,9 @@ void main() {
       expect(find.text('Optimal Readiness'), findsOneWidget);
     });
 
-    testWidgets('MacroProgressRing displays calories and remaining target', (WidgetTester tester) async {
+    testWidgets('MacroProgressRing displays calories and remaining target', (
+      WidgetTester tester,
+    ) async {
       final summary = DailyNutritionSummary(
         dateStr: '2026-11-04',
         targetCalories: 2400.0,
@@ -54,9 +54,7 @@ void main() {
 
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: MacroProgressRing(summary: summary),
-          ),
+          home: Scaffold(body: MacroProgressRing(summary: summary)),
         ),
       );
 
@@ -66,41 +64,44 @@ void main() {
       expect(find.text('Protein'), findsOneWidget);
     });
 
-    testWidgets('EcgWaveformCard renders with full container width and valid telemetry', (WidgetTester tester) async {
-      const containerWidth = 450.0;
-      final samples = List.generate(40, (i) => (i % 5 == 0) ? 1.2 : 0.0);
+    testWidgets(
+      'EcgWaveformCard renders with full container width and valid telemetry',
+      (WidgetTester tester) async {
+        const containerWidth = 450.0;
+        final samples = List.generate(40, (i) => (i % 5 == 0) ? 1.2 : 0.0);
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: SizedBox(
-              width: containerWidth,
-              child: EcgWaveformCard(
-                ecgBuffer: samples,
-                heartRate: 74,
-                spo2: 98,
-                skinTempDelta: 0.2,
-                signalQuality: 99,
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: SizedBox(
+                width: containerWidth,
+                child: EcgWaveformCard(
+                  ecgBuffer: samples,
+                  heartRate: 74,
+                  spo2: 98,
+                  skinTempDelta: 0.2,
+                  signalQuality: 99,
+                ),
               ),
             ),
           ),
-        ),
-      );
+        );
 
-      final cardFinder = find.byType(EcgWaveformCard);
-      expect(cardFinder, findsOneWidget);
-      final cardSize = tester.getSize(cardFinder);
-      expect(cardSize.width, equals(containerWidth));
+        final cardFinder = find.byType(EcgWaveformCard);
+        expect(cardFinder, findsOneWidget);
+        final cardSize = tester.getSize(cardFinder);
+        expect(cardSize.width, equals(containerWidth));
 
-      final chartFinder = find.byType(LineChart);
-      expect(chartFinder, findsOneWidget);
-      final chartSize = tester.getSize(chartFinder);
-      expect(chartSize.width, equals(containerWidth));
+        final chartFinder = find.byType(LineChart);
+        expect(chartFinder, findsOneWidget);
+        final chartSize = tester.getSize(chartFinder);
+        expect(chartSize.width, equals(containerWidth));
 
-      expect(find.text('LIVE PPG TELEMETRY'), findsOneWidget);
-      expect(find.text('74'), findsOneWidget);
-      expect(find.text('98%'), findsOneWidget);
-      expect(tester.takeException(), isNull);
-    });
+        expect(find.text('LIVE PPG TELEMETRY'), findsOneWidget);
+        expect(find.text('74'), findsOneWidget);
+        expect(find.text('98%'), findsOneWidget);
+        expect(tester.takeException(), isNull);
+      },
+    );
   });
 }

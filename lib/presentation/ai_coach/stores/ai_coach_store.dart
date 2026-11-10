@@ -1,6 +1,8 @@
 import 'dart:async';
+
 import 'package:mobx/mobx.dart';
 import 'package:uuid/uuid.dart';
+
 import '../../../domain/entities/ai_coach_message.dart';
 import '../../../domain/repositories/ai_coach_repository.dart';
 
@@ -30,7 +32,8 @@ class AiCoachStore {
       _messages.add(
         AiCoachMessage(
           id: const Uuid().v4(),
-          text: 'Hello Safeer. I am your on-device AI Sports Scientist and Recovery Coach. '
+          text:
+              'Hello Safeer. I am your on-device AI Sports Scientist and Recovery Coach. '
               'I continuously analyze your AuraRing HRV, sleep architecture, and SQLite macro logs. '
               'How can I optimize your training, recovery, or nutrition today?',
           sender: MessageSender.ai,
@@ -95,7 +98,9 @@ class AiCoachStore {
         runInAction(() {
           final idx = _messages.indexWhere((m) => m.id == aiMsgId);
           if (idx != -1) {
-            _messages[idx] = _messages[idx].copyWith(text: fullResponse.toString());
+            _messages[idx] = _messages[idx].copyWith(
+              text: fullResponse.toString(),
+            );
           }
         });
       }

@@ -1,5 +1,7 @@
 import 'dart:async';
+
 import 'package:mobx/mobx.dart';
+
 import '../../../domain/entities/exercise.dart';
 import '../../../domain/repositories/workout_repository.dart';
 

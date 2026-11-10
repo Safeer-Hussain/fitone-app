@@ -37,7 +37,10 @@ class RingTelemetry {
 
     return RingTelemetry(
       packetId: (map['packetId'] as num?)?.toInt() ?? 0,
-      timestamp: DateTime.fromMillisecondsSinceEpoch((map['timestamp'] as num?)?.toInt() ?? DateTime.now().millisecondsSinceEpoch),
+      timestamp: DateTime.fromMillisecondsSinceEpoch(
+        (map['timestamp'] as num?)?.toInt() ??
+            DateTime.now().millisecondsSinceEpoch,
+      ),
       deviceId: map['deviceId'] as String? ?? 'UNKNOWN',
       sdk: map['sdk'] as String? ?? 'SDK_A',
       heartRate: (map['heartRate'] as num?)?.toInt() ?? 72,

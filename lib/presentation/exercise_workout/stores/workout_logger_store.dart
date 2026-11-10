@@ -1,6 +1,8 @@
 import 'dart:async';
+
 import 'package:mobx/mobx.dart';
 import 'package:uuid/uuid.dart';
+
 import '../../../domain/entities/exercise.dart';
 import '../../../domain/repositories/workout_repository.dart';
 
@@ -53,7 +55,8 @@ class WorkoutLoggerStore {
     }
 
     final currentSets = _activeSession.value!.sets;
-    final setNumber = currentSets.where((s) => s.exerciseId == exerciseId).length + 1;
+    final setNumber =
+        currentSets.where((s) => s.exerciseId == exerciseId).length + 1;
 
     final newSet = WorkoutSet(
       id: const Uuid().v4(),
@@ -76,7 +79,10 @@ class WorkoutLoggerStore {
   }
 
   void toggleSetCompletion(int index) {
-    if (_activeSession.value == null || index >= _activeSession.value!.sets.length) return;
+    if (_activeSession.value == null ||
+        index >= _activeSession.value!.sets.length) {
+      return;
+    }
 
     runInAction(() {
       final set = _activeSession.value!.sets[index];
@@ -86,7 +92,10 @@ class WorkoutLoggerStore {
   }
 
   void removeSet(int index) {
-    if (_activeSession.value == null || index >= _activeSession.value!.sets.length) return;
+    if (_activeSession.value == null ||
+        index >= _activeSession.value!.sets.length) {
+      return;
+    }
 
     runInAction(() {
       _activeSession.value!.sets.removeAt(index);

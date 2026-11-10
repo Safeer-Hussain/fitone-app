@@ -30,7 +30,12 @@ class ThemeStore {
       _themeMode.value = mode;
     });
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_themeKey, mode == ThemeMode.light ? 'light' : (mode == ThemeMode.system ? 'system' : 'dark'));
+    await prefs.setString(
+      _themeKey,
+      mode == ThemeMode.light
+          ? 'light'
+          : (mode == ThemeMode.system ? 'system' : 'dark'),
+    );
   }
 
   void toggleTheme() {

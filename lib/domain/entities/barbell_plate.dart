@@ -149,12 +149,10 @@ class LoadedPlate {
   final BarbellPlate plate;
   final int count;
 
-  const LoadedPlate({
-    required this.plate,
-    required this.count,
-  });
+  const LoadedPlate({required this.plate, required this.count});
 
-  double get totalWeight => double.parse((plate.weight * count).toStringAsFixed(4));
+  double get totalWeight =>
+      double.parse((plate.weight * count).toStringAsFixed(4));
 }
 
 class BarbellPlateResult {
@@ -178,7 +176,8 @@ class BarbellPlateResult {
     required this.isExact,
   });
 
-  int get totalPlatesPerSide => platesPerSide.fold(0, (sum, p) => sum + p.count);
+  int get totalPlatesPerSide =>
+      platesPerSide.fold(0, (sum, p) => sum + p.count);
 
   List<BarbellPlate> get flattenedPlatesInsideOut {
     final list = <BarbellPlate>[];
@@ -213,8 +212,12 @@ class BarbellPlateCalculator {
     List<BarbellPlate>? availablePlates,
   }) {
     final cleanTarget = double.parse(targetWeight.toStringAsFixed(4));
-    final defaultBar = unit == BarbellUnit.kg ? defaultBarWeightKg : defaultBarWeightLbs;
-    final effectiveBarWeight = double.parse((barWeight ?? defaultBar).toStringAsFixed(4));
+    final defaultBar = unit == BarbellUnit.kg
+        ? defaultBarWeightKg
+        : defaultBarWeightLbs;
+    final effectiveBarWeight = double.parse(
+      (barWeight ?? defaultBar).toStringAsFixed(4),
+    );
 
     final platesPool = List<BarbellPlate>.from(
       availablePlates ??
@@ -224,7 +227,9 @@ class BarbellPlateCalculator {
     )..sort((a, b) => b.weight.compareTo(a.weight));
 
     if (cleanTarget <= effectiveBarWeight) {
-      final remainder = double.parse((effectiveBarWeight - cleanTarget).toStringAsFixed(4));
+      final remainder = double.parse(
+        (effectiveBarWeight - cleanTarget).toStringAsFixed(4),
+      );
       return BarbellPlateResult(
         targetWeight: cleanTarget,
         barWeight: effectiveBarWeight,
@@ -237,8 +242,12 @@ class BarbellPlateCalculator {
       );
     }
 
-    final targetPlatesTotal = double.parse((cleanTarget - effectiveBarWeight).toStringAsFixed(4));
-    var remainingPerSide = double.parse((targetPlatesTotal / 2.0).toStringAsFixed(4));
+    final targetPlatesTotal = double.parse(
+      (cleanTarget - effectiveBarWeight).toStringAsFixed(4),
+    );
+    var remainingPerSide = double.parse(
+      (targetPlatesTotal / 2.0).toStringAsFixed(4),
+    );
 
     final loadedList = <LoadedPlate>[];
 
@@ -248,7 +257,9 @@ class BarbellPlateCalculator {
         final count = (remainingPerSide / plate.weight).floor();
         if (count > 0) {
           loadedList.add(LoadedPlate(plate: plate, count: count));
-          remainingPerSide = double.parse((remainingPerSide - (count * plate.weight)).toStringAsFixed(4));
+          remainingPerSide = double.parse(
+            (remainingPerSide - (count * plate.weight)).toStringAsFixed(4),
+          );
         }
       }
     }
@@ -258,8 +269,12 @@ class BarbellPlateCalculator {
       (sum, p) => double.parse((sum + p.totalWeight).toStringAsFixed(4)),
     );
 
-    final totalLoaded = double.parse((effectiveBarWeight + (loadedWeightPerSide * 2.0)).toStringAsFixed(4));
-    final remainder = double.parse((cleanTarget - totalLoaded).abs().toStringAsFixed(4));
+    final totalLoaded = double.parse(
+      (effectiveBarWeight + (loadedWeightPerSide * 2.0)).toStringAsFixed(4),
+    );
+    final remainder = double.parse(
+      (cleanTarget - totalLoaded).abs().toStringAsFixed(4),
+    );
     final isExact = remainder < 0.001;
 
     return BarbellPlateResult(

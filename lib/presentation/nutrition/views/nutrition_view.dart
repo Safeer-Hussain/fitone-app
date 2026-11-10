@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+
 import '../../../core/di/injection.dart';
 import '../../../core/theme/theme_store.dart';
 import '../../../core/utils/app_feedback.dart';
@@ -40,19 +41,27 @@ class _NutritionViewState extends State<NutritionView> {
         final theme = Theme.of(context);
         final colorScheme = theme.colorScheme;
         final summary = _store.dailySummary;
-        final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+        final isLandscape =
+            MediaQuery.of(context).orientation == Orientation.landscape;
 
         return Scaffold(
           appBar: AppBar(
             toolbarHeight: isLandscape ? 36 : null,
             title: Text(
               'Nutrition & Hydration Tracker',
-              style: TextStyle(fontSize: isLandscape ? 13 : 16, fontWeight: FontWeight.w700),
+              style: TextStyle(
+                fontSize: isLandscape ? 13 : 16,
+                fontWeight: FontWeight.w700,
+              ),
             ),
             actions: [
               IconButton(
                 onPressed: () => QuickAddFoodDialog.show(context, _store),
-                icon: Icon(Icons.add_circle_outline_rounded, color: colorScheme.primary, size: isLandscape ? 18 : 22),
+                icon: Icon(
+                  Icons.add_circle_outline_rounded,
+                  color: colorScheme.primary,
+                  size: isLandscape ? 18 : 22,
+                ),
                 tooltip: 'Log Food',
               ),
             ],
@@ -77,26 +86,48 @@ class _NutritionViewState extends State<NutritionView> {
                         flex: 35,
                         child: SingleChildScrollView(
                           physics: const ClampingScrollPhysics(),
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 8,
+                          ),
                           child: Column(
                             children: [
-                              MacroProgressRing(summary: summary, isCompact: true),
+                              MacroProgressRing(
+                                summary: summary,
+                                isCompact: true,
+                              ),
                               const SizedBox(height: 8),
-                              HydrationTrackerCard(store: _store, isCompact: true),
+                              HydrationTrackerCard(
+                                store: _store,
+                                isCompact: true,
+                              ),
                               const SizedBox(height: 8),
-                              FastingTrackerCard(store: _fastingStore, isCompact: true),
+                              FastingTrackerCard(
+                                store: _fastingStore,
+                                isCompact: true,
+                              ),
                             ],
                           ),
                         ),
                       ),
-                      VerticalDivider(color: colorScheme.outlineVariant, width: 1),
+                      VerticalDivider(
+                        color: colorScheme.outlineVariant,
+                        width: 1,
+                      ),
                       // Right Pane (65% width): Scrollable list of Meal slots with quick-add actions
                       Expanded(
                         flex: 65,
                         child: ListView(
                           physics: const ClampingScrollPhysics(),
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                          children: _buildMealSlots(summary.mealItems, colorScheme, isCompact: true),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 8,
+                          ),
+                          children: _buildMealSlots(
+                            summary.mealItems,
+                            colorScheme,
+                            isCompact: true,
+                          ),
                         ),
                       ),
                     ],
@@ -147,20 +178,33 @@ class _NutritionViewState extends State<NutritionView> {
                   backgroundColor: colorScheme.primary,
                   foregroundColor: colorScheme.onPrimary,
                   icon: const Icon(Icons.add_rounded),
-                  label: const Text('Log Meal', style: TextStyle(fontWeight: FontWeight.w700)),
+                  label: const Text(
+                    'Log Meal',
+                    style: TextStyle(fontWeight: FontWeight.w700),
+                  ),
                 ),
         );
       },
     );
   }
 
-  List<Widget> _buildMealSlots(List<NutritionLogItem> items, ColorScheme colorScheme, {bool isCompact = false}) {
+  List<Widget> _buildMealSlots(
+    List<NutritionLogItem> items,
+    ColorScheme colorScheme, {
+    bool isCompact = false,
+  }) {
     const categories = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
 
     return categories.map((cat) {
       final slotItems = items.where((i) => i.mealType == cat).toList();
-      final slotCalories = slotItems.fold(0.0, (acc, item) => acc + item.calories);
-      final slotProtein = slotItems.fold(0.0, (acc, item) => acc + item.proteinG);
+      final slotCalories = slotItems.fold(
+        0.0,
+        (acc, item) => acc + item.calories,
+      );
+      final slotProtein = slotItems.fold(
+        0.0,
+        (acc, item) => acc + item.proteinG,
+      );
 
       return Card(
         color: colorScheme.surface,
@@ -190,13 +234,24 @@ class _NutritionViewState extends State<NutritionView> {
                       const SizedBox(width: 8),
                       Text(
                         '${slotCalories.toStringAsFixed(0)} kcal • ${slotProtein.toStringAsFixed(0)}g P',
-                        style: TextStyle(fontSize: 11, color: colorScheme.onSurfaceVariant),
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: colorScheme.onSurfaceVariant,
+                        ),
                       ),
                     ],
                   ),
                   IconButton(
-                    onPressed: () => QuickAddFoodDialog.show(context, _store, defaultMealSlot: cat),
-                    icon: Icon(Icons.add_rounded, size: isCompact ? 18 : 20, color: colorScheme.primary),
+                    onPressed: () => QuickAddFoodDialog.show(
+                      context,
+                      _store,
+                      defaultMealSlot: cat,
+                    ),
+                    icon: Icon(
+                      Icons.add_rounded,
+                      size: isCompact ? 18 : 20,
+                      color: colorScheme.primary,
+                    ),
                     padding: EdgeInsets.zero,
                     constraints: const BoxConstraints(),
                   ),
@@ -220,13 +275,19 @@ class _NutritionViewState extends State<NutritionView> {
                                   item.foodName,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(fontSize: 12, color: colorScheme.onSurface),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: colorScheme.onSurface,
+                                  ),
                                 ),
                                 Text(
                                   '${item.calories.toStringAsFixed(0)} kcal • ${item.proteinG.toStringAsFixed(0)}g P • ${item.carbsG.toStringAsFixed(0)}g C • ${item.fatG.toStringAsFixed(0)}g F',
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(fontSize: 10, color: colorScheme.onSurfaceVariant),
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    color: colorScheme.onSurfaceVariant,
+                                  ),
                                 ),
                               ],
                             ),
@@ -234,9 +295,16 @@ class _NutritionViewState extends State<NutritionView> {
                           IconButton(
                             onPressed: () {
                               _store.deleteFood(item.id);
-                              AppFeedback.showInfo(context, '${item.foodName} removed from log');
+                              AppFeedback.showInfo(
+                                context,
+                                '${item.foodName} removed from log',
+                              );
                             },
-                            icon: Icon(Icons.close_rounded, size: 15, color: colorScheme.onSurfaceVariant),
+                            icon: Icon(
+                              Icons.close_rounded,
+                              size: 15,
+                              color: colorScheme.onSurfaceVariant,
+                            ),
                             padding: EdgeInsets.zero,
                             constraints: const BoxConstraints(),
                           ),

@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:math';
+
 import 'package:dio/dio.dart';
+
 import '../database/app_database.dart';
 import 'network_monitor.dart';
 
@@ -8,7 +10,10 @@ class MockApiInterceptor extends Interceptor {
   final Random _random = Random();
 
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+  void onRequest(
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
     final monitor = NetworkMonitor.instance;
 
     // Apply simulated latency (650ms to 1100ms base or custom)
@@ -108,7 +113,7 @@ class MockApiInterceptor extends Interceptor {
             'limit': limit,
             'total': totalCount,
             'hasMore': (offset + limit) < totalCount,
-          }
+          },
         },
       );
     }
@@ -118,10 +123,7 @@ class MockApiInterceptor extends Interceptor {
       return Response(
         requestOptions: options,
         statusCode: 200,
-        data: {
-          'status': 'success',
-          'data': results,
-        },
+        data: {'status': 'success', 'data': results},
       );
     }
 
@@ -130,11 +132,14 @@ class MockApiInterceptor extends Interceptor {
       final isLiked = options.data['isLiked'] as bool;
       final countDelta = isLiked ? 1 : -1;
 
-      await db.rawUpdate('''
+      await db.rawUpdate(
+        '''
         UPDATE social_posts 
         SET likes_count = likes_count + ?, is_liked = ?
         WHERE id = ?
-      ''', [countDelta, isLiked ? 1 : 0, postId]);
+      ''',
+        [countDelta, isLiked ? 1 : 0, postId],
+      );
 
       return Response(
         requestOptions: options,
@@ -144,7 +149,8 @@ class MockApiInterceptor extends Interceptor {
     }
 
     if (path.contains('/api/v1/nutrition')) {
-      final dateStr = options.queryParameters['date'] as String? ??
+      final dateStr =
+          options.queryParameters['date'] as String? ??
           '${DateTime.now().year}-${DateTime.now().month.toString().padLeft(2, '0')}-${DateTime.now().day.toString().padLeft(2, '0')}';
       final results = await db.query(
         'nutrition_logs',
@@ -160,7 +166,8 @@ class MockApiInterceptor extends Interceptor {
     }
 
     if (path.contains('/api/v1/hydration')) {
-      final dateStr = options.queryParameters['date'] as String? ??
+      final dateStr =
+          options.queryParameters['date'] as String? ??
           '${DateTime.now().year}-${DateTime.now().month.toString().padLeft(2, '0')}-${DateTime.now().day.toString().padLeft(2, '0')}';
       final results = await db.query(
         'hydration_logs',
@@ -176,7 +183,10 @@ class MockApiInterceptor extends Interceptor {
     }
 
     if (path.contains('/api/v1/runs')) {
-      final results = await db.query('running_routes', orderBy: 'start_time DESC');
+      final results = await db.query(
+        'running_routes',
+        orderBy: 'start_time DESC',
+      );
       return Response(
         requestOptions: options,
         statusCode: 200,

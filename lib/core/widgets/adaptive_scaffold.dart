@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'offline_banner.dart';
 
 class AdaptiveScaffoldDestination {
@@ -33,7 +34,10 @@ class AdaptiveScaffold extends StatelessWidget {
     this.endDrawer,
   });
 
-  PreferredSizeWidget? _buildLandscapeAppBar(BuildContext context, PreferredSizeWidget? original) {
+  PreferredSizeWidget? _buildLandscapeAppBar(
+    BuildContext context,
+    PreferredSizeWidget? original,
+  ) {
     if (original == null) return null;
     if (original is AppBar) {
       return PreferredSize(
@@ -77,7 +81,9 @@ class AdaptiveScaffold extends StatelessWidget {
       builder: (context, orientation) {
         return LayoutBuilder(
           builder: (context, constraints) {
-            final isLandscape = orientation == Orientation.landscape || constraints.maxWidth > 720;
+            final isLandscape =
+                orientation == Orientation.landscape ||
+                constraints.maxWidth > 720;
             final safeBody = GestureDetector(
               onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
               behavior: HitTestBehavior.translucent,
@@ -104,21 +110,32 @@ class AdaptiveScaffold extends StatelessWidget {
                                 builder: (context, railConstraints) {
                                   return SingleChildScrollView(
                                     physics: const ClampingScrollPhysics(),
-                                    keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                                    keyboardDismissBehavior:
+                                        ScrollViewKeyboardDismissBehavior
+                                            .onDrag,
                                     child: ConstrainedBox(
-                                      constraints: BoxConstraints(minHeight: railConstraints.maxHeight),
+                                      constraints: BoxConstraints(
+                                        minHeight: railConstraints.maxHeight,
+                                      ),
                                       child: IntrinsicHeight(
                                         child: NavigationRail(
                                           minWidth: 56,
                                           selectedIndex: currentIndex,
-                                          onDestinationSelected: onNavigationIndexChanged,
-                                          labelType: NavigationRailLabelType.none,
+                                          onDestinationSelected:
+                                              onNavigationIndexChanged,
+                                          labelType:
+                                              NavigationRailLabelType.none,
                                           backgroundColor: colorScheme.surface,
-                                          indicatorColor: colorScheme.primary.withValues(alpha: 0.18),
+                                          indicatorColor: colorScheme.primary
+                                              .withValues(alpha: 0.18),
                                           destinations: destinations.map((d) {
                                             return NavigationRailDestination(
                                               icon: Icon(d.icon, size: 22),
-                                              selectedIcon: Icon(d.selectedIcon, size: 22, color: colorScheme.primary),
+                                              selectedIcon: Icon(
+                                                d.selectedIcon,
+                                                size: 22,
+                                                color: colorScheme.primary,
+                                              ),
                                               label: Text(d.label),
                                             );
                                           }).toList(),
@@ -129,7 +146,11 @@ class AdaptiveScaffold extends StatelessWidget {
                                 },
                               ),
                             ),
-                            VerticalDivider(width: 1, thickness: 1, color: colorScheme.outlineVariant),
+                            VerticalDivider(
+                              width: 1,
+                              thickness: 1,
+                              color: colorScheme.outlineVariant,
+                            ),
                             Expanded(child: safeBody),
                           ],
                         ),

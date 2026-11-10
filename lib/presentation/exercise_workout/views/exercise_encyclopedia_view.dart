@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+
 import '../../../core/di/injection.dart';
 import '../../../core/theme/theme_store.dart';
 import '../../../core/widgets/error_retry_view.dart';
@@ -13,7 +14,8 @@ class ExerciseEncyclopediaView extends StatefulWidget {
   const ExerciseEncyclopediaView({super.key});
 
   @override
-  State<ExerciseEncyclopediaView> createState() => _ExerciseEncyclopediaViewState();
+  State<ExerciseEncyclopediaView> createState() =>
+      _ExerciseEncyclopediaViewState();
 }
 
 class _ExerciseEncyclopediaViewState extends State<ExerciseEncyclopediaView> {
@@ -41,7 +43,8 @@ class _ExerciseEncyclopediaViewState extends State<ExerciseEncyclopediaView> {
         final _ = _themeStore.themeMode;
         final theme = Theme.of(context);
         final colorScheme = theme.colorScheme;
-        final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+        final isLandscape =
+            MediaQuery.of(context).orientation == Orientation.landscape;
 
         return DefaultTabController(
           length: 2,
@@ -50,7 +53,10 @@ class _ExerciseEncyclopediaViewState extends State<ExerciseEncyclopediaView> {
               toolbarHeight: isLandscape ? 36 : null,
               title: Text(
                 'Exercise Encyclopedia & Programs',
-                style: TextStyle(fontSize: isLandscape ? 13 : 16, fontWeight: FontWeight.w700),
+                style: TextStyle(
+                  fontSize: isLandscape ? 13 : 16,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
               bottom: TabBar(
                 isScrollable: isLandscape,
@@ -67,10 +73,16 @@ class _ExerciseEncyclopediaViewState extends State<ExerciseEncyclopediaView> {
                 IconButton(
                   onPressed: () {
                     Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => const WorkoutLoggerView()),
+                      MaterialPageRoute(
+                        builder: (_) => const WorkoutLoggerView(),
+                      ),
                     );
                   },
-                  icon: Icon(Icons.fitness_center_rounded, color: colorScheme.primary, size: isLandscape ? 18 : 22),
+                  icon: Icon(
+                    Icons.fitness_center_rounded,
+                    color: colorScheme.primary,
+                    size: isLandscape ? 18 : 22,
+                  ),
                   tooltip: 'Launch Active Logger',
                 ),
               ],
@@ -86,7 +98,9 @@ class _ExerciseEncyclopediaViewState extends State<ExerciseEncyclopediaView> {
                     heroTag: 'fab_exercise_encyclopedia_small',
                     onPressed: () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => const WorkoutLoggerView()),
+                        MaterialPageRoute(
+                          builder: (_) => const WorkoutLoggerView(),
+                        ),
                       );
                     },
                     backgroundColor: colorScheme.primary,
@@ -98,13 +112,18 @@ class _ExerciseEncyclopediaViewState extends State<ExerciseEncyclopediaView> {
                     heroTag: 'fab_exercise_encyclopedia',
                     onPressed: () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => const WorkoutLoggerView()),
+                        MaterialPageRoute(
+                          builder: (_) => const WorkoutLoggerView(),
+                        ),
                       );
                     },
                     backgroundColor: colorScheme.primary,
                     foregroundColor: colorScheme.onPrimary,
                     icon: const Icon(Icons.play_arrow_rounded),
-                    label: const Text('Start Workout', style: TextStyle(fontWeight: FontWeight.w700)),
+                    label: const Text(
+                      'Start Workout',
+                      style: TextStyle(fontWeight: FontWeight.w700),
+                    ),
                   ),
           ),
         );
@@ -145,8 +164,14 @@ class _ExerciseEncyclopediaViewState extends State<ExerciseEncyclopediaView> {
                       children: _store.bodyParts.map((part) {
                         final isSelected = _store.selectedBodyPart == part;
                         return FilterChip(
-                          label: Text(part, style: const TextStyle(fontSize: 11)),
-                          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
+                          label: Text(
+                            part,
+                            style: const TextStyle(fontSize: 11),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 4,
+                            vertical: 0,
+                          ),
                           selected: isSelected,
                           onSelected: (_) => _store.setBodyPart(part),
                         );
@@ -172,7 +197,10 @@ class _ExerciseEncyclopediaViewState extends State<ExerciseEncyclopediaView> {
                         final isSelected = _store.selectedEquipment == eq;
                         return ChoiceChip(
                           label: Text(eq, style: const TextStyle(fontSize: 11)),
-                          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 4,
+                            vertical: 0,
+                          ),
                           selected: isSelected,
                           onSelected: (_) => _store.setEquipment(eq),
                         );
@@ -183,14 +211,21 @@ class _ExerciseEncyclopediaViewState extends State<ExerciseEncyclopediaView> {
               ),
             ),
           ),
-          VerticalDivider(width: 1, thickness: 1, color: colorScheme.outlineVariant),
+          VerticalDivider(
+            width: 1,
+            thickness: 1,
+            color: colorScheme.outlineVariant,
+          ),
           // Right Pane (70% width): Responsive GridView with search pinned at top
           Expanded(
             flex: 70,
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 6,
+                  ),
                   child: SizedBox(
                     height: 38,
                     child: TextField(
@@ -199,8 +234,15 @@ class _ExerciseEncyclopediaViewState extends State<ExerciseEncyclopediaView> {
                       decoration: InputDecoration(
                         hintText: 'Search 60+ exercises...',
                         isDense: true,
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                        prefixIcon: Icon(Icons.search_rounded, size: 18, color: colorScheme.onSurfaceVariant),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 8,
+                        ),
+                        prefixIcon: Icon(
+                          Icons.search_rounded,
+                          size: 18,
+                          color: colorScheme.onSurfaceVariant,
+                        ),
                         suffixIcon: _searchController.text.isNotEmpty
                             ? IconButton(
                                 icon: const Icon(Icons.clear, size: 16),
@@ -223,7 +265,10 @@ class _ExerciseEncyclopediaViewState extends State<ExerciseEncyclopediaView> {
                           itemCount: 4,
                           itemBuilder: (_, __) => const Padding(
                             padding: EdgeInsets.only(bottom: 8),
-                            child: ShimmerLoader(width: double.infinity, height: 70),
+                            child: ShimmerLoader(
+                              width: double.infinity,
+                              height: 70,
+                            ),
                           ),
                         );
                       }
@@ -242,20 +287,27 @@ class _ExerciseEncyclopediaViewState extends State<ExerciseEncyclopediaView> {
                         return Center(
                           child: Text(
                             'No exercises found matching criteria.',
-                            style: TextStyle(color: colorScheme.onSurfaceVariant),
+                            style: TextStyle(
+                              color: colorScheme.onSurfaceVariant,
+                            ),
                           ),
                         );
                       }
 
                       return GridView.builder(
-                        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 8,
-                          mainAxisSpacing: 8,
-                          mainAxisExtent: 135,
+                        keyboardDismissBehavior:
+                            ScrollViewKeyboardDismissBehavior.onDrag,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 4,
                         ),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 8,
+                              mainAxisSpacing: 8,
+                              mainAxisExtent: 135,
+                            ),
                         itemCount: exercises.length,
                         itemBuilder: (context, index) {
                           final ex = exercises[index];
@@ -264,7 +316,10 @@ class _ExerciseEncyclopediaViewState extends State<ExerciseEncyclopediaView> {
                             isCompact: true,
                             onTap: () {
                               Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => ExerciseDetailView(exercise: ex)),
+                                MaterialPageRoute(
+                                  builder: (_) =>
+                                      ExerciseDetailView(exercise: ex),
+                                ),
                               );
                             },
                           );
@@ -289,7 +344,10 @@ class _ExerciseEncyclopediaViewState extends State<ExerciseEncyclopediaView> {
             onChanged: _store.onSearchChanged,
             decoration: InputDecoration(
               hintText: 'Search 60+ exercises or target muscles...',
-              prefixIcon: Icon(Icons.search_rounded, color: colorScheme.onSurfaceVariant),
+              prefixIcon: Icon(
+                Icons.search_rounded,
+                color: colorScheme.onSurfaceVariant,
+              ),
               suffixIcon: _searchController.text.isNotEmpty
                   ? IconButton(
                       icon: const Icon(Icons.clear, size: 18),
@@ -384,7 +442,8 @@ class _ExerciseEncyclopediaViewState extends State<ExerciseEncyclopediaView> {
               }
 
               return ListView.builder(
-                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
                 padding: const EdgeInsets.all(16),
                 itemCount: exercises.length,
                 itemBuilder: (context, index) {
@@ -393,7 +452,9 @@ class _ExerciseEncyclopediaViewState extends State<ExerciseEncyclopediaView> {
                     exercise: ex,
                     onTap: () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => ExerciseDetailView(exercise: ex)),
+                        MaterialPageRoute(
+                          builder: (_) => ExerciseDetailView(exercise: ex),
+                        ),
                       );
                     },
                   );
@@ -415,13 +476,18 @@ class _ExerciseEncyclopediaViewState extends State<ExerciseEncyclopediaView> {
         final plans = _store.workoutPlans;
         if (plans.isEmpty) {
           return Center(
-            child: Text('No workout plans loaded.', style: TextStyle(color: colorScheme.onSurfaceVariant)),
+            child: Text(
+              'No workout plans loaded.',
+              style: TextStyle(color: colorScheme.onSurfaceVariant),
+            ),
           );
         }
 
         Widget buildPlanCard(dynamic plan) {
           return Card(
-            margin: isLandscape ? EdgeInsets.zero : const EdgeInsets.only(bottom: 16),
+            margin: isLandscape
+                ? EdgeInsets.zero
+                : const EdgeInsets.only(bottom: 16),
             child: Padding(
               padding: EdgeInsets.all(isLandscape ? 12 : 18),
               child: SingleChildScrollView(
@@ -445,7 +511,10 @@ class _ExerciseEncyclopediaViewState extends State<ExerciseEncyclopediaView> {
                           ),
                         ),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 6,
+                            vertical: 2,
+                          ),
                           decoration: BoxDecoration(
                             color: colorScheme.primary.withValues(alpha: 0.15),
                             borderRadius: BorderRadius.circular(8),
@@ -466,7 +535,11 @@ class _ExerciseEncyclopediaViewState extends State<ExerciseEncyclopediaView> {
                       plan.description,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontSize: 12, color: colorScheme.onSurfaceVariant, height: 1.3),
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: colorScheme.onSurfaceVariant,
+                        height: 1.3,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Divider(color: colorScheme.outlineVariant),
@@ -488,7 +561,10 @@ class _ExerciseEncyclopediaViewState extends State<ExerciseEncyclopediaView> {
                               ),
                               Text(
                                 '${dayMap['focus']} (${dayMap['exerciseCount']} exercises)',
-                                style: TextStyle(fontSize: 11, color: colorScheme.secondary),
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  color: colorScheme.secondary,
+                                ),
                               ),
                             ],
                           ),

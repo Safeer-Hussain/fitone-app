@@ -24,11 +24,17 @@ class _MockWorkoutRepository implements WorkoutRepository {
   ];
 
   @override
-  Future<List<Exercise>> getExercises({String? bodyPart, String? equipment, String? search, int page = 1, int limit = 60}) async =>
-      exercises;
+  Future<List<Exercise>> getExercises({
+    String? bodyPart,
+    String? equipment,
+    String? search,
+    int page = 1,
+    int limit = 60,
+  }) async => exercises;
 
   @override
-  Future<Exercise?> getExerciseById(String id) async => exercises.where((e) => e.id == id).firstOrNull;
+  Future<Exercise?> getExerciseById(String id) async =>
+      exercises.where((e) => e.id == id).firstOrNull;
 
   @override
   Future<List<WorkoutPlan>> getWorkoutPlans() async => [];
@@ -48,8 +54,12 @@ void main() {
     await sl.reset();
     sl.registerLazySingleton<ThemeStore>(() => ThemeStore());
     sl.registerLazySingleton<WorkoutRepository>(() => _MockWorkoutRepository());
-    sl.registerLazySingleton<WorkoutLoggerStore>(() => WorkoutLoggerStore(workoutRepository: sl<WorkoutRepository>()));
-    sl.registerLazySingleton<ExerciseStore>(() => ExerciseStore(workoutRepository: sl<WorkoutRepository>()));
+    sl.registerLazySingleton<WorkoutLoggerStore>(
+      () => WorkoutLoggerStore(workoutRepository: sl<WorkoutRepository>()),
+    );
+    sl.registerLazySingleton<ExerciseStore>(
+      () => ExerciseStore(workoutRepository: sl<WorkoutRepository>()),
+    );
   });
 
   tearDown(() async {
@@ -73,85 +83,84 @@ void main() {
   }
 
   group('BarbellPlateCalculatorSheet Widget Tests', () {
-    testWidgets('Renders sheet with 100kg default load and visual barbell plates', (tester) async {
+    testWidgets(
+      'Renders sheet with 100kg default load and visual barbell plates',
+      (tester) async {
+        setupPortrait(tester);
+        await tester.pumpWidget(
+          createTestWidget(
+            const BarbellPlateCalculatorSheet(initialWeight: 100.0, unit: 'kg'),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.text('Plate Loading Calculator'), findsOneWidget);
+        expect(find.text('TARGET LOAD'), findsOneWidget);
+        expect(find.text('100.0'), findsOneWidget);
+        expect(find.text('KG'), findsWidgets);
+        expect(find.text('40.00 kg per side'), findsOneWidget);
+        expect(find.text('2 plates total'), findsOneWidget);
+        expect(find.text('25 kg × 1'), findsOneWidget);
+        expect(find.text('15 kg × 1'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'Tapping quick step adjustment increases weight and updates plates',
+      (tester) async {
+        setupPortrait(tester);
+        await tester.pumpWidget(
+          createTestWidget(
+            const BarbellPlateCalculatorSheet(initialWeight: 100.0, unit: 'kg'),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // Find +20 quick adjustment chip
+        final plus20Chip = find.text('+20');
+        expect(plus20Chip, findsOneWidget);
+        await tester.ensureVisible(plus20Chip);
+        await tester.tap(plus20Chip);
+        await tester.pumpAndSettle();
+
+        // Target should be 120.0 kg
+        expect(find.text('120.0'), findsOneWidget);
+        expect(find.text('50.00 kg per side'), findsOneWidget);
+        expect(find.text('25 kg × 2'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'Selecting benchmark preset 140 kg updates configuration immediately',
+      (tester) async {
+        setupPortrait(tester);
+        await tester.pumpWidget(
+          createTestWidget(
+            const BarbellPlateCalculatorSheet(initialWeight: 100.0, unit: 'kg'),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        final preset140 = find.text('140 kg');
+        expect(preset140, findsOneWidget);
+        await tester.ensureVisible(preset140);
+        await tester.tap(preset140);
+        await tester.pumpAndSettle();
+
+        expect(find.text('140.0'), findsOneWidget);
+        expect(find.text('60.00 kg per side'), findsOneWidget);
+        expect(find.text('25 kg × 2'), findsOneWidget);
+        expect(find.text('10 kg × 1'), findsOneWidget);
+      },
+    );
+
+    testWidgets('Switching unit to LBS recalculates in imperial pounds', (
+      tester,
+    ) async {
       setupPortrait(tester);
       await tester.pumpWidget(
         createTestWidget(
-          const BarbellPlateCalculatorSheet(
-            initialWeight: 100.0,
-            unit: 'kg',
-          ),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      expect(find.text('Plate Loading Calculator'), findsOneWidget);
-      expect(find.text('TARGET LOAD'), findsOneWidget);
-      expect(find.text('100.0'), findsOneWidget);
-      expect(find.text('KG'), findsWidgets);
-      expect(find.text('40.00 kg per side'), findsOneWidget);
-      expect(find.text('2 plates total'), findsOneWidget);
-      expect(find.text('25 kg × 1'), findsOneWidget);
-      expect(find.text('15 kg × 1'), findsOneWidget);
-    });
-
-    testWidgets('Tapping quick step adjustment increases weight and updates plates', (tester) async {
-      setupPortrait(tester);
-      await tester.pumpWidget(
-        createTestWidget(
-          const BarbellPlateCalculatorSheet(
-            initialWeight: 100.0,
-            unit: 'kg',
-          ),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      // Find +20 quick adjustment chip
-      final plus20Chip = find.text('+20');
-      expect(plus20Chip, findsOneWidget);
-      await tester.ensureVisible(plus20Chip);
-      await tester.tap(plus20Chip);
-      await tester.pumpAndSettle();
-
-      // Target should be 120.0 kg
-      expect(find.text('120.0'), findsOneWidget);
-      expect(find.text('50.00 kg per side'), findsOneWidget);
-      expect(find.text('25 kg × 2'), findsOneWidget);
-    });
-
-    testWidgets('Selecting benchmark preset 140 kg updates configuration immediately', (tester) async {
-      setupPortrait(tester);
-      await tester.pumpWidget(
-        createTestWidget(
-          const BarbellPlateCalculatorSheet(
-            initialWeight: 100.0,
-            unit: 'kg',
-          ),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      final preset140 = find.text('140 kg');
-      expect(preset140, findsOneWidget);
-      await tester.ensureVisible(preset140);
-      await tester.tap(preset140);
-      await tester.pumpAndSettle();
-
-      expect(find.text('140.0'), findsOneWidget);
-      expect(find.text('60.00 kg per side'), findsOneWidget);
-      expect(find.text('25 kg × 2'), findsOneWidget);
-      expect(find.text('10 kg × 1'), findsOneWidget);
-    });
-
-    testWidgets('Switching unit to LBS recalculates in imperial pounds', (tester) async {
-      setupPortrait(tester);
-      await tester.pumpWidget(
-        createTestWidget(
-          const BarbellPlateCalculatorSheet(
-            initialWeight: 100.0,
-            unit: 'kg',
-          ),
+          const BarbellPlateCalculatorSheet(initialWeight: 100.0, unit: 'kg'),
         ),
       );
       await tester.pumpAndSettle();
@@ -165,22 +174,27 @@ void main() {
       expect(find.text('45lb Olympic'), findsOneWidget);
     });
 
-    testWidgets('Displays unachievable remainder banner on odd fractional load', (tester) async {
-      setupPortrait(tester);
-      await tester.pumpWidget(
-        createTestWidget(
-          const BarbellPlateCalculatorSheet(
-            initialWeight: 61.0,
-            unit: 'kg',
+    testWidgets(
+      'Displays unachievable remainder banner on odd fractional load',
+      (tester) async {
+        setupPortrait(tester);
+        await tester.pumpWidget(
+          createTestWidget(
+            const BarbellPlateCalculatorSheet(initialWeight: 61.0, unit: 'kg'),
           ),
-        ),
-      );
-      await tester.pumpAndSettle();
+        );
+        await tester.pumpAndSettle();
 
-      expect(find.textContaining('Unachievable Remainder: 1.00 kg'), findsOneWidget);
-    });
+        expect(
+          find.textContaining('Unachievable Remainder: 1.00 kg'),
+          findsOneWidget,
+        );
+      },
+    );
 
-    testWidgets('Apply Weight button passes calculated load back to callback', (tester) async {
+    testWidgets('Apply Weight button passes calculated load back to callback', (
+      tester,
+    ) async {
       setupPortrait(tester);
       double? appliedWeight;
 
@@ -214,41 +228,53 @@ void main() {
       expect(appliedWeight, 140.0);
     });
 
-    testWidgets('WorkoutLoggerView opens BarbellPlateCalculatorSheet via AppBar action', (tester) async {
-      setupPortrait(tester);
-      await tester.pumpWidget(createTestWidget(const WorkoutLoggerView()));
-      await tester.pumpAndSettle();
+    testWidgets(
+      'WorkoutLoggerView opens BarbellPlateCalculatorSheet via AppBar action',
+      (tester) async {
+        setupPortrait(tester);
+        await tester.pumpWidget(createTestWidget(const WorkoutLoggerView()));
+        await tester.pumpAndSettle();
 
-      final plateBtn = find.byKey(const ValueKey('plate_calculator_appbar_button'));
-      expect(plateBtn, findsOneWidget);
-      await tester.tap(plateBtn);
-      await tester.pumpAndSettle();
+        final plateBtn = find.byKey(
+          const ValueKey('plate_calculator_appbar_button'),
+        );
+        expect(plateBtn, findsOneWidget);
+        await tester.tap(plateBtn);
+        await tester.pumpAndSettle();
 
-      expect(find.text('Plate Loading Calculator'), findsOneWidget);
-    });
+        expect(find.text('Plate Loading Calculator'), findsOneWidget);
+      },
+    );
 
-    testWidgets('ExerciseDetailView opens BarbellPlateCalculatorSheet via button', (tester) async {
-      setupPortrait(tester);
-      const exercise = Exercise(
-        id: 'ex_test_01',
-        name: 'Barbell Back Squat',
-        bodyPart: 'Legs',
-        equipment: 'Barbell',
-        targetMuscles: 'Quadriceps, Glutes',
-        instructions: 'Descend to parallel keeping torso upright.',
-        difficulty: 'Advanced',
-      );
+    testWidgets(
+      'ExerciseDetailView opens BarbellPlateCalculatorSheet via button',
+      (tester) async {
+        setupPortrait(tester);
+        const exercise = Exercise(
+          id: 'ex_test_01',
+          name: 'Barbell Back Squat',
+          bodyPart: 'Legs',
+          equipment: 'Barbell',
+          targetMuscles: 'Quadriceps, Glutes',
+          instructions: 'Descend to parallel keeping torso upright.',
+          difficulty: 'Advanced',
+        );
 
-      await tester.pumpWidget(createTestWidget(const ExerciseDetailView(exercise: exercise)));
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(
+          createTestWidget(const ExerciseDetailView(exercise: exercise)),
+        );
+        await tester.pumpAndSettle();
 
-      final calcBtn = find.byKey(const ValueKey('open_plate_calculator_detail_button'));
-      expect(calcBtn, findsOneWidget);
-      await tester.ensureVisible(calcBtn);
-      await tester.tap(calcBtn);
-      await tester.pumpAndSettle();
+        final calcBtn = find.byKey(
+          const ValueKey('open_plate_calculator_detail_button'),
+        );
+        expect(calcBtn, findsOneWidget);
+        await tester.ensureVisible(calcBtn);
+        await tester.tap(calcBtn);
+        await tester.pumpAndSettle();
 
-      expect(find.text('Plate Loading Calculator'), findsOneWidget);
-    });
+        expect(find.text('Plate Loading Calculator'), findsOneWidget);
+      },
+    );
   });
 }

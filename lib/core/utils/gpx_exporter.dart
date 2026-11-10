@@ -1,7 +1,9 @@
 import 'dart:io';
+
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+
 import '../../domain/entities/run_record.dart';
 
 class GpxExporter {
@@ -57,18 +59,26 @@ class GpxExporter {
       final lonStr = coord.lng.toStringAsFixed(6);
 
       // Elevation calculation: coordinate elevation or interpolated
-      final ele = coord.elevation ??
-          (215.0 + (totalCoords > 1 ? (i / (totalCoords - 1)) * record.elevationGainM : 0.0));
+      final ele =
+          coord.elevation ??
+          (215.0 +
+              (totalCoords > 1
+                  ? (i / (totalCoords - 1)) * record.elevationGainM
+                  : 0.0));
 
       // Timestamp calculation: coordinate timestamp or distributed across duration
-      final timeUtc = coord.timestamp?.toUtc() ??
-          record.startTime.add(
-            Duration(
-              seconds: totalCoords > 1
-                  ? ((i / (totalCoords - 1)) * record.durationSeconds).round()
-                  : 0,
-            ),
-          ).toUtc();
+      final timeUtc =
+          coord.timestamp?.toUtc() ??
+          record.startTime
+              .add(
+                Duration(
+                  seconds: totalCoords > 1
+                      ? ((i / (totalCoords - 1)) * record.durationSeconds)
+                            .round()
+                      : 0,
+                ),
+              )
+              .toUtc();
       final timeStr = timeUtc.toIso8601String();
 
       // Heart rate telemetry
@@ -106,7 +116,10 @@ class GpxExporter {
     return 'fitone_${cleanTitle.isNotEmpty ? cleanTitle : 'run'}_$dateStr.gpx';
   }
 
-  static Future<File> writeGpxToFile(RunRecord record, {Directory? directory}) async {
+  static Future<File> writeGpxToFile(
+    RunRecord record, {
+    Directory? directory,
+  }) async {
     Directory targetDir;
     if (directory != null) {
       targetDir = directory;
@@ -114,8 +127,9 @@ class GpxExporter {
       targetDir = overrideExportDirectory!;
     } else {
       try {
-        targetDir = await getApplicationDocumentsDirectory()
-            .timeout(const Duration(milliseconds: 300));
+        targetDir = await getApplicationDocumentsDirectory().timeout(
+          const Duration(milliseconds: 300),
+        );
       } catch (_) {
         targetDir = Directory.systemTemp;
       }

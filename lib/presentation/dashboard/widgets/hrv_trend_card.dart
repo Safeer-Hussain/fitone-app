@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+
 import '../../../core/utils/app_feedback.dart';
 
 class HrvTrendCard extends StatelessWidget {
@@ -30,112 +31,125 @@ class HrvTrendCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         onTap: () => _showHrvBreakdownSheet(context, colorScheme),
         child: Padding(
-        padding: EdgeInsets.all(isCompact ? 12 : 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '7-DAY HRV TRAJECTORY',
-                  style: TextStyle(
-                    fontSize: isCompact ? 10 : 12,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 0.8,
-                    color: colorScheme.onSurfaceVariant,
-                  ),
-                ),
-                Text(
-                  'Mean 64.4 ms',
-                  style: TextStyle(
-                    fontSize: isCompact ? 10 : 12,
-                    fontWeight: FontWeight.w700,
-                    color: cyanAccent,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: isCompact ? 8 : 18),
-            SizedBox(
-              height: isCompact ? 85 : 120,
-              child: LineChart(
-                LineChartData(
-                  minY: 45,
-                  maxY: 80,
-                  gridData: FlGridData(
-                    show: true,
-                    drawVerticalLine: false,
-                    horizontalInterval: 10,
-                    getDrawingHorizontalLine: (value) => FlLine(
-                      color: colorScheme.outlineVariant,
-                      strokeWidth: 0.8,
+          padding: EdgeInsets.all(isCompact ? 12 : 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '7-DAY HRV TRAJECTORY',
+                    style: TextStyle(
+                      fontSize: isCompact ? 10 : 12,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.8,
+                      color: colorScheme.onSurfaceVariant,
                     ),
                   ),
-                  titlesData: FlTitlesData(
-                    rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    bottomTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        showTitles: true,
-                        reservedSize: 20,
-                        interval: 1,
-                        getTitlesWidget: (value, meta) {
-                          final idx = value.toInt();
-                          if (idx >= 0 && idx < days.length) {
-                            return Text(
-                              days[idx],
-                              style: TextStyle(color: colorScheme.onSurfaceVariant, fontSize: 10),
-                            );
-                          }
-                          return const SizedBox.shrink();
-                        },
-                      ),
-                    ),
-                  ),
-                  borderData: FlBorderData(show: false),
-                  lineBarsData: [
-                    LineChartBarData(
-                      spots: hrvSpots,
-                      isCurved: true,
-                      curveSmoothness: 0.3,
+                  Text(
+                    'Mean 64.4 ms',
+                    style: TextStyle(
+                      fontSize: isCompact ? 10 : 12,
+                      fontWeight: FontWeight.w700,
                       color: cyanAccent,
-                      barWidth: 2.5,
-                      dotData: FlDotData(
-                        show: true,
-                        getDotPainter: (spot, percent, barData, index) => FlDotCirclePainter(
-                          radius: isCompact ? 2.5 : 3.5,
-                          color: cyanAccent,
-                          strokeWidth: 1.5,
-                          strokeColor: colorScheme.surface,
-                        ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: isCompact ? 8 : 18),
+              SizedBox(
+                height: isCompact ? 85 : 120,
+                child: LineChart(
+                  LineChartData(
+                    minY: 45,
+                    maxY: 80,
+                    gridData: FlGridData(
+                      show: true,
+                      drawVerticalLine: false,
+                      horizontalInterval: 10,
+                      getDrawingHorizontalLine: (value) => FlLine(
+                        color: colorScheme.outlineVariant,
+                        strokeWidth: 0.8,
                       ),
-                      belowBarData: BarAreaData(
-                        show: true,
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            cyanAccent.withValues(alpha: 0.18),
-                            cyanAccent.withValues(alpha: 0.0),
-                          ],
+                    ),
+                    titlesData: FlTitlesData(
+                      rightTitles: const AxisTitles(
+                        sideTitles: SideTitles(showTitles: false),
+                      ),
+                      topTitles: const AxisTitles(
+                        sideTitles: SideTitles(showTitles: false),
+                      ),
+                      leftTitles: const AxisTitles(
+                        sideTitles: SideTitles(showTitles: false),
+                      ),
+                      bottomTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          showTitles: true,
+                          reservedSize: 20,
+                          interval: 1,
+                          getTitlesWidget: (value, meta) {
+                            final idx = value.toInt();
+                            if (idx >= 0 && idx < days.length) {
+                              return Text(
+                                days[idx],
+                                style: TextStyle(
+                                  color: colorScheme.onSurfaceVariant,
+                                  fontSize: 10,
+                                ),
+                              );
+                            }
+                            return const SizedBox.shrink();
+                          },
                         ),
                       ),
                     ),
-                  ],
+                    borderData: FlBorderData(show: false),
+                    lineBarsData: [
+                      LineChartBarData(
+                        spots: hrvSpots,
+                        isCurved: true,
+                        curveSmoothness: 0.3,
+                        color: cyanAccent,
+                        barWidth: 2.5,
+                        dotData: FlDotData(
+                          show: true,
+                          getDotPainter: (spot, percent, barData, index) =>
+                              FlDotCirclePainter(
+                                radius: isCompact ? 2.5 : 3.5,
+                                color: cyanAccent,
+                                strokeWidth: 1.5,
+                                strokeColor: colorScheme.surface,
+                              ),
+                        ),
+                        belowBarData: BarAreaData(
+                          show: true,
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              cyanAccent.withValues(alpha: 0.18),
+                              cyanAccent.withValues(alpha: 0.0),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
       ),
     );
   }
 
   void _showHrvBreakdownSheet(BuildContext context, ColorScheme colorScheme) {
-    AppFeedback.showInfo(context, 'HRV Autonomic Baseline: 64.4 ms RMSSD (+4.2 ms 7-day trend)');
+    AppFeedback.showInfo(
+      context,
+      'HRV Autonomic Baseline: 64.4 ms RMSSD (+4.2 ms 7-day trend)',
+    );
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -168,11 +182,19 @@ class HrvTrendCard extends StatelessWidget {
                   const SizedBox(height: 16),
                   Row(
                     children: [
-                      Icon(Icons.graphic_eq_rounded, color: colorScheme.secondary, size: 22),
+                      Icon(
+                        Icons.graphic_eq_rounded,
+                        color: colorScheme.secondary,
+                        size: 22,
+                      ),
                       const SizedBox(width: 8),
                       Text(
                         'Autonomic HRV Analytics',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: colorScheme.onSurface),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: colorScheme.onSurface,
+                        ),
                       ),
                     ],
                   ),
@@ -186,15 +208,35 @@ class HrvTrendCard extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
-                        _buildHrvRow('7-Day Mean RMSSD', '64.4 ms', colorScheme),
+                        _buildHrvRow(
+                          '7-Day Mean RMSSD',
+                          '64.4 ms',
+                          colorScheme,
+                        ),
                         Divider(color: colorScheme.outlineVariant, height: 16),
-                        _buildHrvRow('SDNN Total Variability', '78.2 ms', colorScheme),
+                        _buildHrvRow(
+                          'SDNN Total Variability',
+                          '78.2 ms',
+                          colorScheme,
+                        ),
                         Divider(color: colorScheme.outlineVariant, height: 16),
-                        _buildHrvRow('Autonomic Balance', 'Parasympathetic Dominant (Recovery)', colorScheme),
+                        _buildHrvRow(
+                          'Autonomic Balance',
+                          'Parasympathetic Dominant (Recovery)',
+                          colorScheme,
+                        ),
                         Divider(color: colorScheme.outlineVariant, height: 16),
-                        _buildHrvRow('Weekly Trajectory', '+4.2 ms vs previous 14d rolling mean', colorScheme),
+                        _buildHrvRow(
+                          'Weekly Trajectory',
+                          '+4.2 ms vs previous 14d rolling mean',
+                          colorScheme,
+                        ),
                         Divider(color: colorScheme.outlineVariant, height: 16),
-                        _buildHrvRow('Stress Response Index', 'Low physiological sympathetic tone', colorScheme),
+                        _buildHrvRow(
+                          'Stress Response Index',
+                          'Low physiological sympathetic tone',
+                          colorScheme,
+                        ),
                       ],
                     ),
                   ),
@@ -223,9 +265,21 @@ class HrvTrendCard extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Expanded(child: Text(label, style: TextStyle(fontSize: 12, color: colorScheme.onSurfaceVariant))),
+        Expanded(
+          child: Text(
+            label,
+            style: TextStyle(fontSize: 12, color: colorScheme.onSurfaceVariant),
+          ),
+        ),
         const SizedBox(width: 8),
-        Text(value, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: colorScheme.onSurface)),
+        Text(
+          value,
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w700,
+            color: colorScheme.onSurface,
+          ),
+        ),
       ],
     );
   }

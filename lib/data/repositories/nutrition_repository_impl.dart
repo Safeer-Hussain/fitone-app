@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:sqflite/sqflite.dart';
+
 import '../../core/database/app_database.dart';
 import '../../domain/entities/nutrition_day.dart';
 import '../../domain/repositories/nutrition_repository.dart';
@@ -39,7 +40,11 @@ class NutritionRepositoryImpl implements NutritionRepository {
   @override
   Future<void> addFoodEntry(NutritionLogItem item) async {
     final db = await AppDatabase.instance.database;
-    await db.insert('nutrition_logs', item.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+    await db.insert(
+      'nutrition_logs',
+      item.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
   }
 
   @override
@@ -51,12 +56,20 @@ class NutritionRepositoryImpl implements NutritionRepository {
   @override
   Future<void> logHydration(HydrationLogItem item) async {
     final db = await AppDatabase.instance.database;
-    await db.insert('hydration_logs', item.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+    await db.insert(
+      'hydration_logs',
+      item.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
   }
 
   @override
   Future<void> resetDayHydration(String dateStr) async {
     final db = await AppDatabase.instance.database;
-    await db.delete('hydration_logs', where: 'date_str = ?', whereArgs: [dateStr]);
+    await db.delete(
+      'hydration_logs',
+      where: 'date_str = ?',
+      whereArgs: [dateStr],
+    );
   }
 }

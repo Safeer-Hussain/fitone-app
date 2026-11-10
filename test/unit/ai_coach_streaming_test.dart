@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:fitone/core/di/injection.dart';
 import 'package:fitone/core/theme/theme_store.dart';
 import 'package:fitone/domain/repositories/ai_coach_repository.dart';
@@ -62,7 +63,10 @@ void main() {
       expect(store.isStreaming, isFalse);
       expect(store.activeReasoning, isNull);
       expect(store.messages.last.isStreaming, isFalse);
-      expect(store.messages.last.text, contains('Based on your HRV telemetry, prioritize recovery.'));
+      expect(
+        store.messages.last.text,
+        contains('Based on your HRV telemetry, prioritize recovery.'),
+      );
     });
 
     test('AiCoachStore guarantees isGenerating resets to false even on stream exception', () async {
@@ -81,40 +85,45 @@ void main() {
       expect(store.activeReasoning, isNull);
     });
 
-    testWidgets('AiCoachView displays streaming indicator and dismisses on completion', (tester) async {
-      if (!sl.isRegistered<ThemeStore>()) {
-        sl.registerSingleton<ThemeStore>(ThemeStore());
-      }
-      if (!sl.isRegistered<AiCoachStore>()) {
-        sl.registerSingleton<AiCoachStore>(store);
-      }
+    testWidgets(
+      'AiCoachView displays streaming indicator and dismisses on completion',
+      (tester) async {
+        if (!sl.isRegistered<ThemeStore>()) {
+          sl.registerSingleton<ThemeStore>(ThemeStore());
+        }
+        if (!sl.isRegistered<AiCoachStore>()) {
+          sl.registerSingleton<AiCoachStore>(store);
+        }
 
-      fakeRepo.streamCompleter = Completer<void>();
+        fakeRepo.streamCompleter = Completer<void>();
 
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: AiCoachView(),
-        ),
-      );
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(const MaterialApp(home: AiCoachView()));
+        await tester.pumpAndSettle();
 
-      // Enter prompt and send
-      await tester.enterText(find.byType(TextField), 'Test recovery advice');
-      await tester.tap(find.byIcon(Icons.arrow_upward_rounded));
-      await tester.pump();
+        // Enter prompt and send
+        await tester.enterText(find.byType(TextField), 'Test recovery advice');
+        await tester.tap(find.byIcon(Icons.arrow_upward_rounded));
+        await tester.pump();
 
-      // Streaming spinner must be visible while isGenerating is true
-      expect(find.byKey(const ValueKey('streaming_indicator_spinner')), findsOneWidget);
-      expect(find.text('Analyzing telemetry context...'), findsWidgets);
+        // Streaming spinner must be visible while isGenerating is true
+        expect(
+          find.byKey(const ValueKey('streaming_indicator_spinner')),
+          findsOneWidget,
+        );
+        expect(find.text('Analyzing telemetry context...'), findsWidgets);
 
-      // Finish streaming
-      fakeRepo.streamCompleter!.complete();
-      await tester.pumpAndSettle();
+        // Finish streaming
+        fakeRepo.streamCompleter!.complete();
+        await tester.pumpAndSettle();
 
-      // Streaming spinner must be completely dismissed after completion
-      expect(find.byKey(const ValueKey('streaming_indicator_spinner')), findsNothing);
-      expect(find.byType(CircularProgressIndicator), findsNothing);
-      expect(find.text('Analyzing telemetry context...'), findsNothing);
-    });
+        // Streaming spinner must be completely dismissed after completion
+        expect(
+          find.byKey(const ValueKey('streaming_indicator_spinner')),
+          findsNothing,
+        );
+        expect(find.byType(CircularProgressIndicator), findsNothing);
+        expect(find.text('Analyzing telemetry context...'), findsNothing);
+      },
+    );
   });
 }

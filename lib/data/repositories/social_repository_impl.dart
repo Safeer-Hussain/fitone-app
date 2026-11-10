@@ -1,6 +1,8 @@
 import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:sqflite/sqflite.dart';
+
 import '../../core/database/app_database.dart';
 import '../../domain/entities/social_post.dart';
 import '../../domain/repositories/social_repository.dart';
@@ -31,23 +33,35 @@ class SocialRepositoryImpl implements SocialRepository {
   Future<void> toggleLike(String postId, bool isLiked) async {
     final db = await AppDatabase.instance.database;
     final countDelta = isLiked ? 1 : -1;
-    await db.rawUpdate('''
+    await db.rawUpdate(
+      '''
       UPDATE social_posts 
       SET likes_count = MAX(0, likes_count + ?), is_liked = ?
       WHERE id = ?
-    ''', [countDelta, isLiked ? 1 : 0, postId]);
+    ''',
+      [countDelta, isLiked ? 1 : 0, postId],
+    );
   }
 
   @override
   Future<void> addComment(String postId, PostComment comment) async {
     final db = await AppDatabase.instance.database;
-    final rows = await db.query('social_posts', where: 'id = ?', whereArgs: [postId], limit: 1);
+    final rows = await db.query(
+      'social_posts',
+      where: 'id = ?',
+      whereArgs: [postId],
+      limit: 1,
+    );
     if (rows.isNotEmpty) {
       final post = SocialPost.fromMap(rows.first);
       post.comments.add(comment);
       await db.update(
         'social_posts',
-        {'comments_json': jsonEncode(post.comments.map((c) => c.toMap()).toList())},
+        {
+          'comments_json': jsonEncode(
+            post.comments.map((c) => c.toMap()).toList(),
+          ),
+        },
         where: 'id = ?',
         whereArgs: [postId],
       );
@@ -57,6 +71,10 @@ class SocialRepositoryImpl implements SocialRepository {
   @override
   Future<void> createPost(SocialPost post) async {
     final db = await AppDatabase.instance.database;
-    await db.insert('social_posts', post.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+    await db.insert(
+      'social_posts',
+      post.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
   }
 }

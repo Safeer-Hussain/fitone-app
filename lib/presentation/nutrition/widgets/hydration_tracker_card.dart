@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../core/utils/app_feedback.dart';
 import '../stores/nutrition_store.dart';
 
@@ -6,7 +7,11 @@ class HydrationTrackerCard extends StatelessWidget {
   final NutritionStore store;
   final bool isCompact;
 
-  const HydrationTrackerCard({super.key, required this.store, this.isCompact = false});
+  const HydrationTrackerCard({
+    super.key,
+    required this.store,
+    this.isCompact = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +39,11 @@ class HydrationTrackerCard extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Icon(Icons.water_drop_rounded, size: isCompact ? 14 : 16, color: colorScheme.secondary),
+                    Icon(
+                      Icons.water_drop_rounded,
+                      size: isCompact ? 14 : 16,
+                      color: colorScheme.secondary,
+                    ),
                     const SizedBox(width: 6),
                     Text(
                       'HYDRATION ENGINE',
@@ -48,11 +57,16 @@ class HydrationTrackerCard extends StatelessWidget {
                   ],
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: isCompact ? 6 : 8, vertical: isCompact ? 2 : 3),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: isCompact ? 6 : 8,
+                    vertical: isCompact ? 2 : 3,
+                  ),
                   decoration: BoxDecoration(
                     color: colorScheme.secondary.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: colorScheme.secondary.withValues(alpha: 0.3)),
+                    border: Border.all(
+                      color: colorScheme.secondary.withValues(alpha: 0.3),
+                    ),
                   ),
                   child: Text(
                     '$streak Day Streak',
@@ -82,7 +96,10 @@ class HydrationTrackerCard extends StatelessWidget {
                     ),
                     Text(
                       'Target $targetMl ml per day',
-                      style: TextStyle(fontSize: isCompact ? 10 : 12, color: colorScheme.onSurfaceVariant),
+                      style: TextStyle(
+                        fontSize: isCompact ? 10 : 12,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
                     ),
                   ],
                 ),
@@ -113,7 +130,10 @@ class HydrationTrackerCard extends StatelessWidget {
                   label: '+250ml',
                   onTap: () {
                     store.logWater(250);
-                    AppFeedback.showSuccess(context, 'Logged 250ml water (+0.25L)');
+                    AppFeedback.showSuccess(
+                      context,
+                      'Logged 250ml water (+0.25L)',
+                    );
                   },
                   colorScheme: colorScheme,
                   isCompact: isCompact,
@@ -123,7 +143,10 @@ class HydrationTrackerCard extends StatelessWidget {
                   label: '+500ml',
                   onTap: () {
                     store.logWater(500);
-                    AppFeedback.showSuccess(context, 'Logged 500ml water (+0.50L)');
+                    AppFeedback.showSuccess(
+                      context,
+                      'Logged 500ml water (+0.50L)',
+                    );
                   },
                   colorScheme: colorScheme,
                   isCompact: isCompact,
@@ -133,7 +156,10 @@ class HydrationTrackerCard extends StatelessWidget {
                   label: '+750ml',
                   onTap: () {
                     store.logWater(750);
-                    AppFeedback.showSuccess(context, 'Logged 750ml water (+0.75L)');
+                    AppFeedback.showSuccess(
+                      context,
+                      'Logged 750ml water (+0.75L)',
+                    );
                   },
                   colorScheme: colorScheme,
                   isCompact: isCompact,
@@ -142,12 +168,22 @@ class HydrationTrackerCard extends StatelessWidget {
                 IconButton(
                   onPressed: () {
                     store.resetHydration();
-                    AppFeedback.showInfo(context, 'Hydration reset to 0ml for today');
+                    AppFeedback.showInfo(
+                      context,
+                      'Hydration reset to 0ml for today',
+                    );
                   },
-                  icon: Icon(Icons.refresh_rounded, size: isCompact ? 16 : 18, color: colorScheme.onSurfaceVariant),
+                  icon: Icon(
+                    Icons.refresh_rounded,
+                    size: isCompact ? 16 : 18,
+                    color: colorScheme.onSurfaceVariant,
+                  ),
                   tooltip: 'Reset Day Hydration',
                   padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
+                  constraints: const BoxConstraints(
+                    minWidth: 28,
+                    minHeight: 28,
+                  ),
                 ),
               ],
             ),
@@ -182,7 +218,13 @@ class _WaterButton extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: isCompact ? 4 : 8),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
-        child: Text(label, style: TextStyle(fontSize: isCompact ? 10 : 12, fontWeight: FontWeight.w700)),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: isCompact ? 10 : 12,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
       ),
     );
   }

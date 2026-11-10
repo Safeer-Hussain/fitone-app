@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../core/constants/app_assets.dart';
 import '../../../core/di/injection.dart';
 import '../../../core/utils/app_feedback.dart';
@@ -26,7 +27,8 @@ class ExerciseDetailView extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
 
     Widget imageSection = ClipRRect(
       borderRadius: BorderRadius.circular(16),
@@ -39,7 +41,11 @@ class ExerciseDetailView extends StatelessWidget {
           errorBuilder: (_, __, ___) => Container(
             color: colorScheme.surfaceContainerHighest,
             child: Center(
-              child: Icon(Icons.fitness_center_rounded, size: 54, color: colorScheme.primary),
+              child: Icon(
+                Icons.fitness_center_rounded,
+                size: 54,
+                color: colorScheme.primary,
+              ),
             ),
           ),
         ),
@@ -79,7 +85,11 @@ class ExerciseDetailView extends StatelessWidget {
           ),
           child: Text(
             exercise.targetMuscles,
-            style: TextStyle(fontSize: 14, color: colorScheme.onSurface, height: 1.4),
+            style: TextStyle(
+              fontSize: 14,
+              color: colorScheme.onSurface,
+              height: 1.4,
+            ),
           ),
         ),
         const SizedBox(height: 24),
@@ -103,7 +113,11 @@ class ExerciseDetailView extends StatelessWidget {
           ),
           child: Text(
             exercise.instructions,
-            style: TextStyle(fontSize: 14, color: colorScheme.onSurfaceVariant, height: 1.5),
+            style: TextStyle(
+              fontSize: 14,
+              color: colorScheme.onSurfaceVariant,
+              height: 1.5,
+            ),
           ),
         ),
         const SizedBox(height: 24),
@@ -114,11 +128,14 @@ class ExerciseDetailView extends StatelessWidget {
             onPressed: () {
               final loggerStore = sl<WorkoutLoggerStore>();
               if (!loggerStore.isSessionActive) {
-                loggerStore.startWorkout(title: '${exercise.name} Focused Workout');
+                loggerStore.startWorkout(
+                  title: '${exercise.name} Focused Workout',
+                );
               }
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (_) => WorkoutLoggerView(initialExerciseId: exercise.id),
+                  builder: (_) =>
+                      WorkoutLoggerView(initialExerciseId: exercise.id),
                 ),
               );
               AppFeedback.showSuccess(
@@ -127,12 +144,17 @@ class ExerciseDetailView extends StatelessWidget {
               );
             },
             icon: const Icon(Icons.playlist_add_rounded, size: 20),
-            label: const Text('Add to Active Workout', style: TextStyle(fontWeight: FontWeight.w700)),
+            label: const Text(
+              'Add to Active Workout',
+              style: TextStyle(fontWeight: FontWeight.w700),
+            ),
             style: ElevatedButton.styleFrom(
               backgroundColor: colorScheme.primary,
               foregroundColor: colorScheme.onPrimary,
               padding: const EdgeInsets.symmetric(vertical: 14),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
           ),
         ),
@@ -147,7 +169,9 @@ class ExerciseDetailView extends StatelessWidget {
               foregroundColor: colorScheme.onSurface,
               side: BorderSide(color: colorScheme.outlineVariant),
               padding: const EdgeInsets.symmetric(vertical: 14),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
           ),
         ),
@@ -163,7 +187,9 @@ class ExerciseDetailView extends StatelessWidget {
               foregroundColor: colorScheme.onSurface,
               side: BorderSide(color: colorScheme.outlineVariant),
               padding: const EdgeInsets.symmetric(vertical: 14),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
           ),
         ),
@@ -177,7 +203,10 @@ class ExerciseDetailView extends StatelessWidget {
           IconButton(
             key: const ValueKey('plate_calculator_detail_appbar_button'),
             onPressed: () => BarbellPlateCalculatorSheet.show(context),
-            icon: Icon(Icons.fitness_center_rounded, color: colorScheme.secondary),
+            icon: Icon(
+              Icons.fitness_center_rounded,
+              color: colorScheme.secondary,
+            ),
             tooltip: 'Plate Calculator',
           ),
           IconButton(
@@ -250,7 +279,11 @@ class _DetailChip extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: TextStyle(color: color, fontSize: 11, fontWeight: FontWeight.w700),
+        style: TextStyle(
+          color: color,
+          fontSize: 11,
+          fontWeight: FontWeight.w700,
+        ),
       ),
     );
   }

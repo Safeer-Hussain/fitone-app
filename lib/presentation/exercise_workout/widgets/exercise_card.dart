@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../domain/entities/exercise.dart';
 
 class ExerciseCard extends StatelessWidget {
@@ -46,7 +47,10 @@ class ExerciseCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 44, maxHeight: 44),
+                    constraints: const BoxConstraints(
+                      maxWidth: 44,
+                      maxHeight: 44,
+                    ),
                     child: Container(
                       width: isCompact ? 36 : 42,
                       height: isCompact ? 36 : 42,
@@ -93,13 +97,24 @@ class ExerciseCard extends StatelessWidget {
                   if (onAddSet != null)
                     IconButton(
                       onPressed: onAddSet,
-                      icon: Icon(Icons.add_circle_outline_rounded, color: colorScheme.primary, size: 20),
+                      icon: Icon(
+                        Icons.add_circle_outline_rounded,
+                        color: colorScheme.primary,
+                        size: 20,
+                      ),
                       padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+                      constraints: const BoxConstraints(
+                        minWidth: 32,
+                        minHeight: 32,
+                      ),
                       tooltip: 'Log Set',
                     )
                   else
-                    Icon(Icons.chevron_right_rounded, size: 18, color: colorScheme.onSurfaceVariant),
+                    Icon(
+                      Icons.chevron_right_rounded,
+                      size: 18,
+                      color: colorScheme.onSurfaceVariant,
+                    ),
                 ],
               ),
               SizedBox(height: isCompact ? 6 : 8),
@@ -107,9 +122,21 @@ class ExerciseCard extends StatelessWidget {
                 spacing: 4,
                 runSpacing: 4,
                 children: [
-                  _Badge(label: exercise.bodyPart, color: colorScheme.secondary, isCompact: isCompact),
-                  _Badge(label: exercise.equipment, color: colorScheme.primary, isCompact: isCompact),
-                  _Badge(label: exercise.difficulty, color: const Color(0xFFFF9100), isCompact: isCompact),
+                  _Badge(
+                    label: exercise.bodyPart,
+                    color: colorScheme.secondary,
+                    isCompact: isCompact,
+                  ),
+                  _Badge(
+                    label: exercise.equipment,
+                    color: colorScheme.primary,
+                    isCompact: isCompact,
+                  ),
+                  _Badge(
+                    label: exercise.difficulty,
+                    color: const Color(0xFFFF9100),
+                    isCompact: isCompact,
+                  ),
                 ],
               ),
             ],
@@ -125,12 +152,19 @@ class _Badge extends StatelessWidget {
   final Color color;
   final bool isCompact;
 
-  const _Badge({required this.label, required this.color, this.isCompact = false});
+  const _Badge({
+    required this.label,
+    required this.color,
+    this.isCompact = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: isCompact ? 6 : 8, vertical: isCompact ? 2 : 3),
+      padding: EdgeInsets.symmetric(
+        horizontal: isCompact ? 6 : 8,
+        vertical: isCompact ? 2 : 3,
+      ),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(6),

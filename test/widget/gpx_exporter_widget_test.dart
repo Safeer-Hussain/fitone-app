@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fitone/core/di/injection.dart';
@@ -37,7 +38,8 @@ class _MockRingRepository implements RingRepository {
   @override
   Future<void> disconnectRing() async {}
   @override
-  Future<HardwareDiagnostics> getHardwareDiagnostics() async => const HardwareDiagnostics(
+  Future<HardwareDiagnostics> getHardwareDiagnostics() async =>
+      const HardwareDiagnostics(
         opticalPPG: 'OK',
         temperatureSensor: 'OK',
         sixAxisIMU: 'OK',
@@ -76,7 +78,9 @@ void main() {
     GpxExporter.overrideExportDirectory = Directory.systemTemp;
     await sl.reset();
     sl.registerLazySingleton<ThemeStore>(() => ThemeStore());
-    sl.registerLazySingleton<RunningRepository>(() => _MockRunningRepository([sampleRun]));
+    sl.registerLazySingleton<RunningRepository>(
+      () => _MockRunningRepository([sampleRun]),
+    );
     sl.registerLazySingleton<RingRepository>(() => _MockRingRepository());
     sl.registerLazySingleton<GpsRunningStore>(
       () => GpsRunningStore(
@@ -108,58 +112,84 @@ void main() {
   }
 
   group('GpxExportDialog & RunSummarySheet Widget Tests', () {
-    testWidgets('Renders GpxExportDialog with metadata, file name and XML preview', (tester) async {
-      setupPortrait(tester);
+    testWidgets(
+      'Renders GpxExportDialog with metadata, file name and XML preview',
+      (tester) async {
+        setupPortrait(tester);
 
-      await tester.pumpWidget(createTestWidget(GpxExportDialog(record: sampleRun)));
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(
+          createTestWidget(GpxExportDialog(record: sampleRun)),
+        );
+        await tester.pumpAndSettle();
 
-      expect(find.text('Export GPX 1.1 Route'), findsOneWidget);
-      expect(find.textContaining('fitone_lahore_canal_tempo_run_'), findsOneWidget);
-      expect(find.text('GPX 1.1 + HR'), findsOneWidget);
-      expect(find.text('6.25 km'), findsOneWidget);
-      expect(find.text('25:00'), findsOneWidget);
-      expect(find.text('4'), findsWidgets); // 4 points
-      expect(find.text('GPX 1.1 XML PREVIEW'), findsOneWidget);
-      expect(find.textContaining('<gpx version="1.1"'), findsOneWidget);
-      expect(find.textContaining('<trkpt lat="31.520400" lon="74.358700">'), findsOneWidget);
-      expect(find.byKey(const ValueKey('copy_gpx_button')), findsOneWidget);
-      expect(find.byKey(const ValueKey('save_gpx_button')), findsOneWidget);
-    });
+        expect(find.text('Export GPX 1.1 Route'), findsOneWidget);
+        expect(
+          find.textContaining('fitone_lahore_canal_tempo_run_'),
+          findsOneWidget,
+        );
+        expect(find.text('GPX 1.1 + HR'), findsOneWidget);
+        expect(find.text('6.25 km'), findsOneWidget);
+        expect(find.text('25:00'), findsOneWidget);
+        expect(find.text('4'), findsWidgets); // 4 points
+        expect(find.text('GPX 1.1 XML PREVIEW'), findsOneWidget);
+        expect(find.textContaining('<gpx version="1.1"'), findsOneWidget);
+        expect(
+          find.textContaining('<trkpt lat="31.520400" lon="74.358700">'),
+          findsOneWidget,
+        );
+        expect(find.byKey(const ValueKey('copy_gpx_button')), findsOneWidget);
+        expect(find.byKey(const ValueKey('save_gpx_button')), findsOneWidget);
+      },
+    );
 
-    testWidgets('Tapping Copy GPX XML button triggers copy and displays success feedback', (tester) async {
-      setupPortrait(tester);
+    testWidgets(
+      'Tapping Copy GPX XML button triggers copy and displays success feedback',
+      (tester) async {
+        setupPortrait(tester);
 
-      await tester.pumpWidget(createTestWidget(GpxExportDialog(record: sampleRun)));
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(
+          createTestWidget(GpxExportDialog(record: sampleRun)),
+        );
+        await tester.pumpAndSettle();
 
-      final copyButton = find.byKey(const ValueKey('copy_gpx_button'));
-      expect(copyButton, findsOneWidget);
-      await tester.tap(copyButton);
-      await tester.pump();
+        final copyButton = find.byKey(const ValueKey('copy_gpx_button'));
+        expect(copyButton, findsOneWidget);
+        await tester.tap(copyButton);
+        await tester.pump();
 
-      expect(find.text('GPX 1.1 XML copied to clipboard'), findsOneWidget);
-    });
+        expect(find.text('GPX 1.1 XML copied to clipboard'), findsOneWidget);
+      },
+    );
 
-    testWidgets('Tapping Save GPX File writes file and shows path notification', (tester) async {
-      setupPortrait(tester);
+    testWidgets(
+      'Tapping Save GPX File writes file and shows path notification',
+      (tester) async {
+        setupPortrait(tester);
 
-      await tester.pumpWidget(createTestWidget(GpxExportDialog(record: sampleRun)));
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(
+          createTestWidget(GpxExportDialog(record: sampleRun)),
+        );
+        await tester.pumpAndSettle();
 
-      final saveButton = find.byKey(const ValueKey('save_gpx_button'));
-      expect(saveButton, findsOneWidget);
+        final saveButton = find.byKey(const ValueKey('save_gpx_button'));
+        expect(saveButton, findsOneWidget);
 
-      await tester.runAsync(() async {
-        await tester.tap(saveButton);
-        await Future.delayed(const Duration(milliseconds: 100));
-      });
-      await tester.pump();
+        await tester.runAsync(() async {
+          await tester.tap(saveButton);
+          await Future.delayed(const Duration(milliseconds: 100));
+        });
+        await tester.pump();
 
-      expect(find.textContaining('GPX exported to fitone_lahore_canal_tempo_run_'), findsOneWidget);
-    });
+        expect(
+          find.textContaining('GPX exported to fitone_lahore_canal_tempo_run_'),
+          findsOneWidget,
+        );
+      },
+    );
 
-    testWidgets('RunSummarySheet opens GpxExportDialog from footer button', (tester) async {
+    testWidgets('RunSummarySheet opens GpxExportDialog from footer button', (
+      tester,
+    ) async {
       setupPortrait(tester);
 
       await tester.pumpWidget(
@@ -184,7 +214,9 @@ void main() {
       expect(find.text('Export GPX 1.1 Route'), findsOneWidget);
     });
 
-    testWidgets('RunSummarySheet opens GpxExportDialog from header button', (tester) async {
+    testWidgets('RunSummarySheet opens GpxExportDialog from header button', (
+      tester,
+    ) async {
       setupPortrait(tester);
 
       await tester.pumpWidget(
@@ -201,7 +233,9 @@ void main() {
       await tester.tap(find.text('Open Summary'));
       await tester.pumpAndSettle();
 
-      final exportHeaderBtn = find.byKey(const ValueKey('export_gpx_header_button'));
+      final exportHeaderBtn = find.byKey(
+        const ValueKey('export_gpx_header_button'),
+      );
       expect(exportHeaderBtn, findsOneWidget);
       await tester.tap(exportHeaderBtn);
       await tester.pumpAndSettle();

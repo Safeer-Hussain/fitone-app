@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../core/utils/app_feedback.dart';
 import '../stores/nutrition_store.dart';
 
@@ -21,10 +22,8 @@ class QuickAddFoodDialog extends StatefulWidget {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (_) => QuickAddFoodDialog(
-        store: store,
-        defaultMealSlot: defaultMealSlot,
-      ),
+      builder: (_) =>
+          QuickAddFoodDialog(store: store, defaultMealSlot: defaultMealSlot),
     );
   }
 
@@ -56,7 +55,13 @@ class _QuickAddFoodDialogState extends State<QuickAddFoodDialog> {
     {'name': 'Chicken Breast (200g)', 'cal': 330, 'p': 62, 'c': 0, 'f': 7},
     {'name': 'Eggs (3 Large)', 'cal': 215, 'p': 19, 'c': 1, 'f': 15},
     {'name': 'Whey Protein Scoop (30g)', 'cal': 120, 'p': 25, 'c': 2, 'f': 1.5},
-    {'name': 'Jasmine Rice Cooked (200g)', 'cal': 260, 'p': 5, 'c': 57, 'f': 0.5},
+    {
+      'name': 'Jasmine Rice Cooked (200g)',
+      'cal': 260,
+      'p': 5,
+      'c': 57,
+      'f': 0.5,
+    },
     {'name': 'Greek Yogurt 0% (250g)', 'cal': 140, 'p': 25, 'c': 9, 'f': 0},
     {'name': 'Avocado (100g)', 'cal': 160, 'p': 2, 'c': 9, 'f': 15},
   ];
@@ -222,12 +227,18 @@ class _QuickAddFoodDialogState extends State<QuickAddFoodDialog> {
       behavior: HitTestBehavior.translucent,
       child: SafeArea(
         child: Padding(
-          padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
           child: Container(
             decoration: BoxDecoration(
               color: colorScheme.surface,
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-              border: Border(top: BorderSide(color: colorScheme.outlineVariant)),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(24),
+              ),
+              border: Border(
+                top: BorderSide(color: colorScheme.outlineVariant),
+              ),
             ),
             padding: const EdgeInsets.all(24),
             child: SingleChildScrollView(
@@ -259,7 +270,11 @@ class _QuickAddFoodDialogState extends State<QuickAddFoodDialog> {
                           color: colorScheme.onSurface,
                         ),
                       ),
-                      Icon(Icons.restaurant_menu_rounded, color: colorScheme.primary, size: 20),
+                      Icon(
+                        Icons.restaurant_menu_rounded,
+                        color: colorScheme.primary,
+                        size: 20,
+                      ),
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -278,7 +293,10 @@ class _QuickAddFoodDialogState extends State<QuickAddFoodDialog> {
                     runSpacing: 6,
                     children: _quickTemplates.map((t) {
                       return ActionChip(
-                        label: Text(t['name'] as String, style: const TextStyle(fontSize: 11)),
+                        label: Text(
+                          t['name'] as String,
+                          style: const TextStyle(fontSize: 11),
+                        ),
                         onPressed: () => _applyTemplate(t),
                       );
                     }).toList(),
@@ -286,10 +304,15 @@ class _QuickAddFoodDialogState extends State<QuickAddFoodDialog> {
                   const SizedBox(height: 16),
                   DropdownButtonFormField<String>(
                     value: _mealSlot,
-                    decoration: const InputDecoration(labelText: 'Meal Category'),
+                    decoration: const InputDecoration(
+                      labelText: 'Meal Category',
+                    ),
                     dropdownColor: colorScheme.surface,
                     items: const [
-                      DropdownMenuItem(value: 'Breakfast', child: Text('Breakfast')),
+                      DropdownMenuItem(
+                        value: 'Breakfast',
+                        child: Text('Breakfast'),
+                      ),
                       DropdownMenuItem(value: 'Lunch', child: Text('Lunch')),
                       DropdownMenuItem(value: 'Dinner', child: Text('Dinner')),
                       DropdownMenuItem(value: 'Snacks', child: Text('Snacks')),
@@ -322,7 +345,9 @@ class _QuickAddFoodDialogState extends State<QuickAddFoodDialog> {
                           key: const ValueKey('calories_field'),
                           controller: _caloriesController,
                           focusNode: _caloriesFocus,
-                          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                          keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true,
+                          ),
                           decoration: InputDecoration(
                             labelText: 'Calories (kcal)',
                             errorText: _caloriesError,
@@ -340,7 +365,9 @@ class _QuickAddFoodDialogState extends State<QuickAddFoodDialog> {
                           key: const ValueKey('protein_field'),
                           controller: _proteinController,
                           focusNode: _proteinFocus,
-                          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                          keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true,
+                          ),
                           decoration: InputDecoration(
                             labelText: 'Protein (g)',
                             errorText: _proteinError,
@@ -363,7 +390,9 @@ class _QuickAddFoodDialogState extends State<QuickAddFoodDialog> {
                           key: const ValueKey('carbs_field'),
                           controller: _carbsController,
                           focusNode: _carbsFocus,
-                          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                          keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true,
+                          ),
                           decoration: InputDecoration(
                             labelText: 'Carbs (g)',
                             errorText: _carbsError,
@@ -381,7 +410,9 @@ class _QuickAddFoodDialogState extends State<QuickAddFoodDialog> {
                           key: const ValueKey('fat_field'),
                           controller: _fatController,
                           focusNode: _fatFocus,
-                          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                          keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true,
+                          ),
                           decoration: InputDecoration(
                             labelText: 'Fats (g)',
                             errorText: _fatError,
@@ -406,7 +437,10 @@ class _QuickAddFoodDialogState extends State<QuickAddFoodDialog> {
                         foregroundColor: colorScheme.onPrimary,
                         padding: const EdgeInsets.symmetric(vertical: 14),
                       ),
-                      child: const Text('Add to Food Log', style: TextStyle(fontWeight: FontWeight.w700)),
+                      child: const Text(
+                        'Add to Food Log',
+                        style: TextStyle(fontWeight: FontWeight.w700),
+                      ),
                     ),
                   ),
                 ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'barbell_plate_calculator_sheet.dart';
 
 class OneRmCalculatorSheet extends StatefulWidget {
@@ -11,12 +12,19 @@ class OneRmCalculatorSheet extends StatefulWidget {
     this.initialReps = 5,
   });
 
-  static void show(BuildContext context, {double initialWeight = 100.0, int initialReps = 5}) {
+  static void show(
+    BuildContext context, {
+    double initialWeight = 100.0,
+    int initialReps = 5,
+  }) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (_) => OneRmCalculatorSheet(initialWeight: initialWeight, initialReps: initialReps),
+      builder: (_) => OneRmCalculatorSheet(
+        initialWeight: initialWeight,
+        initialReps: initialReps,
+      ),
     );
   }
 
@@ -36,7 +44,8 @@ class _OneRmCalculatorSheetState extends State<OneRmCalculatorSheet> {
   }
 
   double get _epley1Rm => _reps <= 1 ? _weight : _weight * (1.0 + _reps / 30.0);
-  double get _brzycki1Rm => _reps >= 37 ? _weight : _weight / (1.0278 - (0.0278 * _reps));
+  double get _brzycki1Rm =>
+      _reps >= 37 ? _weight : _weight / (1.0278 - (0.0278 * _reps));
   double get _avg1Rm => (_epley1Rm + _brzycki1Rm) / 2.0;
 
   @override
@@ -48,7 +57,9 @@ class _OneRmCalculatorSheetState extends State<OneRmCalculatorSheet> {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       behavior: HitTestBehavior.translucent,
       child: Padding(
-        padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
         child: SafeArea(
           child: Container(
             constraints: BoxConstraints(
@@ -56,157 +67,190 @@ class _OneRmCalculatorSheetState extends State<OneRmCalculatorSheet> {
             ),
             decoration: BoxDecoration(
               color: theme.scaffoldBackgroundColor,
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-              border: Border(top: BorderSide(color: colorScheme.outlineVariant)),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(24),
+              ),
+              border: Border(
+                top: BorderSide(color: colorScheme.outlineVariant),
+              ),
             ),
             child: SingleChildScrollView(
               physics: const ClampingScrollPhysics(),
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               padding: const EdgeInsets.all(24),
               child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 40,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: colorScheme.outlineVariant,
-                    borderRadius: BorderRadius.circular(2),
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: colorScheme.outlineVariant,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'One-Rep Max (1RM) Engine',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                        color: colorScheme.onSurface,
-                      ),
-                    ),
-                    Icon(Icons.fitness_center_rounded, color: colorScheme.primary, size: 20),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Weight: ${_weight.toStringAsFixed(1)} kg',
-                            style: TextStyle(fontSize: 13, color: colorScheme.onSurfaceVariant),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          Slider(
-                            value: _weight,
-                            min: 20,
-                            max: 250,
-                            divisions: 46,
-                            activeColor: colorScheme.primary,
-                            inactiveColor: colorScheme.surfaceContainer,
-                            onChanged: (val) => setState(() => _weight = val),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Reps: $_reps',
-                            style: TextStyle(fontSize: 13, color: colorScheme.onSurfaceVariant),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          Slider(
-                            value: _reps.toDouble(),
-                            min: 1,
-                            max: 15,
-                            divisions: 14,
-                            activeColor: colorScheme.secondary,
-                            inactiveColor: colorScheme.surfaceContainer,
-                            onChanged: (val) => setState(() => _reps = val.round()),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: colorScheme.surface,
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: colorScheme.outlineVariant),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      _CalculationMetric(label: 'Epley Formula', value: '${_epley1Rm.toStringAsFixed(1)} kg'),
-                      Container(width: 1, height: 40, color: colorScheme.outlineVariant),
-                      _CalculationMetric(label: 'Brzycki Formula', value: '${_brzycki1Rm.toStringAsFixed(1)} kg'),
-                      Container(width: 1, height: 40, color: colorScheme.outlineVariant),
-                      _CalculationMetric(label: 'Consensus 1RM', value: '${_avg1Rm.toStringAsFixed(1)} kg', isHighlighted: true),
+                      Text(
+                        'One-Rep Max (1RM) Engine',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                          color: colorScheme.onSurface,
+                        ),
+                      ),
+                      Icon(
+                        Icons.fitness_center_rounded,
+                        color: colorScheme.primary,
+                        size: 20,
+                      ),
                     ],
                   ),
-                ),
-                const SizedBox(height: 18),
-                Text(
-                  'PROGRESSIVE OVERLOAD LOADINGS',
-                  style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w800,
-                    color: colorScheme.onSurfaceVariant,
-                    letterSpacing: 0.8,
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Weight: ${_weight.toStringAsFixed(1)} kg',
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: colorScheme.onSurfaceVariant,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Slider(
+                              value: _weight,
+                              min: 20,
+                              max: 250,
+                              divisions: 46,
+                              activeColor: colorScheme.primary,
+                              inactiveColor: colorScheme.surfaceContainer,
+                              onChanged: (val) => setState(() => _weight = val),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Reps: $_reps',
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: colorScheme.onSurfaceVariant,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Slider(
+                              value: _reps.toDouble(),
+                              min: 1,
+                              max: 15,
+                              divisions: 14,
+                              activeColor: colorScheme.secondary,
+                              inactiveColor: colorScheme.surfaceContainer,
+                              onChanged: (val) =>
+                                  setState(() => _reps = val.round()),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    _PercentPill(
-                      pct: '90%',
-                      weight: '${(_avg1Rm * 0.90).toStringAsFixed(1)} kg',
-                      rawWeight: _avg1Rm * 0.90,
-                      reps: '3-4 reps',
+                  const SizedBox(height: 16),
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: colorScheme.surface,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: colorScheme.outlineVariant),
                     ),
-                    _PercentPill(
-                      pct: '85%',
-                      weight: '${(_avg1Rm * 0.85).toStringAsFixed(1)} kg',
-                      rawWeight: _avg1Rm * 0.85,
-                      reps: '5-6 reps',
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        _CalculationMetric(
+                          label: 'Epley Formula',
+                          value: '${_epley1Rm.toStringAsFixed(1)} kg',
+                        ),
+                        Container(
+                          width: 1,
+                          height: 40,
+                          color: colorScheme.outlineVariant,
+                        ),
+                        _CalculationMetric(
+                          label: 'Brzycki Formula',
+                          value: '${_brzycki1Rm.toStringAsFixed(1)} kg',
+                        ),
+                        Container(
+                          width: 1,
+                          height: 40,
+                          color: colorScheme.outlineVariant,
+                        ),
+                        _CalculationMetric(
+                          label: 'Consensus 1RM',
+                          value: '${_avg1Rm.toStringAsFixed(1)} kg',
+                          isHighlighted: true,
+                        ),
+                      ],
                     ),
-                    _PercentPill(
-                      pct: '80%',
-                      weight: '${(_avg1Rm * 0.80).toStringAsFixed(1)} kg',
-                      rawWeight: _avg1Rm * 0.80,
-                      reps: '7-8 reps',
+                  ),
+                  const SizedBox(height: 18),
+                  Text(
+                    'PROGRESSIVE OVERLOAD LOADINGS',
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w800,
+                      color: colorScheme.onSurfaceVariant,
+                      letterSpacing: 0.8,
                     ),
-                    _PercentPill(
-                      pct: '70%',
-                      weight: '${(_avg1Rm * 0.70).toStringAsFixed(1)} kg',
-                      rawWeight: _avg1Rm * 0.70,
-                      reps: '10-12 reps',
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-              ],
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _PercentPill(
+                        pct: '90%',
+                        weight: '${(_avg1Rm * 0.90).toStringAsFixed(1)} kg',
+                        rawWeight: _avg1Rm * 0.90,
+                        reps: '3-4 reps',
+                      ),
+                      _PercentPill(
+                        pct: '85%',
+                        weight: '${(_avg1Rm * 0.85).toStringAsFixed(1)} kg',
+                        rawWeight: _avg1Rm * 0.85,
+                        reps: '5-6 reps',
+                      ),
+                      _PercentPill(
+                        pct: '80%',
+                        weight: '${(_avg1Rm * 0.80).toStringAsFixed(1)} kg',
+                        rawWeight: _avg1Rm * 0.80,
+                        reps: '7-8 reps',
+                      ),
+                      _PercentPill(
+                        pct: '70%',
+                        weight: '${(_avg1Rm * 0.70).toStringAsFixed(1)} kg',
+                        rawWeight: _avg1Rm * 0.70,
+                        reps: '10-12 reps',
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                ],
+              ),
             ),
           ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 }
 
 class _CalculationMetric extends StatelessWidget {
@@ -214,7 +258,11 @@ class _CalculationMetric extends StatelessWidget {
   final String value;
   final bool isHighlighted;
 
-  const _CalculationMetric({required this.label, required this.value, this.isHighlighted = false});
+  const _CalculationMetric({
+    required this.label,
+    required this.value,
+    this.isHighlighted = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -263,7 +311,8 @@ class _PercentPill extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         borderRadius: BorderRadius.circular(10),
-        onTap: () => BarbellPlateCalculatorSheet.show(context, initialWeight: rawWeight),
+        onTap: () =>
+            BarbellPlateCalculatorSheet.show(context, initialWeight: rawWeight),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
           decoration: BoxDecoration(
@@ -273,10 +322,30 @@ class _PercentPill extends StatelessWidget {
           ),
           child: Column(
             children: [
-              Text(pct, style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: colorScheme.secondary)),
+              Text(
+                pct,
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w700,
+                  color: colorScheme.secondary,
+                ),
+              ),
               const SizedBox(height: 2),
-              Text(weight, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: colorScheme.onSurface)),
-              Text(reps, style: TextStyle(fontSize: 9, color: colorScheme.onSurfaceVariant)),
+              Text(
+                weight,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                  color: colorScheme.onSurface,
+                ),
+              ),
+              Text(
+                reps,
+                style: TextStyle(
+                  fontSize: 9,
+                  color: colorScheme.onSurfaceVariant,
+                ),
+              ),
             ],
           ),
         ),
