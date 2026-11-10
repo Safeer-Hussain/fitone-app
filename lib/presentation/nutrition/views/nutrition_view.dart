@@ -4,7 +4,9 @@ import '../../../core/di/injection.dart';
 import '../../../core/theme/theme_store.dart';
 import '../../../core/utils/app_feedback.dart';
 import '../../../domain/entities/nutrition_day.dart';
+import '../stores/fasting_store.dart';
 import '../stores/nutrition_store.dart';
+import '../widgets/fasting_tracker_card.dart';
 import '../widgets/hydration_tracker_card.dart';
 import '../widgets/macro_progress_ring.dart';
 import '../widgets/quick_add_food_dialog.dart';
@@ -18,6 +20,7 @@ class NutritionView extends StatefulWidget {
 
 class _NutritionViewState extends State<NutritionView> {
   late final NutritionStore _store;
+  late final FastingStore _fastingStore;
   final ThemeStore _themeStore = sl<ThemeStore>();
 
   @override
@@ -25,6 +28,8 @@ class _NutritionViewState extends State<NutritionView> {
     super.initState();
     _store = sl<NutritionStore>();
     _store.initialize();
+    _fastingStore = sl<FastingStore>();
+    _fastingStore.initialize();
   }
 
   @override
@@ -78,6 +83,8 @@ class _NutritionViewState extends State<NutritionView> {
                               MacroProgressRing(summary: summary, isCompact: true),
                               const SizedBox(height: 8),
                               HydrationTrackerCard(store: _store, isCompact: true),
+                              const SizedBox(height: 8),
+                              FastingTrackerCard(store: _fastingStore, isCompact: true),
                             ],
                           ),
                         ),
@@ -105,6 +112,8 @@ class _NutritionViewState extends State<NutritionView> {
                     MacroProgressRing(summary: summary),
                     const SizedBox(height: 14),
                     HydrationTrackerCard(store: _store),
+                    const SizedBox(height: 14),
+                    FastingTrackerCard(store: _fastingStore),
                     const SizedBox(height: 20),
                     Text(
                       'MEAL CATEGORIES',

@@ -28,6 +28,7 @@ import 'package:fitone/presentation/exercise_workout/views/exercise_detail_view.
 import 'package:fitone/presentation/exercise_workout/views/exercise_encyclopedia_view.dart';
 import 'package:fitone/presentation/exercise_workout/views/workout_logger_view.dart';
 import 'package:fitone/presentation/gps_running/stores/gps_running_store.dart';
+import 'package:fitone/presentation/nutrition/stores/fasting_store.dart';
 import 'package:fitone/presentation/nutrition/stores/nutrition_store.dart';
 import 'package:fitone/presentation/nutrition/widgets/hydration_tracker_card.dart';
 import 'package:fitone/presentation/settings/views/settings_view.dart';
@@ -399,6 +400,12 @@ void main() {
       } else {
         sl.unregister<NutritionStore>();
         sl.registerSingleton<NutritionStore>(NutritionStore(nutritionRepository: nutritionRepo));
+      }
+      if (!sl.isRegistered<FastingStore>()) {
+        sl.registerSingleton<FastingStore>(FastingStore());
+      } else {
+        sl.unregister<FastingStore>();
+        sl.registerSingleton<FastingStore>(FastingStore());
       }
       if (!sl.isRegistered<GpsRunningStore>()) {
         sl.registerSingleton<GpsRunningStore>(GpsRunningStore(runningRepository: runningRepo, ringRepository: ringRepo));

@@ -18,6 +18,7 @@ import '../../domain/repositories/social_repository.dart';
 import '../../presentation/dashboard/stores/dashboard_store.dart';
 import '../../presentation/exercise_workout/stores/exercise_store.dart';
 import '../../presentation/exercise_workout/stores/workout_logger_store.dart';
+import '../../presentation/nutrition/stores/fasting_store.dart';
 import '../../presentation/nutrition/stores/nutrition_store.dart';
 import '../../presentation/gps_running/stores/gps_running_store.dart';
 import '../../presentation/ai_coach/stores/ai_coach_store.dart';
@@ -51,6 +52,7 @@ Future<void> configureDependencies() async {
   sl.registerLazySingleton<ExerciseStore>(() => ExerciseStore(workoutRepository: sl()));
   sl.registerLazySingleton<WorkoutLoggerStore>(() => WorkoutLoggerStore(workoutRepository: sl()));
   sl.registerLazySingleton<NutritionStore>(() => NutritionStore(nutritionRepository: sl()));
+  sl.registerLazySingleton<FastingStore>(() => FastingStore());
   sl.registerLazySingleton<GpsRunningStore>(() => GpsRunningStore(runningRepository: sl(), ringRepository: sl()));
   sl.registerLazySingleton<AiCoachStore>(() => AiCoachStore(aiCoachRepository: sl()));
   sl.registerLazySingleton<SocialStore>(() => SocialStore(socialRepository: sl()));

@@ -12,7 +12,7 @@ This document maintains 25 high-value engineering upgrades for the Fitone mobile
 - [x] **Sprint 02: GPX Route Exporter**
   - Add standard GPX 1.1 XML generation for completed GPS running routes stored in SQLite, allowing runners to export route coordinates, timestamps, and elevation points to file storage or share intent.
 
-- [ ] **Sprint 03: Intermittent Fasting Window Tracker**
+- [x] **Sprint 03: Intermittent Fasting Window Tracker**
   - Add a dedicated fasting tracker (16:8, 18:6, 20:4, Circadian) with live countdown progress ring, elapsed fasting hours, ketone production phase markers, and local notifications.
 
 - [ ] **Sprint 04: CSV Biometric Telemetry Exporter**

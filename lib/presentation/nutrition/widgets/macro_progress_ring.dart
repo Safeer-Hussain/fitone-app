@@ -30,8 +30,11 @@ class MacroProgressRing extends StatelessWidget {
         padding: EdgeInsets.all(isCompact ? 12 : 20),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Wrap(
+              alignment: WrapAlignment.spaceBetween,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              spacing: 8,
+              runSpacing: 4,
               children: [
                 Text(
                   'DAILY ENERGY & MACROS',
