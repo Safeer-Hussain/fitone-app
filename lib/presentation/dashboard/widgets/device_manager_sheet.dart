@@ -4,6 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import '../../../core/constants/app_assets.dart';
 import '../../../core/utils/app_feedback.dart';
 import '../stores/dashboard_store.dart';
+import 'telemetry_csv_export_dialog.dart';
 
 class DeviceManagerSheet extends StatelessWidget {
   final DashboardStore store;
@@ -500,6 +501,81 @@ class DeviceManagerSheet extends StatelessWidget {
                               }).toList(),
                             );
                           },
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          'SPORTS SCIENCE DATA EXPORT',
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: 1.0,
+                            color: colorScheme.primary,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Container(
+                          padding: const EdgeInsets.all(14),
+                          decoration: BoxDecoration(
+                            color: colorScheme.surface,
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(
+                              color: colorScheme.outlineVariant,
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.table_chart_rounded,
+                                    color: colorScheme.primary,
+                                    size: 20,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      'Export RFC-4180 Biometric Dataset',
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w700,
+                                        color: colorScheme.onSurface,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 6),
+                              Text(
+                                'Export multi-hour smart-ring telemetry (Heart Rate, SpO2, HRV, Skin Temp, Sleep Stages, and ECG samples) into CSV for researcher and sports science analysis.',
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  color: colorScheme.onSurfaceVariant,
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              SizedBox(
+                                width: double.infinity,
+                                child: OutlinedButton.icon(
+                                  key: const ValueKey(
+                                    'device_sheet_export_csv_button',
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    TelemetryCsvExportDialog.show(
+                                      context,
+                                      store,
+                                    );
+                                  },
+                                  icon: const Icon(
+                                    Icons.download_rounded,
+                                    size: 16,
+                                  ),
+                                  label: const Text('Configure & Export CSV'),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),

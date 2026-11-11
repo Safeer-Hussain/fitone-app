@@ -15,7 +15,7 @@ This document maintains 25 high-value engineering upgrades for the Fitone mobile
 - [x] **Sprint 03: Intermittent Fasting Window Tracker**
   - Add a dedicated fasting tracker (16:8, 18:6, 20:4, Circadian) with live countdown progress ring, elapsed fasting hours, ketone production phase markers, and local notifications.
 
-- [ ] **Sprint 04: CSV Biometric Telemetry Exporter**
+- [x] **Sprint 04: CSV Biometric Telemetry Exporter**
   - Add one-tap export of historical smart-ring telemetry packets (Heart Rate, SpO2, HRV, Skin Temp, Sleep Stages) into standard CSV format for sports scientist analysis.
 
 - [ ] **Sprint 05: Custom Superset & Drop Set Builder**

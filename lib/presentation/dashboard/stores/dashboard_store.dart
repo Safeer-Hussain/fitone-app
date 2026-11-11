@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:mobx/mobx.dart';
 
+import '../../../core/utils/telemetry_csv_exporter.dart';
 import '../../../domain/entities/ring_telemetry.dart';
 import '../../../domain/repositories/ring_repository.dart';
 
@@ -28,6 +30,12 @@ class DashboardStore {
   final _recentPackets = ObservableList<RingTelemetry>();
   List<RingTelemetry> get recentPackets => _recentPackets;
 
+  final _historicalPackets = ObservableList<RingTelemetry>();
+  List<RingTelemetry> get historicalPackets => _historicalPackets;
+
+  final _isExportingCsv = Observable<bool>(false);
+  bool get isExportingCsv => _isExportingCsv.value;
+
   final _ecgBuffer = ObservableList<double>();
   List<double> get ecgBuffer => _ecgBuffer;
 
@@ -39,6 +47,7 @@ class DashboardStore {
   void initialize() {
     _startTelemetrySubscription();
     scanDevices();
+    loadHistoricalTelemetry();
   }
 
   void _startTelemetrySubscription() {
@@ -124,6 +133,51 @@ class DashboardStore {
 
   Future<void> setTelemetryInterval(int intervalMs) async {
     await ringRepository.updateTelemetryRate(intervalMs);
+  }
+
+  Future<List<RingTelemetry>> loadHistoricalTelemetry({
+    Duration duration = const Duration(hours: 24),
+  }) async {
+    try {
+      final packets = await ringRepository.getHistoricalTelemetry(
+        duration: duration,
+      );
+      runInAction(() {
+        _historicalPackets.clear();
+        _historicalPackets.addAll(packets);
+      });
+      return packets;
+    } catch (_) {
+      return [];
+    }
+  }
+
+  Future<File> exportTelemetryCsv({
+    bool includeEcg = true,
+    bool fullHistory = true,
+    String? customFileName,
+  }) async {
+    runInAction(() => _isExportingCsv.value = true);
+    try {
+      var packetsToExport = fullHistory
+          ? List<RingTelemetry>.from(_historicalPackets)
+          : List<RingTelemetry>.from(_recentPackets);
+      if (packetsToExport.isEmpty) {
+        if (_activeTelemetry.value != null) {
+          packetsToExport = [_activeTelemetry.value!];
+        } else {
+          packetsToExport = await loadHistoricalTelemetry();
+        }
+      }
+
+      return await TelemetryCsvExporter.writeCsvToFile(
+        packetsToExport,
+        customFileName: customFileName,
+        includeEcgSamples: includeEcg,
+      );
+    } finally {
+      runInAction(() => _isExportingCsv.value = false);
+    }
   }
 
   void dispose() {

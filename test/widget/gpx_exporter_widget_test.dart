@@ -49,6 +49,10 @@ class _MockRingRepository implements RingRepository {
       );
   @override
   Future<void> updateTelemetryRate(int intervalMs) async {}
+  @override
+  Future<List<RingTelemetry>> getHistoricalTelemetry({
+    Duration duration = const Duration(hours: 24),
+  }) async => [];
 }
 
 void main() {

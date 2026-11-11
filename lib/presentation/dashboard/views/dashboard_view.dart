@@ -9,6 +9,7 @@ import '../widgets/ecg_waveform_card.dart';
 import '../widgets/hrv_trend_card.dart';
 import '../widgets/readiness_ring.dart';
 import '../widgets/sleep_architecture_card.dart';
+import '../widgets/telemetry_csv_export_dialog.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -241,7 +242,20 @@ class _DashboardViewState extends State<DashboardView> {
                 ],
               ),
             ),
-            const SizedBox(width: 6),
+            const SizedBox(width: 4),
+            IconButton(
+              key: const ValueKey('dashboard_export_csv_icon_button'),
+              tooltip: 'Export CSV Telemetry',
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
+              icon: Icon(
+                Icons.table_chart_rounded,
+                size: 16,
+                color: colorScheme.primary,
+              ),
+              onPressed: () => TelemetryCsvExportDialog.show(context, _store),
+            ),
+            const SizedBox(width: 4),
             Icon(Icons.tune_rounded, size: 16, color: colorScheme.primary),
           ],
         ),

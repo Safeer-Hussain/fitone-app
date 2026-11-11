@@ -2,7 +2,10 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/constants/app_typography.dart';
+import '../../../core/di/injection.dart';
 import '../../../core/utils/app_feedback.dart';
+import '../stores/dashboard_store.dart';
+import 'telemetry_csv_export_dialog.dart';
 
 class EcgWaveformCard extends StatelessWidget {
   final List<double> ecgBuffer;
@@ -319,16 +322,36 @@ class EcgWaveformCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () => Navigator.pop(sheetContext),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: colorScheme.primary,
-                        foregroundColor: colorScheme.onPrimary,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton.icon(
+                          key: const ValueKey('ecg_sheet_export_csv_button'),
+                          onPressed: () {
+                            Navigator.pop(sheetContext);
+                            if (sl.isRegistered<DashboardStore>()) {
+                              TelemetryCsvExportDialog.show(
+                                context,
+                                sl<DashboardStore>(),
+                              );
+                            }
+                          },
+                          icon: const Icon(Icons.table_chart_rounded, size: 16),
+                          label: const Text('Export CSV'),
+                        ),
                       ),
-                      child: const Text('Close'),
-                    ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () => Navigator.pop(sheetContext),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: colorScheme.primary,
+                            foregroundColor: colorScheme.onPrimary,
+                          ),
+                          child: const Text('Close'),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

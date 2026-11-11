@@ -190,4 +190,83 @@ class NativeRingChannelDataSource {
       ecgSamples: samples,
     );
   }
+
+  Future<List<RingTelemetry>> getHistoricalTelemetry({
+    Duration duration = const Duration(hours: 24),
+  }) async {
+    final now = DateTime.now();
+    final start = now.subtract(duration);
+    const count = 120; // 120 sample points spanning duration
+    final stepSeconds = duration.inSeconds ~/ count;
+
+    final packets = <RingTelemetry>[];
+    var cumulativeSteps = 1200;
+
+    for (var i = 0; i < count; i++) {
+      final packetTime = start.add(Duration(seconds: i * stepSeconds));
+      final hour = packetTime.hour;
+      final isNight = hour >= 23 || hour < 7;
+
+      final String stage;
+      final int hr;
+      final int hrv;
+      final double tempDelta;
+      final int spo2;
+
+      if (isNight) {
+        if (hour == 23 || hour == 0) {
+          stage = 'LIGHT';
+          hr = 60 + (i % 5);
+          hrv = 65 + (i % 6);
+          tempDelta = -0.15;
+        } else if (hour >= 1 && hour < 4) {
+          stage = i % 3 == 0 ? 'REM' : 'DEEP';
+          hr = 52 + (i % 6);
+          hrv = 75 + (i % 10);
+          tempDelta = -0.35;
+        } else {
+          stage = i % 2 == 0 ? 'REM' : 'LIGHT';
+          hr = 58 + (i % 5);
+          hrv = 70 + (i % 8);
+          tempDelta = -0.20;
+        }
+        spo2 = 97 + (i % 3);
+      } else {
+        stage = 'AWAKE';
+        cumulativeSteps += 40 + (i % 60);
+        hr = 70 + (i % 18);
+        hrv = 52 + (i % 14);
+        tempDelta = 0.05 + ((i % 15) / 100.0);
+        spo2 = 98 + (i % 2);
+      }
+
+      final samples = List.generate(16, (sIdx) {
+        final phase = (sIdx + i).toDouble();
+        final base = sin(phase * 0.7) * 0.4;
+        final spike = sIdx == 6 ? 1.2 : (sIdx == 7 ? -0.5 : 0.0);
+        return double.parse((base + spike).toStringAsFixed(3));
+      });
+
+      packets.add(
+        RingTelemetry(
+          packetId: 1000 + i,
+          timestamp: packetTime,
+          deviceId: _activeDeviceId,
+          sdk: _activeSdk,
+          heartRate: hr,
+          spo2: spo2,
+          hrv: hrv,
+          skinTempDelta: tempDelta,
+          sleepStage: stage,
+          stepCount: cumulativeSteps,
+          batteryLevel: (100 - (i * 12 ~/ count)).clamp(20, 100),
+          signalQuality: 98 + (i % 2),
+          checksum: 'A4F${1000 + i}8B',
+          ecgSamples: samples,
+        ),
+      );
+    }
+
+    return packets;
+  }
 }

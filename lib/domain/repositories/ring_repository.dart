@@ -7,4 +7,7 @@ abstract class RingRepository {
   Future<void> updateTelemetryRate(int intervalMs);
   Future<HardwareDiagnostics> getHardwareDiagnostics();
   Stream<RingTelemetry> watchTelemetry();
+  Future<List<RingTelemetry>> getHistoricalTelemetry({
+    Duration duration = const Duration(hours: 24),
+  });
 }

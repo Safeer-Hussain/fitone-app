@@ -27,4 +27,9 @@ class RingRepositoryImpl implements RingRepository {
 
   @override
   Stream<RingTelemetry> watchTelemetry() => dataSource.streamTelemetry();
+
+  @override
+  Future<List<RingTelemetry>> getHistoricalTelemetry({
+    Duration duration = const Duration(hours: 24),
+  }) => dataSource.getHistoricalTelemetry(duration: duration);
 }
