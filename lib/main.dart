@@ -79,7 +79,7 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
 
   final List<AdaptiveScaffoldDestination> _destinations = const [
     AdaptiveScaffoldDestination(
-      label: 'Hub.',
+      label: 'Hub',
       icon: Icons.dashboard_outlined,
       selectedIcon: Icons.dashboard_rounded,
     ),
