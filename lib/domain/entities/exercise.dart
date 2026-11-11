@@ -44,6 +44,8 @@ class Exercise {
   }
 }
 
+enum SetType { normal, superset, dropSet }
+
 class WorkoutSet {
   final String id;
   final String workoutId;
@@ -54,6 +56,10 @@ class WorkoutSet {
   double rpe;
   bool isCompleted;
   final DateTime timestamp;
+  final SetType setType;
+  final String? linkId;
+  final int subStage;
+  final String? tagLabel;
 
   WorkoutSet({
     required this.id,
@@ -65,6 +71,10 @@ class WorkoutSet {
     required this.rpe,
     required this.isCompleted,
     required this.timestamp,
+    this.setType = SetType.normal,
+    this.linkId,
+    this.subStage = 0,
+    this.tagLabel,
   });
 
   double get oneRepMaxEpley {
@@ -78,6 +88,12 @@ class WorkoutSet {
   }
 
   factory WorkoutSet.fromMap(Map<String, dynamic> map) {
+    final typeStr = map['set_type'] as String? ?? 'normal';
+    final parsedType = SetType.values.firstWhere(
+      (t) => t.name == typeStr,
+      orElse: () => SetType.normal,
+    );
+
     return WorkoutSet(
       id: map['id'] as String,
       workoutId: map['workout_id'] as String,
@@ -90,6 +106,10 @@ class WorkoutSet {
       timestamp: DateTime.fromMillisecondsSinceEpoch(
         (map['timestamp'] as num).toInt(),
       ),
+      setType: parsedType,
+      linkId: map['link_id'] as String?,
+      subStage: (map['sub_stage'] as num?)?.toInt() ?? 0,
+      tagLabel: map['tag_label'] as String?,
     );
   }
 
@@ -104,6 +124,10 @@ class WorkoutSet {
       'rpe': rpe,
       'is_completed': isCompleted ? 1 : 0,
       'timestamp': timestamp.millisecondsSinceEpoch,
+      'set_type': setType.name,
+      'link_id': linkId,
+      'sub_stage': subStage,
+      'tag_label': tagLabel,
     };
   }
 }

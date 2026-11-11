@@ -4,11 +4,13 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import '../../../core/di/injection.dart';
 import '../../../core/theme/theme_store.dart';
 import '../../../core/utils/app_feedback.dart';
+import '../../../domain/entities/exercise.dart';
 import '../stores/exercise_store.dart';
 import '../stores/workout_logger_store.dart';
 import '../widgets/barbell_plate_calculator_sheet.dart';
 import '../widgets/one_rm_calculator_sheet.dart';
 import '../widgets/rest_timer_dialog.dart';
+import '../widgets/superset_drop_set_dialog.dart';
 
 class WorkoutLoggerView extends StatefulWidget {
   final String? initialExerciseId;
@@ -179,6 +181,17 @@ class _WorkoutLoggerViewState extends State<WorkoutLoggerView> {
                 tooltip: 'Barbell Plate Calculator',
               ),
               IconButton(
+                key: const ValueKey('workout_open_superset_builder_button'),
+                onPressed: () => SupersetDropSetDialog.show(
+                  context,
+                  loggerStore: _loggerStore,
+                  exercises: exercises,
+                  initialExerciseId: _selectedExerciseId,
+                ),
+                icon: Icon(Icons.layers_outlined, color: colorScheme.tertiary),
+                tooltip: 'Superset & Drop Set Builder',
+              ),
+              IconButton(
                 onPressed: () => OneRmCalculatorSheet.show(context),
                 icon: Icon(
                   Icons.calculate_outlined,
@@ -311,7 +324,7 @@ class _WorkoutLoggerViewState extends State<WorkoutLoggerView> {
 
   Widget _buildInputCard(
     dynamic currentExercise,
-    List<dynamic> exercises,
+    List<Exercise> exercises,
     String unit,
     ColorScheme colorScheme,
   ) {
@@ -322,7 +335,9 @@ class _WorkoutLoggerViewState extends State<WorkoutLoggerView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           DropdownButtonFormField<String>(
-            value: _selectedExerciseId,
+            value: exercises.any((e) => e.id == _selectedExerciseId)
+                ? _selectedExerciseId
+                : (exercises.isNotEmpty ? exercises.first.id : null),
             isExpanded: true,
             decoration: const InputDecoration(
               contentPadding: EdgeInsets.symmetric(
@@ -471,23 +486,53 @@ class _WorkoutLoggerViewState extends State<WorkoutLoggerView> {
                   ],
                 ),
               ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton.icon(
+                  key: const ValueKey('workout_superset_inline_launcher'),
+                  onPressed: () => SupersetDropSetDialog.show(
+                    context,
+                    loggerStore: _loggerStore,
+                    exercises: exercises,
+                    initialExerciseId: _selectedExerciseId,
+                  ),
+                  icon: const Icon(Icons.layers_outlined, size: 16),
+                  label: const Text(
+                    'Superset / Drop Set',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 12,
+                    ),
+                    side: BorderSide(color: colorScheme.outlineVariant),
+                  ),
+                ),
+              ),
               const SizedBox(width: 8),
-              Padding(
-                padding: const EdgeInsets.only(top: 4),
-                child: ElevatedButton(
+              Expanded(
+                child: ElevatedButton.icon(
                   key: const ValueKey('workout_log_set_button'),
                   onPressed: _logSet,
+                  icon: const Icon(Icons.add, size: 16),
+                  label: const Text(
+                    'Log Set',
+                    style: TextStyle(fontWeight: FontWeight.w700),
+                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: colorScheme.primary,
                     foregroundColor: colorScheme.onPrimary,
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 14,
+                      horizontal: 12,
+                      vertical: 12,
                     ),
-                  ),
-                  child: const Text(
-                    'Log Set',
-                    style: TextStyle(fontWeight: FontWeight.w700),
                   ),
                 ),
               ),
@@ -538,6 +583,10 @@ class _WorkoutLoggerViewState extends State<WorkoutLoggerView> {
               border: Border.all(
                 color: set.isCompleted
                     ? colorScheme.primary.withValues(alpha: 0.5)
+                    : set.setType == SetType.superset
+                    ? colorScheme.primary.withValues(alpha: 0.4)
+                    : set.setType == SetType.dropSet
+                    ? colorScheme.secondary.withValues(alpha: 0.4)
                     : colorScheme.outlineVariant,
               ),
             ),
@@ -548,7 +597,11 @@ class _WorkoutLoggerViewState extends State<WorkoutLoggerView> {
                   height: 24,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: colorScheme.surfaceContainerHighest,
+                    color: set.setType == SetType.superset
+                        ? colorScheme.primaryContainer
+                        : set.setType == SetType.dropSet
+                        ? colorScheme.secondaryContainer
+                        : colorScheme.surfaceContainerHighest,
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Text(
@@ -556,7 +609,11 @@ class _WorkoutLoggerViewState extends State<WorkoutLoggerView> {
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 11,
-                      color: colorScheme.onSurface,
+                      color: set.setType == SetType.superset
+                          ? colorScheme.onPrimaryContainer
+                          : set.setType == SetType.dropSet
+                          ? colorScheme.onSecondaryContainer
+                          : colorScheme.onSurface,
                     ),
                   ),
                 ),
@@ -565,15 +622,46 @@ class _WorkoutLoggerViewState extends State<WorkoutLoggerView> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        ex?.name ?? 'Compound Lift',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 13,
-                          color: colorScheme.onSurface,
-                        ),
+                      Row(
+                        children: [
+                          Flexible(
+                            child: Text(
+                              ex?.name ?? 'Compound Lift',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 13,
+                                color: colorScheme.onSurface,
+                              ),
+                            ),
+                          ),
+                          if (set.tagLabel != null) ...[
+                            const SizedBox(width: 6),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 6,
+                                vertical: 2,
+                              ),
+                              decoration: BoxDecoration(
+                                color: set.setType == SetType.superset
+                                    ? colorScheme.primaryContainer
+                                    : colorScheme.secondaryContainer,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Text(
+                                set.tagLabel!,
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  color: set.setType == SetType.superset
+                                      ? colorScheme.onPrimaryContainer
+                                      : colorScheme.onSecondaryContainer,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ],
                       ),
                       Text(
                         '${set.weightKg.toStringAsFixed(1)} kg × ${set.reps} reps • RPE ${set.rpe.toStringAsFixed(1)} • 1RM: ${set.oneRepMaxEpley.toStringAsFixed(0)}kg',
@@ -630,10 +718,14 @@ class _WorkoutLoggerViewState extends State<WorkoutLoggerView> {
                     vertical: 10,
                   ),
                   decoration: BoxDecoration(
-                    color: colorScheme.primary.withValues(alpha: 0.15),
+                    color: _loggerStore.isTransitionTimer
+                        ? colorScheme.tertiaryContainer
+                        : colorScheme.primary.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(
-                      color: colorScheme.primary.withValues(alpha: 0.4),
+                      color: _loggerStore.isTransitionTimer
+                          ? colorScheme.tertiary
+                          : colorScheme.primary.withValues(alpha: 0.4),
                     ),
                   ),
                   child: Row(
@@ -641,18 +733,26 @@ class _WorkoutLoggerViewState extends State<WorkoutLoggerView> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(
-                        Icons.timer_outlined,
+                        _loggerStore.isTransitionTimer
+                            ? Icons.bolt_rounded
+                            : Icons.timer_outlined,
                         size: 15,
-                        color: colorScheme.primary,
+                        color: _loggerStore.isTransitionTimer
+                            ? colorScheme.onTertiaryContainer
+                            : colorScheme.primary,
                       ),
                       const SizedBox(width: 4),
                       Flexible(
                         child: Text(
-                          'Rest: ${restRemaining}s',
+                          _loggerStore.isTransitionTimer
+                              ? 'Switch: ${restRemaining}s • ${_loggerStore.transitionTargetName ?? 'Next Stage'}'
+                              : 'Rest: ${restRemaining}s',
                           style: TextStyle(
-                            color: colorScheme.primary,
+                            color: _loggerStore.isTransitionTimer
+                                ? colorScheme.onTertiaryContainer
+                                : colorScheme.primary,
                             fontWeight: FontWeight.w700,
-                            fontSize: 13,
+                            fontSize: 12,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
